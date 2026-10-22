@@ -16,13 +16,18 @@
   }
 
   const MEDALS = ['🥇', '🥈', '🥉'];
+  let profiles = {}; // nameKey -> { avatar, colour }, from /api/stats
+  /** A name with its avatar. */
+  function who(name) {
+    return Ark.avatarHtml(profiles[String(name).trim().toLowerCase()], 'small') + ' ' + esc(name);
+  }
 
   /** One game's (and variant's) top 10. */
   function board(g) {
     return '<section class="panel"><h2>' + esc(g.gameName) + (g.variant ? ' <span class="tag">' + esc(g.variant) + '</span>' : '') +
       ' <span class="muted count">' + g.runs + ' run' + (g.runs === 1 ? '' : 's') + (g.better === 'lower' ? ' · lower is better' : '') + '</span></h2>' +
       '<table><tbody>' + g.top.map(function (r, i) {
-        return '<tr><td class="rank' + (i === 0 ? ' gold' : '') + '">' + (MEDALS[i] || i + 1) + '</td><td>' + esc(r.name) + '</td>' +
+        return '<tr><td class="rank' + (i === 0 ? ' gold' : '') + '">' + (MEDALS[i] || i + 1) + '</td><td>' + who(r.name) + '</td>' +
           '<td class="num"><strong>' + Ark.formatScore(r.score, g.unit) + '</strong></td><td class="num when">' + ago(r.at) + '</td></tr>';
       }).join('') + '</tbody></table></section>';
   }
@@ -30,7 +35,7 @@
   function players(list) {
     return '<section class="panel"><h2>Players</h2><table><thead><tr><th>Player</th><th class="num">Runs</th><th class="num">Games</th><th class="num">⭐</th><th class="num">Last played</th></tr></thead><tbody>' +
       list.map(function (p) {
-        return '<tr><td>' + esc(p.name) + '</td><td class="num">' + p.runs + '</td><td class="num">' + p.games + '</td>' +
+        return '<tr><td>' + who(p.name) + '</td><td class="num">' + p.runs + '</td><td class="num">' + p.games + '</td>' +
           '<td class="num"><a href="' + Ark.achievementsUrl(p.name) + '">' + (p.achievements || 0) + '</a></td><td class="num when">' + ago(p.last) + '</td></tr>';
       }).join('') + '</tbody></table></section>';
   }
@@ -39,7 +44,7 @@
     const unit = {};
     games.forEach(function (g) { unit[g.game] = g.unit; });
     return '<section class="panel wide"><h2>Latest runs</h2><table><tbody>' + runs.map(function (r) {
-      return '<tr><td>' + esc(r.player) + '</td><td>' + esc(r.gameName) + (r.variant ? ' <span class="tag">' + esc(r.variant) + '</span>' : '') + '</td>' +
+      return '<tr><td>' + who(r.player) + '</td><td>' + esc(r.gameName) + (r.variant ? ' <span class="tag">' + esc(r.variant) + '</span>' : '') + '</td>' +
         '<td class="num">' + Ark.formatScore(r.score, r.unit || unit[r.game]) + '</td><td class="num when">' + ago(r.at) + '</td></tr>';
     }).join('') + '</tbody></table></section>';
   }
@@ -49,6 +54,7 @@
       $('content').innerHTML = '<p class="empty">No scores yet. Play a game and your best will show up here.</p>';
       return;
     }
+    profiles = d.profiles || {};
     $('content').innerHTML = '<div class="grid">' + d.games.map(board).join('') + players(d.players) + recent(d.recent, d.games) + '</div>';
   }).catch(function () {
     $('content').innerHTML = '<p class="empty">Couldn\'t load the scores. Is the hub running?</p>';

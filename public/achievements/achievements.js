@@ -29,7 +29,7 @@
     });
     const pct = d.total ? Math.round((d.got / d.total) * 100) : 0;
     $('content').innerHTML =
-      '<div class="who"><span class="name">' + esc(d.name) + '</span><span class="count">⭐ ' + d.got + ' / ' + d.total + '</span>' +
+      '<div class="who">' + Ark.avatarHtml(d.profile, 'big') + '<span class="name">' + esc(d.name) + '</span><span class="count">⭐ ' + d.got + ' / ' + d.total + '</span>' +
       '<span class="bar"><i style="width:' + pct + '%"></i></span></div>' +
       '<div class="grid">' + groups.map(function (g) { return group(g.title, byGame[g.key], !g.key); }).join('') + '</div>';
   }
@@ -41,7 +41,7 @@
         return;
       }
       $('content').innerHTML = '<p class="muted">Whose achievements?</p><div class="players">' + d.players.map(function (p) {
-        return '<a class="btn" href="' + Ark.achievementsUrl(p.name) + '">' + esc(p.name) + ' <span class="muted">⭐ ' + (p.achievements || 0) + '</span></a>';
+        return '<a class="btn" href="' + Ark.achievementsUrl(p.name) + '">' + Ark.avatarHtml((d.profiles || {})[p.name.trim().toLowerCase()], 'small') + ' ' + esc(p.name) + ' <span class="muted">⭐ ' + (p.achievements || 0) + '</span></a>';
       }).join('') + '</div>';
     });
   }

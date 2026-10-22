@@ -14,6 +14,7 @@ import { loadOrCreateCert } from './tls.js';
 import { Settings } from './settings.js';
 import { adminRouter } from './admin.js';
 import { Stats } from './stats.js';
+import { Profiles, AVATARS, COLOURS } from './profiles.js';
 import { ACHIEVEMENTS, describe } from './achievements.js';
 import { listGames } from './games/index.js';
 
@@ -42,7 +43,8 @@ export function createApp({
   });
   const settings = new Settings(dataDir, { envPassword: adminPassword });
   const stats = new Stats(dataDir);
-  const rooms = new RoomManager(io, { stats });
+  const profiles = new Profiles(dataDir);
+  const rooms = new RoomManager(io, { stats, profiles });
 
   /** (Re)compute a room's join link + QR from the current settings. */
   async function refreshJoin(room) {
@@ -60,14 +62,20 @@ export function createApp({
 
   app.get('/healthz', (_req, res) => res.json({ ok: true, rooms: rooms.rooms.size, playing: rooms.playing }));
   app.get('/version', (_req, res) => res.json(VERSION));
-  app.get('/api/stats', (_req, res) => res.json(stats.leaderboard()));
+  // The tables, with each player's avatar and colour (nameKey -> profile).
+  app.get('/api/stats', (_req, res) => {
+    const board = stats.leaderboard();
+    res.json({ ...board, profiles: profiles.forNames(board.players.map((p) => p.name)) });
+  });
+  // What a profile can be: the avatars and colours to pick from.
+  app.get('/api/profile-choices', (_req, res) => res.json({ avatars: AVATARS, colours: COLOURS }));
   // Every achievement, and which ones a player has (?name=).
   app.get('/api/achievements', (req, res) => {
     const name = String(req.query.name || '').slice(0, 32);
     const have = name ? stats.achievementsOf(name) : {};
     const games = Object.fromEntries(listGames().map((g) => [g.id, g.name]));
     const list = ACHIEVEMENTS.map((a) => ({ ...describe(a, have[a.id] || null), gameName: a.game ? games[a.game] : null }));
-    res.json({ name, got: list.filter((a) => a.at).length, total: list.length, list });
+    res.json({ name, profile: name ? profiles.get(name) : null, got: list.filter((a) => a.at).length, total: list.length, list });
   });
   app.use(
     '/api/admin',

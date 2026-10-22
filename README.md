@@ -99,6 +99,7 @@ on the TV to play there.
 | Lobby | **A** / **Start** | **Enter** / **Space** | Take the seat (as "Controller 1" or "Keyboard"), then start the picked game |
 | Lobby | **D-pad** / stick | **Arrows** / **WASD** | Pick a game |
 | Lobby | **Y** | **E** | Change your name: cycles through the names on the high-score table (so your scores count for you), then ready-made ones (Ace, Blaze, Comet…) |
+| Lobby | **X** | **Q** | Pick your avatar and colour (D-pad to move, **A** to pick, **B** to close) |
 | Lobby | **B** | **Backspace** | Leave the seat |
 | Setup screen | **↑↓** row, **←→** change, **A** start | Arrows, **Enter** | |
 | Any game | **Back / Select** | **Esc** | Back to the lobby |
@@ -128,6 +129,15 @@ Buttons use Xbox names. On a PlayStation controller A = ✕, B = ○, X = □, Y
 Browsers only notice a controller after one of its buttons is pressed, so press
 A once if the TV doesn't react. A phone can take the seat only when nobody is
 playing; tap ✕ on the player card on the TV (then **Remove?**) to free it.
+
+## Profiles
+
+Every player has an **avatar** (a fox, a robot, a rocket…) and a **colour**. They show on the TV's
+player card, on the phone (its header and buttons take your colour) and next to your name in the
+high scores and achievements. Pick them on the phone (tap your avatar at the top, or ⋯ → 🎨 Avatar
+and colour), or on the TV: click the avatar on the player card, or press **X** on a controller
+(**Q** on the keyboard). Until you pick, your name gives you one of its own, the same every time.
+They're kept per name in `profiles.json` in the data folder, so they survive updates.
 
 ## Sound and music
 
@@ -296,6 +306,7 @@ server/
   stats.js                runs, bests and high-score tables
   achievements.js         goals to chase, checked at the end of every run
   daily.js                the daily challenge: today's game and its seed
+  profiles.js             each player's avatar and colour
   games/                  one file per game (pure logic, unit-tested)
 public/
   host/                   TV page (and gamepads.js: controllers + keyboard)
