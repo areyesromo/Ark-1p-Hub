@@ -40,6 +40,7 @@
     restorePad(res.code);
     $('room-code').textContent = res.code;
     $('join-code').textContent = res.code;
+    $('room-note-code').textContent = res.code;
     if (res.qr) $('qr').src = res.qr;
   }
 
@@ -102,6 +103,8 @@
   function renderLobby() {
     $('join-url').textContent = state.joinUrl ? state.joinUrl.replace(/\?.*$/, '') : '';
     $('join-warn').classList.toggle('hidden', !state.joinGuess);
+    // Someone in the seat: the QR code steps aside and the game list gets the room.
+    $('lobby').classList.toggle('seated', Boolean(state.player));
     renderSeat();
 
     $('games-hint').textContent = state.readyToPlay
@@ -486,6 +489,17 @@
   });
 
   const send = function (input) { socket.emit('pad:input', { input: input }); };
+
+  // Typing on the TV's keyboard, for games with a typing(key, view) hook (letters in Word Guess,
+  // digits in Sudoku): only while the keyboard holds the seat and the game is on.
+  ArkPads.setTyping(function (key) {
+    const r = current && current.renderer;
+    if (!r || !r.typing || !padSeat || padSeat.idx !== ArkPads.KEYBOARD || !state || state.phase !== 'playing') return false;
+    if (!lastView || Ark.setup.isHub(lastView) || lastView.phase === 'over') return false;
+    const input = r.typing(key, lastView);
+    if (input) send(input);
+    return Boolean(input);
+  });
 
   ArkPads.onPress(function (idx, btn) {
     if (!state) return;

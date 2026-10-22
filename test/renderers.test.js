@@ -11,6 +11,10 @@ import { Breaker, TIMING as BREAKER_TIMING } from '../server/games/breaker.js';
 import { Game2048 } from '../server/games/2048.js';
 import { Blocks, W as BLOCKS_W, H as BLOCKS_H } from '../server/games/blocks.js';
 import { Flappy } from '../server/games/flappy.js';
+import { Asteroids } from '../server/games/asteroids.js';
+import { Sudoku } from '../server/games/sudoku.js';
+import { WordGuess } from '../server/games/word-guess.js';
+import { Solitaire } from '../server/games/solitaire.js';
 import { Minesweeper } from '../server/games/minesweeper.js';
 import { Simon } from '../server/games/simon.js';
 import { ReactionRush } from '../server/games/reaction.js';
@@ -102,7 +106,42 @@ test('sound hooks name real effects', () => {
   hear('flappy', flappy, ctx, [() => flappy.onInput({ type: 'flap' }), () => ctx.advance(300), () => flappy.onInput({ type: 'flap' }), () => ctx.advance(6000)]);
 
   ctx = fakeCtx();
+  const ast = new Asteroids(ctx, seeded(2));
+  ast.start();
+  hear('asteroids', ast, ctx, [() => ast.onInput({ type: 'fire' }), () => { ast.rocks[0].x = ast.ship.x; ast.rocks[0].y = ast.ship.y - 8; ast.rocks[0].vx = ast.rocks[0].vy = 0; ast.onInput({ type: 'fire' }); ctx.advance(400); }, () => { ast.ship.safeUntil = 0; ast.rocks[0].x = ast.ship.x; ast.rocks[0].y = ast.ship.y; ctx.advance(100); }]);
+
+  ctx = fakeCtx('Ana', { level: 'easy' });
+  const sdk = new Sudoku(ctx, seeded(2));
+  sdk.start();
+  const free = sdk.grid.indexOf(0);
+  hear('sudoku', sdk, ctx, [() => sdk.onInput({ type: 'set', cell: free, n: sdk.solution[free] }), () => sdk.onInput({ type: 'set', cell: free, n: sdk.grid[sdk.grid.findIndex((n, i) => n && i !== free)] })]);
+
+  ctx = fakeCtx('Ana', { mode: 'practice' });
+  const wg = new WordGuess(ctx, seeded(2));
+  wg.start();
+  const typeWord = (w) => () => { for (const letter of w) wg.onInput({ type: 'letter', letter }); wg.onInput({ type: 'enter' }); };
+  hear('word-guess', wg, ctx, [() => wg.onInput({ type: 'letter', letter: 'q' }), typeWord('zzzz'), () => { for (let i = 0; i < 5; i++) wg.onInput({ type: 'back' }); }, typeWord(wg.answer === 'crane' ? 'slate' : 'crane'), typeWord(wg.answer)]);
+
+  ctx = fakeCtx('Ana', { draw: 1 });
+  const sol = new Solitaire(ctx, seeded(2));
+  sol.start();
+  hear('solitaire', sol, ctx, [() => sol.onInput({ type: 'draw' }), () => sol.onInput({ type: 'smart', from: 'waste' }), () => sol.onInput({ type: 'smart', from: 't6' }), () => sol.onInput({ type: 'undo' })]);
+
+  ctx = fakeCtx();
   const reaction = new ReactionRush(ctx, () => 0.5);
   reaction.start();
   hear('reaction', reaction, ctx, [() => ctx.advance(1600), () => reaction.onInput({ type: 'tap' }), () => ctx.advance(6000), () => reaction.onInput({ type: 'tap' })]);
+});
+
+test("Solitaire's screens use the same rules as the server to say where a card can go", () => {
+  const window = {};
+  vm.runInNewContext(fs.readFileSync('public/games/solitaire/board.js', 'utf8'), { window });
+  const { fits } = window.ArkCards;
+  const v = { waste: ['h1'], found: [null, 's1', null, null], tab: [['#', 's10'], ['h9'], [], ['c12', 'd11', 's10'], [], [], []] };
+  assert.equal(fits(v, 'waste', undefined, 'f0'), true, 'an ace goes home');
+  assert.equal(fits(v, 't1', 0, 't0'), true, 'red 9 on black 10');
+  assert.equal(fits(v, 't0', 1, 't1'), false);
+  assert.equal(fits(v, 't3', 0, 't2'), false, 'only a king into an empty column');
+  assert.equal(fits(v, 't3', 1, 'f0'), false, 'a run never goes home');
+  assert.equal(fits(v, 't1', 0, 'stock'), false);
 });

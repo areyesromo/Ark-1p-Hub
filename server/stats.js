@@ -22,12 +22,16 @@ const sameBoard = (r, game, variant) => r.game === game && (r.variant || '') ===
  *
  * variant splits the bests of one game (a difficulty, a board size): a 9×9
  * Minesweeper time doesn't compete with a 16×16 one.
+ *
+ * dailies remembers each player's go at a daily puzzle (Word Guess's word of
+ * the day), so it can be played once a day: 'game|YYYY-MM-DD|name' -> what the game saved.
  */
 export class Stats {
   constructor(dataDir) {
     this.file = dataDir ? path.join(dataDir, 'stats.json') : null;
     const data = this.load();
     this.runs = Array.isArray(data.runs) ? data.runs : [];
+    this.dailies = data.dailies && typeof data.dailies === 'object' ? data.dailies : {};
     this.version = 0; // goes up on every change, so callers can cache what they looked up
   }
 
@@ -45,7 +49,7 @@ export class Stats {
     try {
       fs.mkdirSync(path.dirname(this.file), { recursive: true });
       const tmp = `${this.file}.tmp`;
-      fs.writeFileSync(tmp, JSON.stringify({ runs: this.runs }));
+      fs.writeFileSync(tmp, JSON.stringify({ runs: this.runs, dailies: this.dailies }));
       fs.renameSync(tmp, this.file);
     } catch (err) {
       console.error('Could not save the score history:', err.message);
@@ -70,7 +74,21 @@ export class Stats {
 
   reset() {
     this.runs = [];
+    this.dailies = {};
     this.version++;
+    this.save();
+  }
+
+  /** A player's go at a game's daily puzzle (day: 'YYYY-MM-DD'), or null. */
+  getDaily(game, day, name) {
+    return this.dailies[`${game}|${day}|${nameKey(name)}`] || null;
+  }
+
+  setDaily(game, day, name, data) {
+    this.dailies[`${game}|${day}|${nameKey(name)}`] = data;
+    // Only the last few weeks matter: drop older days so the file doesn't grow forever.
+    const cutoff = new Date(Date.now() - 60 * 86400000).toISOString().slice(0, 10);
+    for (const key of Object.keys(this.dailies)) if (key.split('|')[1] < cutoff) delete this.dailies[key];
     this.save();
   }
 

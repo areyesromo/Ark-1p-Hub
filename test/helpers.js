@@ -7,6 +7,11 @@ export function fakeCtx(name = 'Ana', settings) {
     updates: 0,
     player: { name, local: false },
     saved: {},
+    dailies: {},
+    daily: {
+      get: (day) => ctx.dailies[day] || null,
+      set: (day, data) => { ctx.dailies[day] = data; },
+    },
     settings,
     now: () => now,
     setTimeout(fn, ms) {

@@ -21,6 +21,7 @@
     Enter: 'A', NumpadEnter: 'A', Space: 'A', Backspace: 'B', KeyQ: 'X', KeyE: 'Y', KeyP: 'START', Escape: 'BACK',
   };
   const keysDown = {}; // key code -> button name, while held
+  let typing = null; // fn(key) -> true when a game took the key as typing (see setTyping)
   let keyboardSeen = false;
 
   const held = {}; // pad index -> names held on the last frame
@@ -88,9 +89,15 @@
   // A key fires one press when it goes down (held keys auto-repeat keydown: those are
   // skipped, like a held button). Typing in a text box is left alone.
   window.addEventListener('keydown', function (e) {
-    const name = KEYS[e.code];
-    if (!name || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
     if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+    // A game that wants letters or digits (Word Guess, Sudoku) gets them first.
+    if (typing && !e.repeat && typing(e.key)) {
+      e.preventDefault();
+      return;
+    }
+    const name = KEYS[e.code];
+    if (!name) return;
     e.preventDefault(); // Space would scroll and Enter would click whatever has focus
     if (keysDown[e.code]) return;
     keysDown[e.code] = name;
@@ -102,6 +109,8 @@
 
   window.ArkPads = {
     KEYBOARD: KEYBOARD,
+    /** fn(key) gets each key press first (e.key: 'a', '7', 'Enter'…); return true to keep it from the buttons. */
+    setTyping: function (fn) { typing = fn; },
     /** fn(padIndex, buttonName) on each new press. */
     onPress: function (fn) { onPress = fn; },
     /** fn([padIndex, ...]) whenever a controller appears or disappears. */
