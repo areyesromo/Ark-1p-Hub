@@ -82,5 +82,5 @@
     return top !== '#' && redOf(top) !== redOf(c) && rankOf(top) === rankOf(c) + 1;
   }
 
-  window.ArkCards = { html: html, fits: fits };
+  window.ArkCards = { html: html, fits: fits, card: card };
 })();
