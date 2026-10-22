@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ark 1P Hub</title>
+  <link rel="stylesheet" href="/shared/common.css">
+  <style>
+    main {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      padding: 24px 16px;
+      text-align: center;
+    }
+    h1 { font-size: clamp(2.4rem, 8vw, 5rem); }
+    .choices { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+    .choices .btn { min-width: 240px; padding: 22px 28px; font-size: 1.2rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1 class="brand"><span class="p1">ARK</span> <span class="p2">1P</span> HUB</h1>
+    <p class="muted">Solo arcade games. The TV is the screen, your phone (or a controller) is the controller. Beat your best.</p>
+    <div class="choices">
+      <a class="btn primary" href="/host/">📺 Play on this screen</a>
+      <a class="btn" href="/play/">📱 Use this phone as the controller</a>
+      <a class="btn ghost" href="/stats/">🏆 High scores</a>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ark 1P Hub · TV</title>
+  <link rel="stylesheet" href="/shared/common.css">
+  <link rel="stylesheet" href="/host/host.css">
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <h1 class="brand"><span class="p1">ARK</span> <span class="p2">1P</span> HUB</h1>
+      <div id="best-chip" class="best-chip hidden"></div>
+      <div class="topbar-right">
+        <span id="conn" class="conn">Connecting…</span>
+        <span class="room-chip">Room <strong id="room-code">····</strong></span>
+        <button id="to-lobby" class="ghost hidden">Lobby</button>
+        <button id="sound" class="ghost" title="Sound on/off">🔊</button>
+        <button id="music" class="ghost" title="Music on/off">🎵</button>
+        <a class="btn ghost icon-btn" href="/stats/" title="High scores">🏆</a>
+        <a class="btn ghost icon-btn" href="/admin/" title="Settings">⚙</a>
+        <button id="fullscreen" class="ghost" title="Fullscreen">⛶</button>
+      </div>
+    </header>
+
+    <section id="lobby" class="lobby">
+      <div class="join panel">
+        <h2>Scan to play</h2>
+        <div class="qr-wrap"><img id="qr" alt="QR code to join"></div>
+        <p class="muted">or open <strong id="join-url" class="join-url"></strong></p>
+        <p class="muted">and enter code <strong id="join-code" class="join-code"></strong></p>
+        <p id="join-warn" class="join-warn hidden">
+          ⚠ This address is a guess (the server is in Docker). If your phone can't connect, open
+          <strong>/admin/</strong> on this server from a phone or PC and set the join address.
+        </p>
+      </div>
+
+      <div class="side-col">
+        <div id="seat" class="seat"></div>
+        <p id="pad-hint" class="pad-hint"></p>
+
+        <div class="panel games">
+          <h2>Pick a game</h2>
+          <p id="games-hint" class="muted"></p>
+          <div id="game-list" class="game-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="stage" class="stage hidden"></section>
+    <section id="hub-setup" class="hub-setup hidden"></section>
+    <div id="run-over" class="run-over hidden"></div>
+    <div id="version" class="version"></div>
+    <div id="pad-footer" class="pad-footer hidden"></div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/shared/common.js"></script>
+  <script src="/host/gamepads.js"></script>
+  <script src="/host/sound.js"></script>
+  <script src="/host/music.js"></script>
+  <script src="/host/host.js"></script>
+</body>
+</html>
