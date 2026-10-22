@@ -100,3 +100,7 @@ body { --me: var(--p1); }
 .phone-lobby .board-link + .board-link { margin-top: 0; }
 
 .menu .buzz-msg { margin: 0; font-size: 0.9rem; color: var(--muted); max-width: 18rem; }
+.phone-games button.daily { border-style: solid; border-color: var(--warn); }
+.phone-games button.daily span strong { color: var(--text); }
+.phone-games button.daily.done { border-color: var(--line); opacity: 0.7; }
+.phone-games button.daily.done strong { color: var(--muted); }

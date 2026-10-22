@@ -157,5 +157,5 @@ export default {
   tagline: 'Swipe to slide the tiles; equal tiles merge. Can you make 2048?',
   category: 'puzzle',
   score: { better: 'higher', unit: 'pts' },
-  create: (ctx) => new Game2048(ctx),
+  create: (ctx) => new Game2048(ctx, ctx.rng),
 };

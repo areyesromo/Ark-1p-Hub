@@ -10,6 +10,9 @@ import invaders from './invaders.js';
 import runner from './runner.js';
 import slide, { SIZES as SLIDE_SIZES } from './slide.js';
 import gems from './gems.js';
+import nonogram from './nonogram.js';
+import trivia from './trivia.js';
+import { CATEGORIES as TRIVIA_CATEGORIES } from './trivia-questions.js';
 import maths from './maths.js';
 import colours from './colours.js';
 import game2048 from './2048.js';
@@ -37,7 +40,10 @@ import { withSetup } from './options.js';
  *
  * ctx gives the game: player ({ name, local }), now(), setTimeout/clearTimeout
  * (auto-cleared when the game ends), update() to push fresh views to the TV
- * and the phone, and saved (kept between launches).
+ * and the phone, saved (kept between launches), and rng: pass it on to the
+ * game (create: (ctx) => new Game(ctx, ctx.rng)) so the daily challenge can
+ * deal everyone the same game; it's undefined otherwise. ctx.challenge is true
+ * in the daily challenge.
  *
  * When a run ends, hostView() has phase: 'over' and score (a number, or null
  * when the run doesn't count, like a lost Minesweeper). An optional variant
@@ -77,6 +83,9 @@ const GAMES = [
     size: { title: 'Size', values: [4, 3, 5], label: (n) => `${n} × ${n} (${n * n - 1} tiles${n === 3 ? ', a warm-up' : n === 5 ? ', a real test' : ''})` },
   }),
   gems,
+  withSetup(nonogram, {
+    size: { title: 'Size', values: [10, 5, 15], label: (n) => `${n} × ${n}${n === 5 ? ' (a warm-up)' : n === 15 ? ' (a long one)' : ''}` },
+  }),
   withSetup(wordGuess, {
     mode: { title: 'Word', values: ['daily', 'practice'], label: (m) => (m === 'daily' ? '📅 Today\'s word (the same for everyone, once a day)' : '🎲 Practice (a new word every time)') },
   }),
@@ -84,6 +93,9 @@ const GAMES = [
   reaction,
   maths,
   colours,
+  withSetup(trivia, {
+    category: { title: 'Questions', values: ['mix', ...Object.keys(TRIVIA_CATEGORIES)], label: (c) => (c === 'mix' ? '🎲 A mix of everything' : `${TRIVIA_CATEGORIES[c]} (its own scores)`) },
+  }),
 ];
 
 export const CATEGORIES = ['arcade', 'puzzle', 'brain'];

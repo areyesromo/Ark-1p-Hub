@@ -118,5 +118,5 @@ export default {
   category: 'brain',
   music: 'off',
   score: { better: 'lower', unit: 'ms' },
-  create: (ctx) => new ReactionRush(ctx),
+  create: (ctx) => new ReactionRush(ctx, ctx.rng),
 };

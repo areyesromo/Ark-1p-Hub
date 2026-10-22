@@ -225,5 +225,5 @@ export default {
   tagline: 'Fill the grid so every row, column and box has 1 to 9. A fresh puzzle every time.',
   category: 'puzzle',
   score: { better: 'lower', unit: 'time' },
-  create: (ctx) => new Sudoku(ctx),
+  create: (ctx) => new Sudoku(ctx, ctx.rng),
 };

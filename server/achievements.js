@@ -27,6 +27,8 @@ export const ACHIEVEMENTS = [
   { id: 'top-spot', icon: '🥇', name: 'Top of the table', desc: 'Hold the best score on this hub in any game.', check: (r, v, h) => h.topSpots >= 1 },
   { id: 'streak-3', icon: '📅', name: 'Three days running', desc: 'Play on 3 days in a row.', check: (r, v, h) => h.streak >= 3 },
   { id: 'streak-7', icon: '🔥', name: 'A whole week', desc: 'Play on 7 days in a row.', check: (r, v, h) => h.streak >= 7 },
+  { id: 'daily-1', icon: '📆', name: 'Daily dealer', desc: 'Play a daily challenge.', check: (r, v, h) => h.dailyChallenges >= 1 },
+  { id: 'daily-7', icon: '🗓️', name: 'Seven deals', desc: 'Play 7 daily challenges.', check: (r, v, h) => h.dailyChallenges >= 7 },
 
   // ---- arcade ----
   ...game('snake', [
@@ -90,6 +92,11 @@ export const ACHIEVEMENTS = [
     { id: 'slide-4-2min', icon: '⏱️', name: 'Smooth slider', desc: 'Sliding Puzzle: solve a 4×4 in under 2 minutes.', check: (r) => scored(r) && r.variant === '4×4' && r.score < 2 * MIN },
     { id: 'slide-5', icon: '🧊', name: 'Big puzzle', desc: 'Sliding Puzzle: solve a 5×5.', check: (r) => scored(r) && r.variant === '5×5' },
   ]),
+  ...game('nonogram', [
+    { id: 'nonogram-solve', icon: '🖼️', name: 'Picture this', desc: 'Nonograms: solve a puzzle.', check: (r) => scored(r) },
+    { id: 'nonogram-10-5', icon: '⏱️', name: 'Quick sketch', desc: 'Nonograms: solve a 10×10 in under 5 minutes.', check: (r, v) => scored(r) && v.n === 10 && r.score < 5 * MIN },
+    { id: 'nonogram-15', icon: '🎨', name: 'Big picture', desc: 'Nonograms: solve a 15×15.', check: (r, v) => scored(r) && v.n === 15 },
+  ]),
   ...game('gems', [
     { id: 'gems-five', icon: '💎', name: 'Five in a row', desc: 'Gem Swap: line up 5 of a colour.', check: (r, v) => v.biggest >= 5 },
     { id: 'gems-chain4', icon: '⛓️', name: 'Chain reaction', desc: 'Gem Swap: set off a chain of 4.', check: (r, v) => v.bestChain >= 4 },
@@ -115,6 +122,11 @@ export const ACHIEVEMENTS = [
     { id: 'colours-20', icon: '🎨', name: 'Not fooled', desc: 'Colour Trap: 20 right in one go.', check: (r) => r.score >= 20 },
     { id: 'colours-40', icon: '🌈', name: 'Colour master', desc: 'Colour Trap: 40 right in one go.', check: (r) => r.score >= 40 },
     { id: 'colours-streak', icon: '🔥', name: 'Unshakeable', desc: 'Colour Trap: 25 right in a row.', check: (r, v) => v.bestStreak >= 25 },
+  ]),
+  ...game('trivia', [
+    { id: 'trivia-1500', icon: '🧠', name: 'Know-it-all', desc: 'Trivia: score 1,500.', check: (r) => r.score >= 1500 },
+    { id: 'trivia-perfect', icon: '🎓', name: 'Full marks', desc: 'Trivia: get all 12 right.', check: (r, v) => v.of > 0 && v.right === v.of },
+    { id: 'trivia-fast', icon: '⚡', name: 'Buzzer beater', desc: 'Trivia: a right answer in under 2 seconds.', check: (r, v) => v.fastest !== null && v.fastest < 2000 },
   ]),
   ...game('reaction', [
     { id: 'reaction-300', icon: '⚡', name: 'Quick', desc: 'Reaction Rush: average under 300 ms.', check: (r) => scored(r) && r.score < 300 },

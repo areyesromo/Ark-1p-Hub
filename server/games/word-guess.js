@@ -176,5 +176,5 @@ export default {
   category: 'brain',
   music: 'thinking',
   score: { better: 'lower', unit: 'tries' },
-  create: (ctx) => new WordGuess(ctx),
+  create: (ctx) => new WordGuess(ctx, ctx.rng),
 };

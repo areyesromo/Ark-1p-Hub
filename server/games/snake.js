@@ -196,5 +196,5 @@ export default {
   tagline: 'Eat, grow, don\'t bite your own tail. It speeds up as you go.',
   category: 'arcade',
   score: { better: 'higher', unit: 'pts' },
-  create: (ctx) => new Snake(ctx),
+  create: (ctx) => new Snake(ctx, ctx.rng),
 };

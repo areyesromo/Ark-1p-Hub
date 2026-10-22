@@ -177,6 +177,9 @@
     $('ach-link').textContent = '⭐ Achievements' + (state.achievements ? ' · ' + state.achievements.got + ' / ' + state.achievements.total : '');
     $('phone-games').innerHTML =
       '<button data-game="random" class="random"><strong>🎲 Random game</strong><span>Can\'t decide? Let the hub pick.</span></button>' +
+      (state.daily ? (function (d) {
+        return '<button data-game="daily" class="random daily' + (d.done ? ' done' : '') + '"><strong>' + d.name + '</strong><span>' + d.tagline + '</span></button>';
+      })(Ark.dailyCard(state.daily)) : '') +
       state.games.map(function (g, i) {
         const heading = i === 0 || state.games[i - 1].category !== g.category
           ? '<h3 class="game-group">' + (Ark.GROUPS[g.category] || Ark.escapeHtml(g.category)) + '</h3>'
@@ -342,9 +345,11 @@
       '<div class="ro-record">' + Ark.recordHtml(v, g.score.unit) + '</div>' +
       Ark.unlockedHtml(v.record) +
       (extra ? '<div class="ro-extra">' + extra + '</div>' : '') +
-      '<button class="primary rematch" data-ro="rematch">Play again</button>' +
-      '<div class="ro-row">' + (v.hubSetup ? '<button class="ghost" data-ro="setup">⚙ Change settings</button>' : '') +
-      '<button class="ghost" data-ro="lobby">Pick another game</button></div>';
+      (v.daily
+        ? '<div class="ro-extra">📅 That was today\'s challenge. A new one comes at midnight (UTC).</div><button class="primary rematch" data-ro="lobby">Pick another game</button>'
+        : '<button class="primary rematch" data-ro="rematch">Play again</button>' +
+          '<div class="ro-row">' + (v.hubSetup ? '<button class="ghost" data-ro="setup">⚙ Change settings</button>' : '') +
+          '<button class="ghost" data-ro="lobby">Pick another game</button></div>');
     if (html === runOverKey) return;
     runOverKey = html;
     $('run-over').innerHTML = html;

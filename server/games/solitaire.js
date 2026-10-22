@@ -243,5 +243,5 @@ export default {
   tagline: 'Klondike: build the suits up from ace to king. Tap a card to send it where it fits.',
   category: 'puzzle',
   score: { better: 'lower', unit: 'time' },
-  create: (ctx) => new Solitaire(ctx),
+  create: (ctx) => new Solitaire(ctx, ctx.rng),
 };

@@ -30,5 +30,5 @@ export default {
   tagline: 'Tap the colour of the ink, not the word. RED written in blue is blue!',
   category: 'brain',
   score: { better: 'higher', unit: 'pts' },
-  create: (ctx) => new ColourTrap(ctx),
+  create: (ctx) => new ColourTrap(ctx, ctx.rng),
 };

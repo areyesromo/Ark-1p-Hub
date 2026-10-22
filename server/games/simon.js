@@ -142,5 +142,5 @@ export default {
   tagline: 'Watch the pads light up, then play the sequence back. One more each round.',
   category: 'brain',
   score: { better: 'higher', unit: 'pts' },
-  create: (ctx) => new Simon(ctx),
+  create: (ctx) => new Simon(ctx, ctx.rng),
 };

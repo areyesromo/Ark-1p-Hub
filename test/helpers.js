@@ -43,13 +43,4 @@ export function fakeCtx(name = 'Ana', settings) {
 }
 
 /** A repeatable rng: the same seed gives the same numbers. */
-export function seeded(seed = 1) {
-  let s = seed >>> 0;
-  return () => {
-    s = (s + 0x6d2b79f5) >>> 0;
-    let t = s;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
+export { seeded } from '../server/rng.js';

@@ -164,5 +164,5 @@ export default {
   tagline: 'Tap to flap. Fly through the gaps in the pipes, as far as you can.',
   category: 'arcade',
   score: { better: 'higher', unit: 'pts' },
-  create: (ctx) => new Flappy(ctx),
+  create: (ctx) => new Flappy(ctx, ctx.rng),
 };

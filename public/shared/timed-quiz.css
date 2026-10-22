@@ -34,3 +34,17 @@
 .tq-phone .tq-choices { flex: 1; gap: 12px; }
 .tq-phone .tq-choices button { font-size: 2rem; font-weight: 900; border-radius: var(--radius); background: var(--panel); border: 2px solid var(--line-strong); touch-action: none; }
 .tq-phone .tq-choices button:active { background: var(--me); color: var(--on-bright); }
+
+/* The answer shown (Trivia): the right one lights up, a wrong pick goes red. */
+.tq-choice.is-answer, .tq-phone .tq-choices button.is-answer { background: var(--good); color: var(--on-good); border-color: var(--good); }
+.tq-choice.is-wrong, .tq-phone .tq-choices button.is-wrong { background: var(--bad); color: var(--text); border-color: var(--bad); }
+.tq-choice.is-off, .tq-phone .tq-choices button.is-off { opacity: 0.4; }
+
+/* Longer questions and answers (Trivia). */
+.tq-long .tq-prompt { font-size: 3.4rem; max-width: 64rem; line-height: 1.2; }
+.tq-long .tq-choices { font-size: 2rem; }
+.tq-long .tq-choice { min-height: 4.5rem; }
+.tq-long .tq-cat { display: block; font-size: 0.45em; font-weight: 700; color: var(--muted); margin-bottom: 0.5em; }
+.tq-phone.tq-long .tq-prompt { font-size: 1.25rem; min-height: 0; }
+.tq-phone.tq-long .tq-choices button { font-size: 1.15rem; padding: 8px; }
+.tq-top .good { color: var(--good); font-weight: 900; }
