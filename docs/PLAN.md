@@ -61,4 +61,3 @@ end screen.
 
 - More games (Blocks, Flappy, Asteroids, Invaders, Runner, Sudoku, Solitaire, Sliding Puzzle, Gem Swap, Nonograms,
   Word Guess with a daily word, Quick Maths, Colour Trap, Trivia and a daily challenge across the hub are in).
-- Screenshots in the README.
