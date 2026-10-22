@@ -1,5 +1,7 @@
 import snake from './snake.js';
 import breaker from './breaker.js';
+import blocks from './blocks.js';
+import flappy from './flappy.js';
 import game2048 from './2048.js';
 import minesweeper, { SIZES as MINE_SIZES } from './minesweeper.js';
 import simon from './simon.js';
@@ -45,6 +47,8 @@ const GAMES = [
   withSetup(breaker, {
     lives: { title: 'Lives', values: ['normal', 'easy'], label: (l) => (l === 'easy' ? '5 lives (easy, its own scores)' : '3 lives') },
   }),
+  blocks,
+  flappy,
   game2048,
   withSetup(minesweeper, {
     size: { title: 'Field', values: Object.keys(MINE_SIZES), label: (k) => `${MINE_SIZES[k].name} · ${MINE_SIZES[k].w}×${MINE_SIZES[k].h}, ${MINE_SIZES[k].mines} mines` },
