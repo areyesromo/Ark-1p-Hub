@@ -122,6 +122,49 @@ The setting is stored in the `ark-data` Docker volume. You can also set
 `ADMIN_PASSWORD` and/or `PUBLIC_URL` in `docker-compose.yml`; `PUBLIC_URL`
 overrides the saved address.
 
+### Update and redeploy from GitHub
+
+Clone the repo once on the Docker machine, then run the update script from the
+repo folder whenever there are bug fixes or new games:
+
+```bash
+git clone https://github.com/areyesromo/Ark-1p-Hub.git && cd Ark-1p-Hub
+
+./update.sh                  # Linux / macOS / Pi
+./update.sh --branch main    # switch to (and follow) another branch
+./update.sh --force          # recreate the container even if nothing changed
+./update.sh --port 3001      # where to check it's up (if you changed the port in docker-compose.yml)
+```
+
+```powershell
+.\update.ps1                 # Windows (Docker Desktop), PowerShell 5.1 or 7
+.\update.ps1 -Branch main
+.\update.ps1 -Force
+.\update.ps1 -Port 3001
+```
+
+It runs `git pull`, builds the image, redeploys with Docker Compose, then
+checks `http://localhost:3001/version` and prints the version and commit that
+are running. Details:
+
+- **Failed build:** the running container is left as it is.
+- **Pinned version:** if you've checked out a tag or commit to roll back, it
+  won't pull.
+- **Local changes:** they're kept, and the build is tagged `+dirty`.
+- **Common git errors:** it explains them, including folders owned by another
+  user ("dubious ownership") and ZIP downloads that aren't a git clone.
+- **Screens:** after an update the TV and the phone reload by themselves, and
+  the TV keeps its room code, so the phone reconnects without scanning again.
+  (A run in progress does end, so update between games.) Scores and settings
+  live in the `ark-data` volume and survive every update.
+
+If Windows blocks the script, run `Set-ExecutionPolicy -Scope Process Bypass` first.
+
+To update automatically, schedule it:
+
+- **Linux (cron):** `*/10 * * * * /path/to/Ark-1p-Hub/update.sh >> /var/log/ark-update.log 2>&1`
+- **Windows (Task Scheduler):** run `powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\path\to\Ark-1p-Hub\update.ps1` on a timer.
+
 ### Local development
 
 ```bash
@@ -166,4 +209,5 @@ public/
   games/<id>/host.js      how a game looks on the TV
   games/<id>/player.js    how a game looks and behaves on the phone
   stats/, admin/          high scores, settings
+update.sh / update.ps1     pull from GitHub, rebuild and redeploy
 ```
