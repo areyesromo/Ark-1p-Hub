@@ -109,6 +109,12 @@ test('a phone joins, plays a run, and its score is recorded as a best', async ()
   const lb = await (await fetch(url + '/api/stats')).json();
   assert.equal(lb.total, 1);
   assert.equal(lb.games[0].top[0].name, 'Ana');
+  // Her first run also unlocked achievements, listed for her by name.
+  assert.ok(end.record.unlocked.some((a) => a.id === 'first-run'));
+  const ach = await (await fetch(url + '/api/achievements?name=ana')).json();
+  assert.equal(ach.list.find((a) => a.id === 'first-run').at > 0, true);
+  assert.equal(ach.got, end.record.unlocked.length);
+  assert.ok(ach.list.every((a) => a.check === undefined));
 
   // Back to the lobby, then leave: the seat is free for someone else.
   const lobby = next(host, 'room:state', (s) => s.phase === 'lobby');
@@ -178,10 +184,12 @@ test('a run that scores nothing, or doesn\'t count, is not recorded', () => {
   room.seatPlayer('Fay', null, { local: true });
   room.startGame('simon');
   room.recordResult({ phase: 'over', score: 0 });
-  assert.deepEqual(room.result, { score: null, zero: true });
+  assert.equal(room.result.score, null);
+  assert.equal(room.result.zero, true);
+  assert.deepEqual(room.result.unlocked, [], 'nothing to unlock for a run that scored nothing');
   room.startGame('minesweeper');
   room.recordResult({ phase: 'over', score: null, variant: 'Easy' });
-  assert.deepEqual(room.result, { score: null });
+  assert.equal(room.result.score, null);
   // Lower is better: a time is a time, however short.
   room.startGame('reaction');
   room.recordResult({ phase: 'over', score: 180 });

@@ -173,6 +173,8 @@
 
   function renderLobby() {
     $('lobby-status').innerHTML = 'Hi <strong>' + Ark.escapeHtml(me.name) + '</strong>! Pick a game and beat your best.';
+    $('ach-link').href = Ark.achievementsUrl(me.name);
+    $('ach-link').textContent = '⭐ Achievements' + (state.achievements ? ' · ' + state.achievements.got + ' / ' + state.achievements.total : '');
     $('phone-games').innerHTML =
       '<button data-game="random" class="random"><strong>🎲 Random game</strong><span>Can\'t decide? Let the hub pick.</span></button>' +
       state.games.map(function (g, i) {
@@ -338,6 +340,7 @@
       '<div class="ro-game">' + Ark.escapeHtml(g.name) + (v.variant ? ' · ' + Ark.escapeHtml(v.variant) : '') + '</div>' +
       '<div class="ro-score">' + Ark.formatScore(v.score, g.score.unit) + '</div>' +
       '<div class="ro-record">' + Ark.recordHtml(v, g.score.unit) + '</div>' +
+      Ark.unlockedHtml(v.record) +
       (extra ? '<div class="ro-extra">' + extra + '</div>' : '') +
       '<button class="primary rematch" data-ro="rematch">Play again</button>' +
       '<div class="ro-row">' + (v.hubSetup ? '<button class="ghost" data-ro="setup">⚙ Change settings</button>' : '') +
@@ -345,7 +348,7 @@
     if (html === runOverKey) return;
     runOverKey = html;
     $('run-over').innerHTML = html;
-    if (v.record && v.record.newBest && v.record.score !== null) api.vibrate([60, 40, 60, 40, 120]);
+    if ((v.record && v.record.newBest && v.record.score !== null) || (v.record && v.record.unlocked && v.record.unlocked.length)) api.vibrate([60, 40, 60, 40, 120]);
   }
   $('run-over').addEventListener('click', function (e) {
     const btn = e.target.closest('[data-ro]');

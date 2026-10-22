@@ -96,5 +96,7 @@ body { --me: var(--p1); }
 .run-over .ro-extra { color: var(--muted); }
 .run-over .ro-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
 .join-screen .note { font-weight: 400; font-size: 0.85rem; }
+.run-over .ark-unlocked { font-size: 0.95rem; max-width: 26rem; }
+.phone-lobby .board-link + .board-link { margin-top: 0; }
 
 .menu .buzz-msg { margin: 0; font-size: 0.9rem; color: var(--muted); max-width: 18rem; }

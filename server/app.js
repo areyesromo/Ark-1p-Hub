@@ -14,6 +14,8 @@ import { loadOrCreateCert } from './tls.js';
 import { Settings } from './settings.js';
 import { adminRouter } from './admin.js';
 import { Stats } from './stats.js';
+import { ACHIEVEMENTS, describe } from './achievements.js';
+import { listGames } from './games/index.js';
 
 const ROOT_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PUBLIC_DIR = path.join(ROOT_DIR, 'public');
@@ -59,6 +61,14 @@ export function createApp({
   app.get('/healthz', (_req, res) => res.json({ ok: true, rooms: rooms.rooms.size, playing: rooms.playing }));
   app.get('/version', (_req, res) => res.json(VERSION));
   app.get('/api/stats', (_req, res) => res.json(stats.leaderboard()));
+  // Every achievement, and which ones a player has (?name=).
+  app.get('/api/achievements', (req, res) => {
+    const name = String(req.query.name || '').slice(0, 32);
+    const have = name ? stats.achievementsOf(name) : {};
+    const games = Object.fromEntries(listGames().map((g) => [g.id, g.name]));
+    const list = ACHIEVEMENTS.map((a) => ({ ...describe(a, have[a.id] || null), gameName: a.game ? games[a.game] : null }));
+    res.json({ name, got: list.filter((a) => a.at).length, total: list.length, list });
+  });
   app.use(
     '/api/admin',
     adminRouter({

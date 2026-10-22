@@ -59,6 +59,7 @@ export class Blocks {
     this.lines = 0;
     this.cleared = null; // { rows, n } the last clear, for the TV to flash
     this.clears = 0; // counts clears, so the TV can tell a new one from the last
+    this.bestClear = 0; // the most rows cleared at once this run
     this.pieces = 0;
     this.phase = 'play';
     this.spawn();
@@ -158,6 +159,7 @@ export class Blocks {
       this.score += LINE_POINTS[full.length] * level;
       this.cleared = { rows: full, n: full.length };
       this.clears++;
+      this.bestClear = Math.max(this.bestClear, full.length);
     }
     this.pieces++;
     this.held = false;
@@ -268,6 +270,7 @@ export class Blocks {
       level: this.level,
       cleared: this.cleared,
       clears: this.clears,
+      bestClear: this.bestClear,
     };
   }
 

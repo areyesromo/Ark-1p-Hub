@@ -214,8 +214,25 @@
 
   /** The line under a lobby card: your best in that game. */
   function bestLine(g) {
-    if (!g.best || g.best.score === null) return '';
-    return '🏅 ' + formatScore(g.best.score, g.score.unit) + (g.best.variant ? ' <span class="muted">· ' + escapeHtml(g.best.variant) + '</span>' : '');
+    const parts = [];
+    if (g.best && g.best.score !== null) parts.push('🏅 ' + formatScore(g.best.score, g.score.unit) + (g.best.variant ? ' <span class="muted">· ' + escapeHtml(g.best.variant) + '</span>' : ''));
+    if (g.achievements && g.achievements.got) parts.push('<span class="ach-count">⭐ ' + g.achievements.got + '/' + g.achievements.total + '</span>');
+    return parts.join(' ');
+  }
+
+  /** The achievements a run just unlocked (record.unlocked, see server/achievements.js), for the end screen. */
+  function unlockedHtml(record) {
+    const list = (record && record.unlocked) || [];
+    if (!list.length) return '';
+    return '<div class="ark-unlocked">' + list.map(function (a, i) {
+      return '<div class="ach" style="--i:' + i + '"><span class="icon">' + escapeHtml(a.icon) + '</span><span class="what"><strong>' + escapeHtml(a.name) + '</strong>' +
+        '<span class="desc">' + escapeHtml(a.desc) + '</span></span><span class="tag">Achievement unlocked</span></div>';
+    }).join('') + '</div>';
+  }
+
+  /** Where a player's achievements are listed. */
+  function achievementsUrl(name) {
+    return '/achievements/?name=' + encodeURIComponent(name || '');
   }
 
   // ---- the TV lobby's layout change (QR code panel on / off) ----
@@ -280,6 +297,8 @@
     formatScore: formatScore,
     recordHtml: recordHtml,
     bestLine: bestLine,
+    unlockedHtml: unlockedHtml,
+    achievementsUrl: achievementsUrl,
     GROUPS: GROUPS,
     setup: { html: setupHtml, pad: setupPad, bind: bindSetup, choices: setupChoices, isHub: isHubSetup, hubParts: hubSetupParts },
   };

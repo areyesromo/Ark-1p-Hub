@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { longestStreak } from './achievements.js';
 
 export const MAX_RUNS = 5000; // oldest are dropped beyond this
 const RECENT = 30;
@@ -23,6 +24,8 @@ const sameBoard = (r, game, variant) => r.game === game && (r.variant || '') ===
  * variant splits the bests of one game (a difficulty, a board size): a 9×9
  * Minesweeper time doesn't compete with a 16×16 one.
  *
+ * achievements: what each player has unlocked, nameKey -> { id: when } (see achievements.js).
+ *
  * dailies remembers each player's go at a daily puzzle (Word Guess's word of
  * the day), so it can be played once a day: 'game|YYYY-MM-DD|name' -> what the game saved.
  */
@@ -32,6 +35,7 @@ export class Stats {
     const data = this.load();
     this.runs = Array.isArray(data.runs) ? data.runs : [];
     this.dailies = data.dailies && typeof data.dailies === 'object' ? data.dailies : {};
+    this.achievements = data.achievements && typeof data.achievements === 'object' ? data.achievements : {};
     this.version = 0; // goes up on every change, so callers can cache what they looked up
   }
 
@@ -49,7 +53,7 @@ export class Stats {
     try {
       fs.mkdirSync(path.dirname(this.file), { recursive: true });
       const tmp = `${this.file}.tmp`;
-      fs.writeFileSync(tmp, JSON.stringify({ runs: this.runs, dailies: this.dailies }));
+      fs.writeFileSync(tmp, JSON.stringify({ runs: this.runs, dailies: this.dailies, achievements: this.achievements }));
       fs.renameSync(tmp, this.file);
     } catch (err) {
       console.error('Could not save the score history:', err.message);
@@ -75,8 +79,60 @@ export class Stats {
   reset() {
     this.runs = [];
     this.dailies = {};
+    this.achievements = {};
     this.version++;
     this.save();
+  }
+
+  /** The achievements a player has: { id: when unlocked }. */
+  achievementsOf(name) {
+    return this.achievements[nameKey(name)] || {};
+  }
+
+  /** Mark achievements unlocked for a player (ids already there keep their date). */
+  unlock(name, ids) {
+    if (!ids.length) return;
+    const k = nameKey(name);
+    const mine = this.achievements[k] || (this.achievements[k] = {});
+    const at = Date.now();
+    for (const id of ids) if (!mine[id]) mine[id] = at;
+    this.save();
+  }
+
+  /**
+   * A player's record, for achievements: runs finished, games scored in,
+   * personal bests set (each time a run beat their best), the longest run of
+   * days played in a row, days today's word was found (Word Guess), and how
+   * many tables they're top of.
+   */
+  historyOf(name) {
+    const key = nameKey(name);
+    const mine = this.runs.filter((r) => nameKey(r.player) === key);
+    const best = new Map();
+    let bests = 0;
+    for (const r of mine) {
+      const id = r.game + '\u0000' + (r.variant || '');
+      if (!best.has(id) || beats(r.score, best.get(id), r.better)) {
+        bests++;
+        best.set(id, r.score);
+      }
+    }
+    const top = new Map(); // board -> best score anyone has
+    for (const r of this.runs) {
+      const id = r.game + '\u0000' + (r.variant || '');
+      if (!top.has(id) || beats(r.score, top.get(id), r.better)) top.set(id, r.score);
+    }
+    let topSpots = 0;
+    for (const [id, score] of best) if (top.get(id) === score) topSpots++;
+    const days = new Set(mine.filter((r) => r.game === 'word-guess' && r.variant === 'Daily').map((r) => Math.floor(r.at / 86400000)));
+    return {
+      runs: mine.length,
+      games: new Set(mine.map((r) => r.game)).size,
+      bests,
+      topSpots,
+      streak: longestStreak(mine.map((r) => r.at)),
+      dailyWords: days.size,
+    };
   }
 
   /** A player's go at a game's daily puzzle (day: 'YYYY-MM-DD'), or null. */
@@ -165,7 +221,7 @@ export class Stats {
     return {
       total: this.runs.length,
       games,
-      players: [...players.values()].map((p) => ({ name: p.name, runs: p.runs, games: p.games.size, last: p.last })).sort((a, b) => b.runs - a.runs),
+      players: [...players.values()].map((p) => ({ name: p.name, runs: p.runs, games: p.games.size, last: p.last, achievements: Object.keys(this.achievementsOf(p.name)).length })).sort((a, b) => b.runs - a.runs),
       recent: this.runs.slice(-RECENT).reverse(),
     };
   }
