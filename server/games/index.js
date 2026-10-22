@@ -10,6 +10,10 @@ import invaders from './invaders.js';
 import runner from './runner.js';
 import slide, { SIZES as SLIDE_SIZES } from './slide.js';
 import gems from './gems.js';
+import memory, { SIZES as MEMORY_SIZES } from './memory.js';
+import stack from './stack.js';
+import mahjong from './mahjong.js';
+import freecell from './freecell.js';
 import nonogram from './nonogram.js';
 import trivia from './trivia.js';
 import { CATEGORIES as TRIVIA_CATEGORIES } from './trivia-questions.js';
@@ -69,6 +73,7 @@ const GAMES = [
   asteroids,
   invaders,
   runner,
+  stack,
   game2048,
   withSetup(minesweeper, {
     size: { title: 'Field', values: Object.keys(MINE_SIZES), label: (k) => `${MINE_SIZES[k].name} · ${MINE_SIZES[k].w}×${MINE_SIZES[k].h}, ${MINE_SIZES[k].mines} mines` },
@@ -79,6 +84,8 @@ const GAMES = [
   withSetup(solitaire, {
     draw: { title: 'Turn from the stock', values: [1, 3], label: (n) => (n === 1 ? 'One card at a time' : 'Three at a time (harder, its own scores)') },
   }),
+  freecell,
+  mahjong,
   withSetup(slide, {
     size: { title: 'Size', values: [4, 3, 5], label: (n) => `${n} × ${n} (${n * n - 1} tiles${n === 3 ? ', a warm-up' : n === 5 ? ', a real test' : ''})` },
   }),
@@ -90,6 +97,9 @@ const GAMES = [
     mode: { title: 'Word', values: ['daily', 'practice'], label: (m) => (m === 'daily' ? '📅 Today\'s word (the same for everyone, once a day)' : '🎲 Practice (a new word every time)') },
   }),
   simon,
+  withSetup(memory, {
+    size: { title: 'Cards', values: ['small', 'medium', 'large'], label: (k) => `${MEMORY_SIZES[k].w} × ${MEMORY_SIZES[k].h} (${(MEMORY_SIZES[k].w * MEMORY_SIZES[k].h) / 2} pairs)` },
+  }),
   reaction,
   maths,
   colours,

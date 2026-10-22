@@ -56,6 +56,11 @@ export const ACHIEVEMENTS = [
     { id: 'asteroids-wave6', icon: '🚀', name: 'Deep space', desc: 'Asteroids: reach wave 6.', check: (r, v) => v.wave >= 6 },
     { id: 'asteroids-10k', icon: '⭐', name: 'Ace pilot', desc: 'Asteroids: score 10,000 (an extra ship!).', check: (r) => r.score >= 10000 },
   ]),
+  ...game('stack', [
+    { id: 'stack-10', icon: '🧱', name: 'Steady hands', desc: 'Stack: stack 10 blocks.', check: (r) => r.score >= 10 },
+    { id: 'stack-25', icon: '🏙️', name: 'Skyscraper', desc: 'Stack: stack 25 blocks.', check: (r) => r.score >= 25 },
+    { id: 'stack-perfect5', icon: '🎯', name: 'Spot on', desc: 'Stack: 5 perfect drops in a row.', check: (r, v) => v.bestPerfects >= 5 },
+  ]),
   ...game('invaders', [
     { id: 'invaders-wave2', icon: '👾', name: 'Defender', desc: 'Invaders: clear a whole wave.', check: (r, v) => v.wave >= 2 },
     { id: 'invaders-saucer', icon: '🛸', name: 'Saucer spotter', desc: 'Invaders: shoot down a saucer.', check: (r, v) => v.saucers >= 1 },
@@ -97,6 +102,16 @@ export const ACHIEVEMENTS = [
     { id: 'nonogram-10-5', icon: '⏱️', name: 'Quick sketch', desc: 'Nonograms: solve a 10×10 in under 5 minutes.', check: (r, v) => scored(r) && v.n === 10 && r.score < 5 * MIN },
     { id: 'nonogram-15', icon: '🎨', name: 'Big picture', desc: 'Nonograms: solve a 15×15.', check: (r, v) => scored(r) && v.n === 15 },
   ]),
+  ...game('freecell', [
+    { id: 'freecell-win', icon: '🃏', name: 'Free and clear', desc: 'FreeCell: win a game.', check: (r) => scored(r) },
+    { id: 'freecell-8min', icon: '⏱️', name: 'Card sharp', desc: 'FreeCell: win in under 8 minutes.', check: (r) => scored(r) && r.score < 8 * MIN },
+    { id: 'freecell-120', icon: '🎯', name: 'No wasted moves', desc: 'FreeCell: win in under 120 moves.', check: (r, v) => scored(r) && v.moves < 120 },
+  ]),
+  ...game('mahjong', [
+    { id: 'mahjong-clear', icon: '🀄', name: 'Clean sweep', desc: 'Mahjong Solitaire: clear the pile.', check: (r) => scored(r) },
+    { id: 'mahjong-nohelp', icon: '🧘', name: 'No help needed', desc: 'Mahjong Solitaire: clear it without a hint or a shuffle.', check: (r, v) => scored(r) && !v.hints && !v.shuffles },
+    { id: 'mahjong-10min', icon: '⏱️', name: 'Tile racer', desc: 'Mahjong Solitaire: clear it in under 10 minutes.', check: (r) => scored(r) && r.score < 10 * MIN },
+  ]),
   ...game('gems', [
     { id: 'gems-five', icon: '💎', name: 'Five in a row', desc: 'Gem Swap: line up 5 of a colour.', check: (r, v) => v.biggest >= 5 },
     { id: 'gems-chain4', icon: '⛓️', name: 'Chain reaction', desc: 'Gem Swap: set off a chain of 4.', check: (r, v) => v.bestChain >= 4 },
@@ -127,6 +142,11 @@ export const ACHIEVEMENTS = [
     { id: 'trivia-1500', icon: '🧠', name: 'Know-it-all', desc: 'Trivia: score 1,500.', check: (r) => r.score >= 1500 },
     { id: 'trivia-perfect', icon: '🎓', name: 'Full marks', desc: 'Trivia: get all 12 right.', check: (r, v) => v.of > 0 && v.right === v.of },
     { id: 'trivia-fast', icon: '⚡', name: 'Buzzer beater', desc: 'Trivia: a right answer in under 2 seconds.', check: (r, v) => v.fastest !== null && v.fastest < 2000 },
+  ]),
+  ...game('memory', [
+    { id: 'memory-solve', icon: '🃏', name: 'Total recall', desc: 'Memory Pairs: find every pair.', check: (r) => scored(r) },
+    { id: 'memory-12', icon: '🧠', name: 'Sharp memory', desc: 'Memory Pairs: clear 4 × 4 in 12 tries or fewer.', check: (r, v) => scored(r) && v.w === 4 && v.h === 4 && r.score <= 12 },
+    { id: 'memory-large', icon: '🐘', name: 'Elephant', desc: 'Memory Pairs: clear 6 × 6.', check: (r, v) => scored(r) && v.w === 6 && v.h === 6 },
   ]),
   ...game('reaction', [
     { id: 'reaction-300', icon: '⚡', name: 'Quick', desc: 'Reaction Rush: average under 300 ms.', check: (r) => scored(r) && r.score < 300 },
