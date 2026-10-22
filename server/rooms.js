@@ -152,6 +152,11 @@ export class Room {
       now: () => Date.now(),
       // Kept by the room between launches of this game, e.g. the settings picked last time.
       saved: (this.saved[def.id] = this.saved[def.id] || {}),
+      // This player's go at the game's daily puzzle, kept in the score history (see Stats#getDaily).
+      daily: {
+        get: (day) => (room.stats ? room.stats.getDaily(def.id, day, room.playerName) : null),
+        set: (day, data) => { if (room.stats) room.stats.setDaily(def.id, day, room.playerName, data); },
+      },
       setTimeout(fn, ms) {
         const t = setTimeout(() => {
           room.timers.delete(t);

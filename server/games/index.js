@@ -2,6 +2,10 @@ import snake from './snake.js';
 import breaker from './breaker.js';
 import blocks from './blocks.js';
 import flappy from './flappy.js';
+import asteroids from './asteroids.js';
+import sudoku, { LEVELS as SUDOKU_LEVELS } from './sudoku.js';
+import wordGuess from './word-guess.js';
+import solitaire from './solitaire.js';
 import game2048 from './2048.js';
 import minesweeper, { SIZES as MINE_SIZES } from './minesweeper.js';
 import simon from './simon.js';
@@ -16,7 +20,8 @@ import { withSetup } from './options.js';
  * category is 'arcade' (real time, quick reflexes), 'puzzle' (think at your
  * own pace) or 'brain' (memory and reaction). The lobby groups them.
  * score.better is 'higher' or 'lower'; score.unit says how to show a score:
- * 'pts', 'ms' (a reaction time) or 'time' (a duration in ms, shown as m:ss.s).
+ * 'pts', 'ms' (a reaction time), 'time' (a duration in ms, shown as m:ss.s) or
+ * 'tries' (guesses it took).
  *
  * create(ctx) returns an instance with:
  *   start()           begin (or restart) a run
@@ -49,9 +54,19 @@ const GAMES = [
   }),
   blocks,
   flappy,
+  asteroids,
   game2048,
   withSetup(minesweeper, {
     size: { title: 'Field', values: Object.keys(MINE_SIZES), label: (k) => `${MINE_SIZES[k].name} · ${MINE_SIZES[k].w}×${MINE_SIZES[k].h}, ${MINE_SIZES[k].mines} mines` },
+  }),
+  withSetup(sudoku, {
+    level: { title: 'Difficulty', values: Object.keys(SUDOKU_LEVELS), label: (k) => `${SUDOKU_LEVELS[k].name} · ${SUDOKU_LEVELS[k].clues} numbers given` },
+  }),
+  withSetup(solitaire, {
+    draw: { title: 'Turn from the stock', values: [1, 3], label: (n) => (n === 1 ? 'One card at a time' : 'Three at a time (harder, its own scores)') },
+  }),
+  withSetup(wordGuess, {
+    mode: { title: 'Word', values: ['daily', 'practice'], label: (m) => (m === 'daily' ? '📅 Today\'s word (the same for everyone, once a day)' : '🎲 Practice (a new word every time)') },
   }),
   simon,
   reaction,

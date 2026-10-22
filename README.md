@@ -12,7 +12,8 @@ It's the one-player sibling of [Ark 2P Hub](https://github.com/areyesromo/Ark-2P
 
 ## Games
 
-The lobby groups games into **🕹️ Arcade** (real time, quick hands),
+Once someone has taken the seat, the lobby on the TV puts the player in a narrow column on the left and gives the
+rest of the screen to the games (the QR code comes back when the seat is free). It groups them into **🕹️ Arcade** (real time, quick hands),
 **🧩 Puzzle** (think it through, at your own pace) and **🧠 Brain** (memory and
 reflexes). Each card shows your best, and **🎲 Random game** at the top picks one
 for you (never the one you just played). During a game the top of the TV shows
@@ -28,6 +29,7 @@ the settings, or pick another game.
 | **Brick Breaker** | Keep the ball in play with your paddle and smash the wall. Slide a finger along the phone's strip to move the paddle (or the stick / D-pad). Where the ball hits the paddle sets its angle, and it speeds up a little on every hit. Higher rows score more (1, 3, 5, 7 points). Clear the wall for a new, faster level with a different pattern (and a life back); lose the ball 3 times and it's over. 🚀 Launch on the phone, or it goes by itself after 3 s. Pick 3 lives or 5 (easy, with its own scores). |
 | **Blocks** | The falling-block classic: pieces of four squares drop into a 10×20 well. Move and turn them so they fill whole rows, which clear. Every 10 rows the level goes up and pieces fall faster. Clearing several rows at once scores far more (100, 300, 500 or 800 points for 1 to 4 rows, times the level), plus a point a row when you drop a piece yourself. **Hold** puts a piece aside for later (once per piece); the TV shows it, the next three pieces and a shadow where yours will land. On the phone: ◀ ▶ move (hold to repeat), ⟲ ⟳ turn, ▼ soft drop, **⤓ Drop** drops it at once. Pieces come in shuffled sets of seven, so you never wait long for a straight piece. The run ends when a new piece has no room. |
 | **Flappy** | Tap the phone's big button to flap; the bird falls the rest of the time. Fly through the gaps between the pipes without touching them or the ground (the top just stops you). The pipes come a little faster and the gaps get a little smaller as you go. The first tap starts the run. Score: pipes passed. |
+| **Asteroids** | Turn your ship, thrust and shoot. Big rocks split in two when you hit them, middle ones split again, small ones are gone; everything wraps round the edges of the screen. A rock that hits you costs a ship (3 to start, you come back in the middle and blink, safe, for a moment). Clear the screen and a bigger wave comes. On the phone: hold ⟲ ⟳ to turn and 🔥 Thrust to fly, tap 💥 Fire (a few shots at a time). Score: 20 for a big rock, 50 a middle one, 100 a small one; an extra ship every 10,000. |
 
 ### 🧩 Puzzle
 
@@ -35,12 +37,15 @@ the settings, or pick another game.
 | --- | --- |
 | **2048** | Swipe on the phone (or tap a side of the pad) to slide every tile on the 4×4 board; two equal tiles that bump into each other merge into their sum, which is added to your score. A new 2 (sometimes a 4) appears after every move. Make a 2048 tile and keep going; the run ends when nothing can move (or tap **End this run** twice). |
 | **Minesweeper** | Open every cell that isn't a mine. A number counts the mines in the 8 cells around it. Tap to dig, hold to flag (or switch the phone to 🚩 flag mode); tapping a number whose mines are all flagged opens the rest around it. The first cell you open is always safe. Three fields: Easy 9×9 (10 mines), Medium 16×16 (40), Hard 30×16 (99, shown turned on an upright phone). Score: your time, only when you clear the field; lower is better, and each field has its own bests. |
+| **Sudoku** | Fill the 9×9 grid so every row, column and 3×3 box has 1 to 9 once each. Tap a cell on the phone, then a number; ✏️ Pencil switches to small notes (a number you place rubs out the same note around it), ⌫ clears. The picked cell, its row, column and box, and the same number elsewhere are shaded on the TV and the phone; two of the same number in a line or box turn red (that only says they can't both be right, not which is wrong). Every puzzle is made fresh with exactly one solution: Easy (40 numbers given), Medium (32) or Hard (26). Pausing hides the grid. Score: your time, per difficulty. |
+| **Solitaire** | Klondike: build the four foundations up by suit from ace to king. In the seven columns cards go down in alternating colours, a face-up run moves together, and only a king goes into an empty column. Tap the stock to turn cards over (one at a time, or three: pick on the setup screen, each has its own scores); when it runs out it turns back over. **Tap a card and it goes where it fits** (home first). If it can't go anywhere it's picked up: tap where it should go. Undo as often as you like. Once every card is face up, ✨ Finish sends them all home. Score: your time; a game you give up on doesn't count. |
 
 ### 🧠 Brain
 
 | Game | How it plays |
 | --- | --- |
 | **Simon** | The TV lights the four pads (each with its own note) in a sequence; tap them back in the same order on your phone's four big pads. Every round adds one more and plays a little faster. One wrong pad, or 5 s without a press, and it's over. Score: the longest sequence you repeated. |
+| **Word Guess** | Find the hidden five-letter word in six guesses, typed on the phone's keyboard. After each guess the letters turn green (right place), yellow (in the word, elsewhere) or grey (not in it), and so do the keyboard's keys. Guesses must be real words (about 12,500 are allowed). 📅 **Today's word** is the same for everyone and can be played once a day (a new one at midnight UTC; a second go shows how you did); 🎲 **Practice** gives a new word every time. Score: the guesses it took; a word you don't find doesn't count. |
 | **Reaction Rush** | The screen says **Wait…** (red), then after a random moment **TAP!** (green): hit the phone's big button as fast as you can. Five rounds. Tap before green and it's a false start: that round starts again and 100 ms goes on your time. Score: your average time plus penalties, in ms (lower is better). No music, so you can concentrate. |
 
 ## Controllers and the keyboard
@@ -63,8 +68,12 @@ on the TV to play there.
 | Brick Breaker | Stick or **D-pad ← →**, **A** launches, **Start** pauses | Arrows, **Enter**, **P** | Move the paddle |
 | Blocks | **D-pad ← →** move, **↓** soft drop, **↑** / **RT** drop, **A** / **X** turn ⟳, **B** turn ⟲, **Y** / **LB** / **RB** hold, **Start** pauses | Arrows, **Enter** ⟳, **Backspace** ⟲, **E** hold, **P** | Held directions repeat |
 | Flappy | **A**, **↑** or any face button, bumper or trigger; **Start** pauses | **Space**, **Enter** or **↑**; **P** | Flap |
+| Asteroids | Stick / **D-pad ← →** turn, **↑**, **B** or **RT** thrust, **A** / **X** fire, **Start** pauses | Arrows (↑ thrust), **Enter** / **Space** fire, **P** | |
 | 2048 | **D-pad** / stick | Arrows | Slide |
 | Minesweeper | **D-pad** moves a cursor on the TV, **A** opens, **X** / **B** flags | Arrows, **Enter**, **Q** / **Backspace** | |
+| Sudoku | **D-pad** moves, **A** places the pen number, **X** / **Y** change it, **B** clears, **Start** pauses | Arrows, type **1**–**9**, **0** / **Backspace** clears, **P** | |
+| Solitaire | **D-pad** moves (↑ from a column goes to the top row), **A** picks up / puts down (on the stock: turn a card), **X** sends it where it fits, **B** drops it, **Y** undo, **Start** finish | Arrows, **Enter**, **Q**, **Backspace**, **E**, **P** | |
+| Word Guess | **D-pad** picks a key on the TV's keyboard, **A** types it, **B** deletes, **Start** / **X** enters | Just type: letters, **Backspace**, **Enter** | |
 | Simon | **A** green, **B** red, **Y** yellow, **X** blue, or the **D-pad** by position (↑ green, → red, ← yellow, ↓ blue) | Arrows by position | |
 | Reaction Rush | Any face button, bumper or trigger | **Enter** / **Space** | Tap |
 
