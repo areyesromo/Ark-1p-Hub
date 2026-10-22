@@ -28,9 +28,10 @@
   }
 
   function players(list) {
-    return '<section class="panel"><h2>Players</h2><table><thead><tr><th>Player</th><th class="num">Runs</th><th class="num">Games</th><th class="num">Last played</th></tr></thead><tbody>' +
+    return '<section class="panel"><h2>Players</h2><table><thead><tr><th>Player</th><th class="num">Runs</th><th class="num">Games</th><th class="num">⭐</th><th class="num">Last played</th></tr></thead><tbody>' +
       list.map(function (p) {
-        return '<tr><td>' + esc(p.name) + '</td><td class="num">' + p.runs + '</td><td class="num">' + p.games + '</td><td class="num when">' + ago(p.last) + '</td></tr>';
+        return '<tr><td>' + esc(p.name) + '</td><td class="num">' + p.runs + '</td><td class="num">' + p.games + '</td>' +
+          '<td class="num"><a href="' + Ark.achievementsUrl(p.name) + '">' + (p.achievements || 0) + '</a></td><td class="num when">' + ago(p.last) + '</td></tr>';
       }).join('') + '</tbody></table></section>';
   }
 

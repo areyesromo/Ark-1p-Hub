@@ -1,5 +1,6 @@
 import { randomBytes, randomInt } from 'node:crypto';
 import { getGame, listGames } from './games/index.js';
+import { ACHIEVEMENTS, newlyEarned, describe } from './achievements.js';
 
 const NAME_MAX = 16;
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ'; // no I or O, they look like 1 and 0
@@ -222,16 +223,42 @@ export class Room {
   recordResult(view) {
     const def = getGame(this.gameId);
     const score = Number(view.score);
+    const variant = typeof view.variant === 'string' ? view.variant : '';
     if (view.score === null || view.score === undefined || !Number.isFinite(score)) {
       this.result = { score: null };
-      return;
-    }
-    if (def.score.better === 'higher' && score <= 0) {
+    } else if (def.score.better === 'higher' && score <= 0) {
       this.result = { score: null, zero: true };
-      return;
+    } else {
+      const run = { game: def.id, gameName: def.name, player: this.playerName, score, variant, better: def.score.better, unit: def.score.unit };
+      this.result = this.stats ? this.stats.record(run) : { score, best: null, newBest: true, rank: 1 };
     }
-    const run = { game: def.id, gameName: def.name, player: this.playerName, score, variant: typeof view.variant === 'string' ? view.variant : '', better: def.score.better, unit: def.score.unit };
-    this.result = this.stats ? this.stats.record(run) : { score, best: null, newBest: true, rank: 1 };
+    // Any run can earn achievements, even one that doesn't count for the scores.
+    this.result.unlocked = this.checkAchievements({ game: def.id, score: this.result.score, variant }, view);
+  }
+
+  /** Unlock what this run earned; returns them, to show on the end screen. */
+  checkAchievements(run, view) {
+    if (!this.stats || !this.player) return [];
+    const name = this.player.name;
+    const history = { ...this.stats.historyOf(name), gamesInHub: listGames().length };
+    const earned = newlyEarned(run, view, history, this.stats.achievementsOf(name));
+    this.stats.unlock(name, earned.map((a) => a.id));
+    return earned.map((a) => describe(a));
+  }
+
+  /** How many achievements this player has, overall and per game (for the lobby). */
+  achievementCounts() {
+    const have = this.stats && this.player ? this.stats.achievementsOf(this.player.name) : {};
+    const out = { got: 0, total: ACHIEVEMENTS.length, games: {} };
+    for (const a of ACHIEVEMENTS) {
+      const got = Boolean(have[a.id]);
+      if (got) out.got++;
+      if (!a.game) continue;
+      const g = out.games[a.game] || (out.games[a.game] = { got: 0, total: 0 });
+      g.total++;
+      if (got) g.got++;
+    }
+    return out;
   }
 
   /** What the hub adds to a game's views: the best to beat, and on the end screen how this run went. */
@@ -254,6 +281,7 @@ export class Room {
       hostConnected: this.hostSockets.size > 0,
       readyToPlay: this.readyToPlay,
       player: p ? { name: p.name, connected: p.connected, local: Boolean(p.local) } : null,
+      achievements: p ? (({ got, total }) => ({ got, total }))(this.achievementCounts()) : null,
       games: this.lobbyGames(),
       knownNames: this.stats ? this.stats.knownNames() : [],
     };
@@ -284,7 +312,8 @@ export class Room {
   lobbyGames() {
     const bests = this.stats && this.player ? this.stats.bestsOf(this.player.name) : {};
     const last = this.stats ? this.stats.lastPlayed() : {};
-    return listGames().map((g) => ({ ...g, best: bests[g.id] || null, lastPlayed: last[g.id] || null }));
+    const ach = this.achievementCounts().games;
+    return listGames().map((g) => ({ ...g, best: bests[g.id] || null, lastPlayed: last[g.id] || null, achievements: this.player ? ach[g.id] || null : null }));
   }
 
   /** Bring a (re)connecting socket fully up to date. */

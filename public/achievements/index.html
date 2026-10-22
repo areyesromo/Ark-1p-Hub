@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ark 1P Hub · Achievements</title>
+  <link rel="stylesheet" href="/shared/common.css">
+  <style>
+    body { overflow-y: auto; }
+    main { max-width: 1100px; margin: 0 auto; padding: 28px 16px 48px; display: flex; flex-direction: column; gap: 20px; }
+    header { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    h1 { font-size: 2rem; margin: 0; }
+    h2 { font-size: 1.15rem; margin: 0 0 10px; display: flex; justify-content: space-between; gap: 8px; }
+    h2 .muted { font-weight: 400; font-size: 0.9rem; }
+    .who { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .who .name { font-size: 1.5rem; font-weight: 900; }
+    .bar { flex: 1; min-width: 180px; height: 12px; border-radius: var(--r-pill); background: var(--bg-2); overflow: hidden; border: 1px solid var(--line); }
+    .bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--warn), #fb923c); }
+    .count { font-weight: 800; color: var(--warn); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 16px; }
+    .group.wide { grid-column: 1 / -1; }
+    .list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: 8px; }
+    .ach { display: flex; gap: 12px; align-items: center; padding: 10px 12px; border-radius: var(--r-md); border: 1px solid var(--line); background: var(--bg-2); }
+    .ach .icon { font-size: 1.8rem; line-height: 1; }
+    .ach .what { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .ach .desc { color: var(--muted); font-size: 0.9rem; }
+    .ach .when { color: var(--warn); font-size: 0.8rem; font-weight: 700; }
+    .ach.got { border-color: var(--warn); background: linear-gradient(90deg, rgba(250, 204, 21, 0.12), var(--bg-2)); }
+    .ach:not(.got) .icon { filter: grayscale(1); opacity: 0.35; }
+    .ach:not(.got) strong { color: var(--muted); }
+    .players { display: flex; flex-wrap: wrap; gap: 8px; }
+    .empty { color: var(--muted); text-align: center; padding: 48px 16px; font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1 class="brand"><span class="p1">ARK</span> <span class="p2">1P</span> HUB <span class="muted">· Achievements</span></h1>
+      <a class="btn ghost" id="back" href="/host/">← Back</a>
+    </header>
+    <div id="content"><p class="empty">Loading…</p></div>
+  </main>
+  <script src="/shared/common.js"></script>
+  <script src="/achievements/achievements.js"></script>
+</body>
+</html>

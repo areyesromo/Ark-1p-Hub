@@ -92,7 +92,8 @@
       '<button class="kick' + (kickArmed ? ' armed' : '') + '" data-kick title="Free the seat">' + (kickArmed ? 'Remove?' : '✕') + '</button>' +
       '<span class="label">Player</span>' +
       '<span class="who">' + Ark.escapeHtml(p.name) + '</span>' +
-      '<span class="status">' + deviceOf(p) + ' · ' + (p.connected ? 'Ready' : 'Reconnecting…') + '</span>';
+      '<span class="status">' + deviceOf(p) + ' · ' + (p.connected ? 'Ready' : 'Reconnecting…') + '</span>' +
+      (state.achievements ? '<a class="ach-link" href="' + Ark.achievementsUrl(p.name) + '">⭐ ' + state.achievements.got + ' / ' + state.achievements.total + ' achievements</a>' : '');
   }
 
   // The first lobby card picks a game at random (the server chooses, see Room#pickRandomGame).
@@ -198,6 +199,7 @@
     const html =
       '<div class="ro-score"><span class="muted">Score</span> ' + Ark.formatScore(v.score, g.score.unit) + '</div>' +
       '<div class="ro-record">' + Ark.recordHtml(v, g.score.unit) + '</div>' +
+      Ark.unlockedHtml(v.record) +
       (extra ? '<div class="ro-extra muted">' + extra + '</div>' : '') +
       '<div class="ro-next muted">' + next + '</div>';
     if ($('run-over').innerHTML !== html) $('run-over').innerHTML = html;
@@ -254,7 +256,7 @@
     if (prev) {
       if (v.countdown > 0 && v.countdown !== prev.countdown) names.push('tick');
       if (prev.countdown > 0 && !(v.countdown > 0) && v.phase !== 'over') names.push('go');
-      if (v.phase === 'over' && prev.phase !== 'over') names.push(v.record && v.record.newBest && v.record.score !== null ? 'fanfare' : 'end');
+      if (v.phase === 'over' && prev.phase !== 'over') names.push((v.record && v.record.newBest && v.record.score !== null) || (v.record && v.record.unlocked && v.record.unlocked.length) ? 'fanfare' : 'end');
     } else if (v.countdown > 0) {
       names.push('tick');
     }

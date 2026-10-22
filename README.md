@@ -101,6 +101,17 @@ latest runs. Players are matched by name (ignoring capitals), so use the same
 name each time. A run that scores nothing, or a lost Minesweeper, isn't
 recorded. Settings (`/admin/`) can clear all scores.
 
+## Achievements
+
+Goals to chase on your own: 43 of them, a few for every game (eat 25 in Snake, clear four rows at
+once in Blocks, solve a Hard Sudoku, find the word in 3 guesses…) and some for the hub as a whole
+(score in every game, set 10 personal bests, hold a top score, play 7 days in a row). They're
+checked at the end of every run, and new ones pop up on the end screen on the TV and the phone.
+The player card on the TV, each game's card and the phone lobby show how many you have; ⭐
+**Achievements** (the phone lobby, the player card, or the ⭐ column in the high scores) lists
+them all, done and to do. They're kept per player name with the scores (and cleared with them
+in Settings). The list lives in `server/achievements.js`.
+
 ## Secure page (https)
 
 The hub answers both `http://` and `https://` on the same port. The certificate

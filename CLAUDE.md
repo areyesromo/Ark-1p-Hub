@@ -53,5 +53,6 @@ itself (a 2048 tile, a Simon pad, a brick row, red/green in Reaction Rush).
 1. Server module + its test (`npm test` must pass; `test/hub.test.js` checks every game is well formed).
 2. TV and phone renderers under `public/games/<id>/`.
 3. The game's row in the **README.md** games table (and the controls table), in the same player-facing tone.
+4. New game: give it a few achievements in `server/achievements.js` (`test/achievements.test.js` checks every game has some).
 
 Commit messages: `Game Name: what changed, in plain words` (for example `Snake: wrap-round walls`).
