@@ -1,0 +1,24 @@
+# Raspberry Pi: run the prebuilt multi-arch image from GitHub Container Registry.
+# CI publishes ghcr.io/areyesromo/ark-1p-hub:latest on every push to main;
+# ark-1p-update.timer pulls it, so merging to main updates the Pi (see install.sh).
+services:
+  ark:
+    image: ghcr.io/areyesromo/ark-1p-hub:latest
+    container_name: ark-1p-hub
+    restart: unless-stopped
+    # Host networking lets the server see the Pi's real LAN IP, so the QR code
+    # is right even though the kiosk browser opens http://localhost:3001.
+    # Port 3001, so it can run next to Ark 2P Hub (on 3000).
+    network_mode: host
+    environment:
+      PORT: "3001"
+      # Optional, set in /opt/ark-1p/.env: an admin password (instead of creating
+      # one at /admin/) and a fixed address for phones (e.g. a static IP).
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+      PUBLIC_URL: ${PUBLIC_URL:-}
+    volumes:
+      # Settings and match history survive updates.
+      - ark-data:/app/data
+
+volumes:
+  ark-data:

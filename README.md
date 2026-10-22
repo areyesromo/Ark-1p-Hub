@@ -215,6 +215,23 @@ To update automatically, schedule it:
 - **Linux (cron):** `*/10 * * * * /path/to/Ark-1p-Hub/update.sh >> /var/log/ark-update.log 2>&1`
 - **Windows (Task Scheduler):** run `powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\path\to\Ark-1p-Hub\update.ps1` on a timer.
 
+### Raspberry Pi 4/5 as a plug-in console
+
+The Pi runs the server *and* shows the TV screen full-screen from boot, pairs
+Bluetooth controllers and updates itself from GitHub (never mid-run; the TV
+keeps its room code and your phone reconnects by itself). On Raspberry Pi OS
+(64-bit, with desktop), as your normal user:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/areyesromo/Ark-1p-Hub/main/deploy/pi/install.sh | bash
+sudo reboot
+/opt/ark-1p/pair-controller.sh   # once per Bluetooth controller
+```
+
+It uses port **3001** and `/opt/ark-1p`, so it can share a Pi with Ark 2P Hub
+(install one of them with `ARK_NO_KIOSK=1`, since only one can be the TV
+screen). Full guide: [docs/raspberry-pi.md](docs/raspberry-pi.md).
+
 ### Local development
 
 ```bash
@@ -252,6 +269,8 @@ server/
   sockets.js              the socket protocol (join, start game, input…)
   rooms.js                the room, its one seat, running a game, recording scores
   stats.js                runs, bests and high-score tables
+  achievements.js         goals to chase, checked at the end of every run
+  daily.js                the daily challenge: today's game and its seed
   games/                  one file per game (pure logic, unit-tested)
 public/
   host/                   TV page (and gamepads.js: controllers + keyboard)
@@ -259,5 +278,7 @@ public/
   games/<id>/host.js      how a game looks on the TV
   games/<id>/player.js    how a game looks and behaves on the phone
   stats/, admin/          high scores, settings
+  achievements/           a player's achievements
+deploy/pi/                Raspberry Pi installer, compose, kiosk, updater, controller pairing
 update.sh / update.ps1     pull from GitHub, rebuild and redeploy
 ```
