@@ -1,0 +1,128 @@
+:root {
+  --bg: #0b0d17;
+  --bg-2: #141829;
+  --panel: #1b2036;
+  --line: #2c3354;
+  --line-strong: #5f699c; /* the edge of a control you have to find by eye: 3:1 on --bg, --bg-2 and --panel */
+  --text: #eef0ff;
+  --muted: #9aa1c7;
+  --p1: #22d3ee;
+  --p2: #f472b6;
+  --good: #4ade80;
+  --bad: #f87171;
+  --bad-strong: #ef4444; /* bars and borders that must shout: "hard", a line about to snap */
+  --bad-soft: #fca5a5;   /* warning text on a dark background: a clock running out, a missed cut */
+  --warn: #facc15;
+  --btn: #3b4370;        /* a plain button */
+  /* Dark text on a bright fill: --on-bright for player colours (--me, --p1, --p2) and blues */
+  --on-bright: #06121c;
+  --on-good: #052e16;
+  --on-warn: #1c1402;
+  /* --me (the phone's own colour) is set in play/play.css */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --radius: 18px;
+  --r-pill: 999px;
+  /* Type sizes for new screens (older ones still have their own) */
+  --fs-sm: 0.9rem;
+  --fs-md: 1.1rem;
+  --fs-lg: 1.4rem;
+  --fs-xl: 1.8rem;
+  --fs-2xl: 2.6rem;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: radial-gradient(ellipse at top, #1a1f3d 0%, var(--bg) 60%) fixed;
+}
+
+h1, h2, h3 { margin: 0; line-height: 1.1; }
+
+.brand {
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+.brand .p1 { color: var(--p1); }
+.brand .p2 { color: var(--p2); }
+
+.p1-text { color: var(--p1); }
+.p2-text { color: var(--p2); }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+button, .btn {
+  font: inherit;
+  font-weight: 700;
+  border: 0;
+  border-radius: 14px;
+  padding: 14px 22px;
+  background: var(--btn);
+  color: var(--text);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  touch-action: manipulation;
+}
+button:disabled { opacity: 0.4; cursor: default; }
+button.primary, .btn.primary { background: linear-gradient(135deg, var(--p1), #6366f1); color: var(--on-bright); }
+button.ghost, .btn.ghost { background: transparent; border: 1px solid var(--line); color: var(--muted); }
+
+input {
+  font: inherit;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+  color: var(--text);
+}
+
+.muted { color: var(--muted); }
+.hidden { display: none !important; }
+
+/* The hub's setup screen for games that don't draw their own (TV and phones) */
+.hub-setup { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.8rem; text-align: center; }
+.hub-setup .hub-title { font-size: 2em; font-weight: 900; }
+.hub-setup .ark-setup { width: min(40rem, 100%); }
+.hub-setup .muted { max-width: 40rem; }
+
+/* Shared setup screen (match settings before a game starts): Ark.setup.html */
+.ark-setup { display: flex; flex-direction: column; gap: 0.9em; margin: 1em 0; text-align: left; }
+.ark-setup .row { padding: 0.5em 0.7em; border-radius: var(--r-md); border: 3px solid transparent; }
+.ark-setup .row.focus { border-color: var(--p1); }
+.ark-setup .title { font-weight: 800; color: var(--muted); margin-bottom: 0.4em; }
+.ark-setup .seg { display: flex; flex-wrap: wrap; gap: 0.4em; }
+.ark-setup .opt { flex: 1 1 auto; min-width: 4.5em; min-height: 44px; padding: 0.6em 0.5em; background: var(--panel); color: inherit; font-weight: 800; }
+.ark-setup .opt.on { background: var(--good); color: var(--on-good); }
+
+/* How a finished run went (Ark.recordHtml), on the TV and the phone */
+.new-best { color: var(--warn); font-weight: 900; }
+
+/* Players who ask their device for less motion get it everywhere: pulses, pops and slides end at once
+   (nothing waits for an animation to finish). Canvas and 3D games move by script and aren't affected.
+   .keep-motion opts out where the movement is the information (where a thrown ball went). */
+@media (prefers-reduced-motion: reduce) {
+  *:not(.keep-motion), *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

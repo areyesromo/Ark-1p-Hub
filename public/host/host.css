@@ -1,0 +1,174 @@
+/* The TV page scales with the viewport so it reads well from the couch. */
+html { font-size: clamp(14px, 1.15vw, 28px); }
+body { overflow: hidden; }
+
+#app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 2.5rem 2rem;
+  gap: 1.5rem;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.topbar h1 { font-size: 2rem; }
+.topbar-right { display: flex; align-items: center; gap: 1rem; }
+.topbar button { padding: 0.5rem 1rem; }
+
+.room-chip {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  padding: 0.4rem 1rem;
+  color: var(--muted);
+}
+.room-chip strong { color: var(--text); letter-spacing: 0.2em; margin-left: 0.4rem; }
+
+.conn { font-size: 0.85rem; color: var(--warn); }
+.conn.ok { color: var(--muted); }
+
+/* ---- lobby ---- */
+
+.lobby {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: 2rem;
+  min-height: 0;
+}
+
+.join {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+}
+.join h2 { font-size: 2rem; }
+.qr-wrap {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 0.8rem;
+  width: min(100%, 22rem);
+  aspect-ratio: 1;
+}
+.qr-wrap img { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+.join p { margin: 0; font-size: 1.1rem; }
+.join-url { color: var(--text); word-break: break-all; }
+.join-code { color: var(--text); font-size: 1.6rem; letter-spacing: 0.25em; }
+.join .join-warn {
+  color: var(--warn);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  border: 1px solid var(--warn);
+  border-radius: var(--r-md);
+  padding: 0.7rem 0.9rem;
+}
+.join-warn strong { color: var(--text); }
+.icon-btn { padding: 0.5rem 1rem; }
+
+.side-col { display: flex; flex-direction: column; gap: 2rem; min-height: 0; }
+
+.seat {
+  border-radius: var(--radius);
+  border: 3px dashed var(--line);
+  padding: 1.5rem;
+  min-height: 8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.4rem;
+}
+.seat .label { font-size: 0.9rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; }
+.seat .who { font-size: 2rem; font-weight: 900; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.seat .status { font-size: 0.95rem; color: var(--muted); }
+.seat.filled { border-style: solid; background: var(--panel); }
+#seat { color: var(--p1); }
+#seat.filled { border-color: var(--p1); box-shadow: 0 0 2rem -0.6rem var(--p1); }
+.seat.away { opacity: 0.55; }
+.seat .who, .seat .status { color: var(--text); }
+.seat.empty .who { color: var(--muted); }
+
+.games { flex: 1; display: flex; flex-direction: column; gap: 0.8rem; min-height: 0; overflow: auto; }
+.games h2 { font-size: 1.6rem; }
+.games p { margin: 0; }
+.game-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 1rem; }
+.game-group { grid-column: 1 / -1; margin: 0.6rem 0 -0.2rem; font-size: 1.15rem; }
+.game-group span { font-weight: 400; color: var(--muted); font-size: 0.9rem; margin-left: 0.5rem; }
+.game-card {
+  text-align: left;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  padding: 1.1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.game-card strong { font-size: 1.3rem; }
+.game-card span { font-weight: 400; color: var(--muted); font-size: 0.95rem; }
+.game-card:not(:disabled):hover { border-color: var(--p1); }
+.game-card.pad-focus { border-color: var(--p1); box-shadow: 0 0 0 3px var(--p1); }
+.game-card .best { font-style: normal; font-weight: 700; color: var(--warn); font-size: 0.95rem; }
+
+.pad-hint { margin: -1rem 0 0; text-align: center; color: var(--muted); font-size: 1rem; }
+.pad-footer { text-align: center; color: var(--muted); font-size: 1rem; margin-top: -0.5rem; }
+
+/* ---- game stage ---- */
+
+.stage { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.stage .loading { margin: auto; color: var(--muted); font-size: 1.5rem; }
+
+#music.off { opacity: 0.4; text-decoration: line-through; }
+#sound.attention { border-color: var(--warn); color: var(--warn); animation: sound-pulse 1.6s ease-in-out infinite; }
+@keyframes sound-pulse { 50% { box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.25); } }
+.game-card .tag { font-style: normal; font-size: 0.75rem; font-weight: 700; color: var(--warn); margin-left: 0.5rem; vertical-align: middle; }
+.game-card.random { grid-column: 1 / -1; flex-direction: row; align-items: center; gap: 1rem; padding-top: 0.8rem; padding-bottom: 0.8rem; border-style: dashed; }
+body:not(.cursor-on), body:not(.cursor-on) * { cursor: none !important; }
+.version { position: fixed; right: 12px; bottom: 6px; font-size: 0.75rem; color: var(--muted); opacity: 0.5; pointer-events: none; }
+
+#hub-setup { font-size: 1.4rem; }
+#hub-setup .muted { font-size: 1.2rem; }
+#hub-setup .muted strong { color: var(--warn); }
+
+/* During a game: the game, its variant and the best to beat, centred in the top bar. */
+.best-chip { flex: 1; text-align: center; font-size: 1.2rem; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.best-chip .muted { font-weight: 400; }
+
+/* The end of a run, drawn by the hub over the bottom of the game. */
+.run-over {
+  position: fixed;
+  left: 50%;
+  bottom: 2.5rem;
+  transform: translateX(-50%);
+  z-index: 5;
+  min-width: min(34rem, 90vw);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1rem 2rem;
+  border-radius: var(--radius);
+  border: 2px solid var(--p1);
+  background: rgba(11, 13, 23, 0.94);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.6);
+  text-align: center;
+  animation: ro-in 260ms ease-out;
+}
+.run-over .ro-score { font-size: var(--fs-2xl); font-weight: 900; font-variant-numeric: tabular-nums; }
+.run-over .ro-score .muted { font-size: 0.45em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; vertical-align: middle; }
+.run-over .ro-record { font-size: var(--fs-lg); }
+.run-over .ro-next { font-size: 1rem; }
+.run-over .ro-next strong { color: var(--text); }
+@keyframes ro-in { from { opacity: 0; transform: translate(-50%, 1rem); } }
+
+/* Freeing the seat: ✕, then "Remove?" to confirm. */
+.seat { position: relative; }
+.seat .kick { position: absolute; top: 0.6rem; right: 0.6rem; padding: 0.2rem 0.6rem; font-size: 0.95rem; background: transparent; color: var(--muted); border: 1px solid var(--line); opacity: 0.55; }
+.seat .kick:hover, .seat .kick.armed { opacity: 1; color: #fff; }
+.seat .kick.armed { background: var(--bad); border-color: var(--bad); }
