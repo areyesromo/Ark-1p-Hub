@@ -16,7 +16,8 @@ Once someone has taken the seat, the lobby on the TV puts the player in a narrow
 rest of the screen to the games (the QR code comes back when the seat is free). It groups them into **🕹️ Arcade** (real time, quick hands),
 **🧩 Puzzle** (think it through, at your own pace) and **🧠 Brain** (memory and
 reflexes). Each card shows your best, and **🎲 Random game** at the top picks one
-for you (never the one you just played). During a game the top of the TV shows
+for you (never the one you just played). Up and down on a controller (or the arrow keys) go to the card
+above or below; left and right go through them in order. During a game the top of the TV shows
 the best to beat; at the end the hub shows your score, whether it's a
 **🎉 New best!** and where it ranks on this hub, then **Play again**, change
 the settings, or pick another game.
@@ -43,6 +44,7 @@ the settings, or pick another game.
 | **Solitaire** | Klondike: build the four foundations up by suit from ace to king. In the seven columns cards go down in alternating colours, a face-up run moves together, and only a king goes into an empty column. Tap the stock to turn cards over (one at a time, or three: pick on the setup screen, each has its own scores); when it runs out it turns back over. **Tap a card and it goes where it fits** (home first). If it can't go anywhere it's picked up: tap where it should go. Undo as often as you like. Once every card is face up, ✨ Finish sends them all home. Score: your time; a game you give up on doesn't count. |
 | **Sliding Puzzle** | Numbered tiles in a square with one gap: slide them back into order, 1, 2, 3… with the gap at the bottom right. Tap a tile in line with the gap to slide it (and any tiles between) over, or swipe. Every shuffle is made of real slides, so it can always be solved. 3×3, 4×4 or 5×5. The clock starts with your first slide. Score: your time, per size. |
 | **Gem Swap** | Swap two touching gems to line up three or more of a colour: they vanish, the gems above fall and new ones drop in, and any new lines vanish too (a chain, each step scoring more). A swap that makes no line doesn't happen. Swipe a gem into its neighbour, or tap one then the other. 30 swaps; a board with no moves left is reshuffled. Score: 10 a gem, +50 for a line of four, +150 for five, times the chain step. |
+| **Nonograms** | Picture logic: the numbers by each row and column are the runs of filled squares in that line, in order ("3 1" means three filled, a gap, then one). Fill squares until every line matches and the picture appears. On the phone tap a square, or drag across several, to fill them; switch to ✕ **Cross out** to mark squares you know are empty. A line whose filled squares match its numbers turns grey. Every puzzle is a fresh random picture that can be solved one line at a time, without guessing. 5×5, 10×10 or 15×15. Pausing hides the grid. Score: your time, per size. |
 
 ### 🧠 Brain
 
@@ -53,6 +55,16 @@ the settings, or pick another game.
 | **Reaction Rush** | The screen says **Wait…** (red), then after a random moment **TAP!** (green): hit the phone's big button as fast as you can. Five rounds. Tap before green and it's a false start: that round starts again and 100 ms goes on your time. Score: your average time plus penalties, in ms (lower is better). No music, so you can concentrate. |
 | **Quick Maths** | Sums against the clock: pick the right answer of four on the phone's big buttons. They start easy (adding small numbers) and get harder every 5 right answers: taking away, times tables, then a mix with dividing and bigger numbers. 60 seconds; a wrong answer costs 3 of them. Score: right answers. |
 | **Colour Trap** | A colour's name shows up written in another colour: tap the colour of the **ink**, not what the word says (BLUE written in red is red). Your brain wants to read the word; that's the trap. 45 seconds; a wrong answer costs 3 of them. Score: right answers. |
+| **Trivia** | Twelve questions, four answers each, 15 seconds a question. A right answer scores 100, plus up to 100 more the faster you are; wrong or too slow scores nothing, and the right answer shows for a moment either way. 152 questions in six subjects (science & nature, geography, history, sport & games, film, music & books, food & drink): play a mix, or pick one (each has its own scores). You won't see a question again until you've seen them all. Score: points. |
+
+### 📅 Daily challenge
+
+Next to Random game in the lobby: one game a day, **the same deal for everyone** (the same falling
+pieces, the same board, the same questions), played at set settings. The lobby says which game it is
+today. You get **one go a day** (it counts from the moment you start, so quitting doesn't give you
+another), and each day's runs get their own high-score table, so you can see who did best with the
+same luck. The games take turns, and every one comes round before any comes round again. A new
+challenge at midnight (UTC).
 
 ## Controllers and the keyboard
 
@@ -83,11 +95,13 @@ on the TV to play there.
 | Solitaire | **D-pad** moves (↑ from a column goes to the top row), **A** picks up / puts down (on the stock: turn a card), **X** sends it where it fits, **B** drops it, **Y** undo, **Start** finish | Arrows, **Enter**, **Q**, **Backspace**, **E**, **P** | |
 | Sliding Puzzle | **D-pad** / stick | Arrows | Slide a tile into the gap (from the side the arrow points away from) |
 | Gem Swap | **D-pad** moves, **A** picks a gem, then a direction swaps it; **B** lets go | Arrows, **Enter**, **Backspace** | |
+| Nonograms | **D-pad** moves, **A** fills, **X** / **B** crosses out (again to clear), **Start** pauses | Arrows, **Enter**, **Q** / **Backspace**, **P** | |
 | Word Guess | **D-pad** picks a key on the TV's keyboard, **A** types it, **B** deletes, **Start** / **X** enters | Just type: letters, **Backspace**, **Enter** | |
 | Simon | **A** green, **B** red, **Y** yellow, **X** blue, or the **D-pad** by position (↑ green, → red, ← yellow, ↓ blue) | Arrows by position | |
 | Reaction Rush | Any face button, bumper or trigger | **Enter** / **Space** | Tap |
 | Quick Maths | **A**, **B**, **X**, **Y**: the answer next to that letter on the TV | **1**–**4** | |
 | Colour Trap | The face button of that colour: **B** red, **X** blue, **A** green, **Y** yellow | **R**, **B**, **G**, **Y** (or **1**–**4**) | |
+| Trivia | **A**, **B**, **X**, **Y**: the answer next to that letter on the TV | **1**–**4** | |
 
 Buttons use Xbox names. On a PlayStation controller A = ✕, B = ○, X = □, Y = △.
 Browsers only notice a controller after one of its buttons is pressed, so press
@@ -115,9 +129,9 @@ recorded. Settings (`/admin/`) can clear all scores.
 
 ## Achievements
 
-Goals to chase on your own: 61 of them, a few for every game (eat 25 in Snake, clear four rows at
+Goals to chase on your own: 69 of them, a few for every game (eat 25 in Snake, clear four rows at
 once in Blocks, solve a Hard Sudoku, find the word in 3 guesses…) and some for the hub as a whole
-(score in every game, set 10 personal bests, hold a top score, play 7 days in a row). They're
+(score in every game, set 10 personal bests, hold a top score, play 7 days in a row, play 7 daily challenges). They're
 checked at the end of every run, and new ones pop up on the end screen on the TV and the phone.
 The player card on the TV, each game's card and the phone lobby show how many you have; ⭐
 **Achievements** (the phone lobby, the player card, or the ⭐ column in the high scores) lists

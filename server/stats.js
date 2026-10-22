@@ -102,8 +102,8 @@ export class Stats {
   /**
    * A player's record, for achievements: runs finished, games scored in,
    * personal bests set (each time a run beat their best), the longest run of
-   * days played in a row, days today's word was found (Word Guess), and how
-   * many tables they're top of.
+   * days played in a row, days today's word was found (Word Guess), daily
+   * challenges played, and how many tables they're top of.
    */
   historyOf(name) {
     const key = nameKey(name);
@@ -132,6 +132,7 @@ export class Stats {
       topSpots,
       streak: longestStreak(mine.map((r) => r.at)),
       dailyWords: days.size,
+      dailyChallenges: Object.keys(this.dailies).filter((k) => k.startsWith('daily|') && k.endsWith('|' + key)).length,
     };
   }
 
@@ -160,12 +161,12 @@ export class Stats {
 
   /**
    * A player's best in each game, for the lobby cards: gameId -> { score, variant, unit, better },
-   * in the variant they played last.
+   * in the variant they played last (daily challenges aside: each day is its own table).
    */
   bestsOf(name) {
     const key = nameKey(name);
     const lastVariant = {};
-    for (const r of this.runs) if (nameKey(r.player) === key) lastVariant[r.game] = r.variant || '';
+    for (const r of this.runs) if (nameKey(r.player) === key && !String(r.variant || '').startsWith('Daily ')) lastVariant[r.game] = r.variant || '';
     const out = {};
     for (const [game, variant] of Object.entries(lastVariant)) {
       const r = this.runs.find((x) => x.game === game);

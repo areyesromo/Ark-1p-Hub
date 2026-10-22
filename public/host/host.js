@@ -99,7 +99,7 @@
   // The first lobby card picks a game at random (the server chooses, see Room#pickRandomGame).
   const RANDOM = { id: 'random', name: '🎲 Random game', tagline: "Can't decide? Let the hub pick one for you." };
   function lobbyCards() {
-    return [RANDOM].concat(state.games);
+    return [RANDOM].concat(state.daily ? [Ark.dailyCard(state.daily)] : [], state.games);
   }
 
   function renderLobby() {
@@ -120,15 +120,15 @@
     const cards = lobbyCards();
     if (focus >= cards.length) focus = 0;
     $('game-list').innerHTML = cards.map(function (g, i) {
-      const heading = i > 0 && (i === 1 || cards[i - 1].category !== g.category)
+      const heading = g.category && cards[i - 1].category !== g.category
         ? '<h3 class="game-group">' + (Ark.GROUPS[g.category] || Ark.escapeHtml(g.category)) + '</h3>'
         : '';
       const best = g.score ? Ark.bestLine(g) : '';
       return (
         heading +
-        '<button class="game-card' + (g.id === 'random' ? ' random' : '') + (padFocus && i === focus ? ' pad-focus' : '') + '" data-game="' + Ark.escapeHtml(g.id) + '"' + (state.readyToPlay ? '' : ' disabled') + '>' +
+        '<button class="game-card' + (g.id === 'random' ? ' random' : '') + (g.id === 'daily' ? ' random daily' + (g.done ? ' done' : '') : '') + (padFocus && i === focus ? ' pad-focus' : '') + '" data-game="' + Ark.escapeHtml(g.id) + '"' + (state.readyToPlay ? '' : ' disabled') + '>' +
         '<strong>' + Ark.escapeHtml(g.name) + '</strong>' +
-        '<span>' + Ark.escapeHtml(g.tagline) + '</span>' +
+        '<span>' + (g.id === 'daily' ? g.tagline : Ark.escapeHtml(g.tagline)) + '</span>' +
         (best ? '<em class="best">' + best + '</em>' : '') +
         '</button>'
       );
@@ -191,9 +191,11 @@
     $('run-over').classList.toggle('hidden', !show);
     if (!show) return;
     const local = state.player && state.player.local;
-    const next = local
-      ? '<strong>A</strong> play again' + (v.hubSetup ? ' · <strong>Y</strong> change settings' : '') + ' · <strong>Back</strong> lobby'
-      : 'Play again or pick another game on your phone';
+    const next = v.daily
+      ? '📅 That was today\'s challenge: a new one at midnight (UTC) · ' + (local ? '<strong>A</strong> lobby' : 'pick another game on your phone')
+      : local
+        ? '<strong>A</strong> play again' + (v.hubSetup ? ' · <strong>Y</strong> change settings' : '') + ' · <strong>Back</strong> lobby'
+        : 'Play again or pick another game on your phone';
     const r = current && current.renderer;
     const extra = r && r.overHtml ? r.overHtml(v) : '';
     const html =
@@ -521,7 +523,8 @@
         return;
       }
       if (lastView && lastView.phase === 'over') {
-        if (btn === 'A' || btn === 'START') send({ type: 'rematch' });
+        if (lastView.daily && (btn === 'A' || btn === 'START')) socket.emit('lobby:return'); // one go a day
+        else if (btn === 'A' || btn === 'START') send({ type: 'rematch' });
         else if (btn === 'Y' && lastView.hubSetup) send({ type: 'setup' });
         else if (btn === 'B') socket.emit('lobby:return');
         return;

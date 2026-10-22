@@ -135,5 +135,5 @@ export default {
   tagline: 'Slide the numbered tiles back into order. 3×3, 4×4 or 5×5.',
   category: 'puzzle',
   score: { better: 'lower', unit: 'time' },
-  create: (ctx) => new Slide(ctx),
+  create: (ctx) => new Slide(ctx, ctx.rng),
 };

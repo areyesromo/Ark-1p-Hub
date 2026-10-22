@@ -253,5 +253,5 @@ export default {
   tagline: 'Turn, thrust and blast the rocks to bits before they hit you.',
   category: 'arcade',
   score: { better: 'higher', unit: 'pts' },
-  create: (ctx) => new Asteroids(ctx),
+  create: (ctx) => new Asteroids(ctx, ctx.rng),
 };

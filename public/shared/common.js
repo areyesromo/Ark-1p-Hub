@@ -276,6 +276,17 @@
     return best;
   }
 
+  /**
+   * The lobby card for today's daily challenge (state.daily from the room):
+   * { id: 'daily', name, tagline (html), done }.
+   */
+  function dailyCard(d) {
+    const tagline = d.done
+      ? 'Done for today' + (d.score !== null ? ': ' + formatScore(d.score, d.unit) : '') + '. A new one at midnight (UTC).'
+      : 'Today: <strong>' + escapeHtml(d.name) + '</strong>. The same deal for everyone, one go a day.';
+    return { id: 'daily', name: '📅 Daily challenge', tagline: tagline, done: d.done };
+  }
+
   function lobbyLayout(lobby, cls, on, leaving, moving, animate) {
     const busy = switching.has(lobby);
     if (busy) switching.set(lobby, on);
@@ -314,6 +325,7 @@
 
   window.Ark = {
     lobbyLayout: lobbyLayout,
+    dailyCard: dailyCard,
     stepVertical: stepVertical,
     watchVersion: watchVersion,
     escapeHtml: escapeHtml,

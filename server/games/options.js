@@ -53,7 +53,8 @@ export function withSetup(def, spec) {
     options[key] = s.values;
     rows.push({ key, title: s.title, labels: Object.fromEntries(s.values.map((v) => [v, s.label(v)])) });
   }
-  return { ...def, create: (ctx) => new SetupFirst(ctx, def, options, rows) };
+  // base: the game without its setup screen (the daily challenge starts it with set settings).
+  return { ...def, base: def, options, create: (ctx) => new SetupFirst(ctx, def, options, rows) };
 }
 
 class SetupFirst {

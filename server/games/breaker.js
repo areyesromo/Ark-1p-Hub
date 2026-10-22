@@ -249,5 +249,5 @@ export default {
   tagline: 'Bounce the ball off your paddle and smash the wall, brick by brick.',
   category: 'arcade',
   score: { better: 'higher', unit: 'pts' },
-  create: (ctx) => new Breaker(ctx),
+  create: (ctx) => new Breaker(ctx, ctx.rng),
 };

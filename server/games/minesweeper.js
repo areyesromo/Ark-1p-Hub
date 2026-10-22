@@ -193,5 +193,5 @@ export default {
   tagline: 'Clear the field without setting off a mine. Numbers count the mines next door.',
   category: 'puzzle',
   score: { better: 'lower', unit: 'time' },
-  create: (ctx) => new Minesweeper(ctx),
+  create: (ctx) => new Minesweeper(ctx, ctx.rng),
 };

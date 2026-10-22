@@ -1,6 +1,8 @@
 import { randomBytes, randomInt } from 'node:crypto';
 import { getGame, listGames } from './games/index.js';
 import { ACHIEVEMENTS, newlyEarned, describe } from './achievements.js';
+import { challengeFor, dayOf, variantFor } from './daily.js';
+import { seeded } from './rng.js';
 
 const NAME_MAX = 16;
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ'; // no I or O, they look like 1 and 0
@@ -47,6 +49,7 @@ export class Room {
     this.timers = new Set();
     this.saved = {}; // per game: what it asked to keep between launches (e.g. chosen settings)
     this.result = null; // how the last run went, shown on its end screen
+    this.challenge = null; // today's daily challenge, while it's being played (see daily.js)
     this.touch();
   }
 
@@ -133,7 +136,31 @@ export class Room {
     return pool[Math.floor(rng() * pool.length)].id;
   }
 
+  /** Today's daily challenge for the lobby: which game, and whether this player has had their go. */
+  dailyInfo(now = Date.now()) {
+    const c = challengeFor(dayOf(now));
+    const def = getGame(c.game);
+    const mine = this.stats && this.player ? this.stats.getDaily('daily', c.day, this.player.name) : null;
+    return {
+      day: c.day,
+      game: c.game,
+      name: def ? def.name : c.game,
+      done: Boolean(mine),
+      score: mine && Number.isFinite(mine.score) ? mine.score : null,
+      unit: def ? def.score.unit : 'pts',
+    };
+  }
+
   startGame(gameId) {
+    let challenge = null;
+    if (gameId === 'daily') {
+      if (!this.readyToPlay) return { error: 'Join first: scan the code with your phone, or press a button on a controller.' };
+      challenge = challengeFor(dayOf(Date.now()));
+      if (this.stats && this.stats.getDaily('daily', challenge.day, this.playerName)) {
+        return { error: "You've had your go at today's challenge. A new one comes at midnight (UTC)." };
+      }
+      gameId = challenge.game;
+    }
     if (gameId === 'random') gameId = this.pickRandomGame();
     const def = getGame(gameId);
     if (!def) return { error: 'Unknown game.' };
@@ -151,8 +178,9 @@ export class Room {
         return { name: room.playerName, local: Boolean(room.player && room.player.local) };
       },
       now: () => Date.now(),
-      // Kept by the room between launches of this game, e.g. the settings picked last time.
-      saved: (this.saved[def.id] = this.saved[def.id] || {}),
+      // Kept by the room between launches of this game, e.g. the settings picked last time
+      // (not for the daily challenge, which is played as it's dealt).
+      saved: challenge ? {} : (this.saved[def.id] = this.saved[def.id] || {}),
       // This player's go at the game's daily puzzle, kept in the score history (see Stats#getDaily).
       daily: {
         get: (day) => (room.stats ? room.stats.getDaily(def.id, day, room.playerName) : null),
@@ -176,7 +204,18 @@ export class Room {
     };
 
     this.gameId = def.id;
-    this.game = def.create(ctx);
+    if (challenge) {
+      // Everyone gets the same deal today: set settings (no setup screen) and the day's seed.
+      ctx.settings = challenge.settings;
+      ctx.rng = seeded(challenge.seed);
+      ctx.challenge = true;
+      this.challenge = challenge;
+      // The go counts from the start, so quitting and trying again isn't a second go.
+      if (this.stats) this.stats.setDaily('daily', challenge.day, this.playerName, { game: def.id, score: null });
+      this.game = (def.base || def).create(ctx);
+    } else {
+      this.game = def.create(ctx);
+    }
     this.broadcastState();
     this.game.start();
     return { ok: true, gameId: def.id };
@@ -189,11 +228,14 @@ export class Room {
     this.game = null;
     this.gameId = null;
     this.result = null;
+    this.challenge = null;
     if (!silent) this.broadcastState();
   }
 
   handleInput(input) {
     if (!this.game || !input || typeof input !== 'object') return;
+    // The daily challenge is one go: no playing it again, no changing its settings.
+    if (this.challenge && (input.type === 'rematch' || input.type === 'setup')) return;
     this.touch();
     try {
       this.game.onInput(input);
@@ -204,14 +246,21 @@ export class Room {
 
   // ---- scores --------------------------------------------------------------
 
+  /** The scores table a run goes on: the game's variant, or the day's for the daily challenge. */
+  variantOf(view) {
+    if (this.challenge) return variantFor(this.challenge.day);
+    return typeof view.variant === 'string' ? view.variant : '';
+  }
+
   /** The player's best in the running game (in the variant on screen), or null. */
   bestNow(view) {
     const def = getGame(this.gameId);
     if (!this.stats || !def || !this.player) return null;
+    const variant = this.variantOf(view);
     // Views go out up to 30 times a second: look the best up again only when something changed.
-    const key = [def.id, view.variant || '', this.player.name, this.stats.version].join('\u0000');
+    const key = [def.id, variant, this.player.name, this.stats.version].join('\u0000');
     if (!this.bestCache || this.bestCache.key !== key) {
-      this.bestCache = { key, best: this.stats.bestFor(def.id, view.variant || '', this.player.name, def.score.better) };
+      this.bestCache = { key, best: this.stats.bestFor(def.id, variant, this.player.name, def.score.better) };
     }
     return this.bestCache.best;
   }
@@ -223,7 +272,7 @@ export class Room {
   recordResult(view) {
     const def = getGame(this.gameId);
     const score = Number(view.score);
-    const variant = typeof view.variant === 'string' ? view.variant : '';
+    const variant = this.variantOf(view);
     if (view.score === null || view.score === undefined || !Number.isFinite(score)) {
       this.result = { score: null };
     } else if (def.score.better === 'higher' && score <= 0) {
@@ -232,6 +281,7 @@ export class Room {
       const run = { game: def.id, gameName: def.name, player: this.playerName, score, variant, better: def.score.better, unit: def.score.unit };
       this.result = this.stats ? this.stats.record(run) : { score, best: null, newBest: true, rank: 1 };
     }
+    if (this.challenge && this.stats) this.stats.setDaily('daily', this.challenge.day, this.playerName, { game: def.id, score: this.result.score });
     // Any run can earn achievements, even one that doesn't count for the scores.
     this.result.unlocked = this.checkAchievements({ game: def.id, score: this.result.score, variant }, view);
   }
@@ -264,6 +314,10 @@ export class Room {
   /** What the hub adds to a game's views: the best to beat, and on the end screen how this run went. */
   decorate(view, hostView) {
     const out = { ...view, best: this.bestNow(hostView) };
+    if (this.challenge) {
+      out.variant = this.variantOf(hostView);
+      out.daily = { day: this.challenge.day };
+    }
     if (hostView.phase === 'over' && this.result) out.record = this.result;
     return out;
   }
@@ -283,6 +337,7 @@ export class Room {
       player: p ? { name: p.name, connected: p.connected, local: Boolean(p.local) } : null,
       achievements: p ? (({ got, total }) => ({ got, total }))(this.achievementCounts()) : null,
       games: this.lobbyGames(),
+      daily: this.dailyInfo(),
       knownNames: this.stats ? this.stats.knownNames() : [],
     };
   }

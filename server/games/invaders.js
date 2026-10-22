@@ -304,5 +304,5 @@ export default {
   tagline: 'Rows of aliens march down on you. Slide, shoot, and hide behind the bunkers.',
   category: 'arcade',
   score: { better: 'higher', unit: 'pts' },
-  create: (ctx) => new Invaders(ctx),
+  create: (ctx) => new Invaders(ctx, ctx.rng),
 };
