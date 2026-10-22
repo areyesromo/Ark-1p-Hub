@@ -1,0 +1,36 @@
+/* Against-the-clock games (Quick Maths, Colour Trap): see timed-quiz.js. */
+.tq-host, .tq-phone { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; text-align: center; }
+.tq-top { display: flex; gap: 2rem; justify-content: center; align-items: baseline; color: var(--muted); }
+.tq-top strong { color: var(--text); }
+.tq-clock { font-weight: 900; color: var(--text); font-variant-numeric: tabular-nums; }
+.tq-clock.low { color: var(--bad-soft); }
+.tq-prompt { font-weight: 900; line-height: 1.1; border-radius: var(--radius); padding: 0.2em 0.6em; }
+.tq-ready { color: var(--muted); font-size: 0.5em; }
+.tq-choices { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; width: 100%; }
+.tq-choice { display: flex; align-items: center; justify-content: center; gap: 0.6em; padding: 0.6em; border-radius: var(--r-md); background: var(--panel); border: 2px solid var(--line); font-weight: 900; }
+.tq-choice .badge { display: inline-flex; align-items: center; justify-content: center; width: 1.6em; height: 1.6em; border-radius: 50%; font-size: 0.6em; background: var(--btn); color: var(--text); }
+/* A controller's face buttons are coloured like the real thing. */
+.tq-choice .badge.bA { background: #16a34a; }
+.tq-choice .badge.bB { background: #dc2626; }
+.tq-choice .badge.bX { background: #2563eb; }
+.tq-choice .badge.bY { background: #ca8a04; }
+.tq-bar { width: 100%; height: 0.6rem; border-radius: var(--r-pill); background: var(--bg-2); overflow: hidden; }
+.tq-bar i { display: block; height: 100%; background: var(--p1); transition: width 250ms linear; }
+.right .tq-prompt { animation: tq-right 400ms; }
+.wrong .tq-prompt { animation: tq-wrong 400ms; }
+@keyframes tq-right { 0% { background: rgba(74, 222, 128, 0.45); } }
+@keyframes tq-wrong { 0% { background: rgba(248, 113, 113, 0.5); transform: translateX(-0.3em); } 30% { transform: translateX(0.3em); } }
+
+/* TV */
+.tq-host { gap: 2rem; }
+.tq-host .tq-top { font-size: var(--fs-xl); }
+.tq-host .tq-prompt { font-size: 7rem; }
+.tq-host .tq-choices { max-width: 56rem; font-size: 2.6rem; }
+
+/* phone */
+.tq-phone { justify-content: stretch; padding: 12px 16px 16px; gap: 12px; }
+.tq-phone .tq-top { font-size: var(--fs-md); }
+.tq-phone .tq-prompt { font-size: 2.6rem; min-height: 1.4em; }
+.tq-phone .tq-choices { flex: 1; gap: 12px; }
+.tq-phone .tq-choices button { font-size: 2rem; font-weight: 900; border-radius: var(--radius); background: var(--panel); border: 2px solid var(--line-strong); touch-action: none; }
+.tq-phone .tq-choices button:active { background: var(--me); color: var(--on-bright); }

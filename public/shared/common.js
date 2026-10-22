@@ -124,9 +124,10 @@
   // ({ key: [values] }, see server/games/options.js). rows describes how to
   // show them: [{ key, title, fmt(value) -> label }].
 
-  /** Each option's values, in the order the game lists them. */
+  /** Each option's values: numbers smallest first, words in the order the game lists them. */
   function setupChoices(v, key) {
-    return v.options[key].slice();
+    const list = v.options[key].slice();
+    return list.every(function (x) { return typeof x === 'number'; }) ? list.sort(function (a, b) { return a - b; }) : list;
   }
 
   /** The settings as rows of buttons (phones tap them: data-key / data-value). focusKey outlines one row (TV). */

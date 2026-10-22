@@ -59,7 +59,7 @@ end screen.
 
 ## Later
 
-- More games (Blocks, Flappy, Asteroids, Sudoku, Solitaire and Word Guess with a daily word are in): Space
-  Invaders-style, an endless runner, a sliding puzzle, match-3, nonograms, trivia, a daily challenge for other games.
+- More games (Blocks, Flappy, Asteroids, Invaders, Runner, Sudoku, Solitaire, Sliding Puzzle, Gem Swap, Word Guess
+  with a daily word, Quick Maths and Colour Trap are in): nonograms, trivia, a daily challenge for other games.
 - Pi deploy scripts (kiosk, controller pairing) as in Ark 2P Hub's `deploy/pi/` (`update.sh` / `update.ps1` are already here).
 - Screenshots in the README.
