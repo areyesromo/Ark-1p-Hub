@@ -6,6 +6,12 @@ import asteroids from './asteroids.js';
 import sudoku, { LEVELS as SUDOKU_LEVELS } from './sudoku.js';
 import wordGuess from './word-guess.js';
 import solitaire from './solitaire.js';
+import invaders from './invaders.js';
+import runner from './runner.js';
+import slide, { SIZES as SLIDE_SIZES } from './slide.js';
+import gems from './gems.js';
+import maths from './maths.js';
+import colours from './colours.js';
 import game2048 from './2048.js';
 import minesweeper, { SIZES as MINE_SIZES } from './minesweeper.js';
 import simon from './simon.js';
@@ -55,6 +61,8 @@ const GAMES = [
   blocks,
   flappy,
   asteroids,
+  invaders,
+  runner,
   game2048,
   withSetup(minesweeper, {
     size: { title: 'Field', values: Object.keys(MINE_SIZES), label: (k) => `${MINE_SIZES[k].name} · ${MINE_SIZES[k].w}×${MINE_SIZES[k].h}, ${MINE_SIZES[k].mines} mines` },
@@ -65,11 +73,17 @@ const GAMES = [
   withSetup(solitaire, {
     draw: { title: 'Turn from the stock', values: [1, 3], label: (n) => (n === 1 ? 'One card at a time' : 'Three at a time (harder, its own scores)') },
   }),
+  withSetup(slide, {
+    size: { title: 'Size', values: [4, 3, 5], label: (n) => `${n} × ${n} (${n * n - 1} tiles${n === 3 ? ', a warm-up' : n === 5 ? ', a real test' : ''})` },
+  }),
+  gems,
   withSetup(wordGuess, {
     mode: { title: 'Word', values: ['daily', 'practice'], label: (m) => (m === 'daily' ? '📅 Today\'s word (the same for everyone, once a day)' : '🎲 Practice (a new word every time)') },
   }),
   simon,
   reaction,
+  maths,
+  colours,
 ];
 
 export const CATEGORIES = ['arcade', 'puzzle', 'brain'];

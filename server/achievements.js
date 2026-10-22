@@ -54,6 +54,16 @@ export const ACHIEVEMENTS = [
     { id: 'asteroids-wave6', icon: '🚀', name: 'Deep space', desc: 'Asteroids: reach wave 6.', check: (r, v) => v.wave >= 6 },
     { id: 'asteroids-10k', icon: '⭐', name: 'Ace pilot', desc: 'Asteroids: score 10,000 (an extra ship!).', check: (r) => r.score >= 10000 },
   ]),
+  ...game('invaders', [
+    { id: 'invaders-wave2', icon: '👾', name: 'Defender', desc: 'Invaders: clear a whole wave.', check: (r, v) => v.wave >= 2 },
+    { id: 'invaders-saucer', icon: '🛸', name: 'Saucer spotter', desc: 'Invaders: shoot down a saucer.', check: (r, v) => v.saucers >= 1 },
+    { id: 'invaders-5k', icon: '🌍', name: 'Earth\'s hero', desc: 'Invaders: score 5,000.', check: (r) => r.score >= 5000 },
+  ]),
+  ...game('runner', [
+    { id: 'runner-100', icon: '🏃', name: 'Jogger', desc: 'Runner: run 100 m.', check: (r) => r.score >= 100 },
+    { id: 'runner-500', icon: '🏃‍♀️', name: 'Sprinter', desc: 'Runner: run 500 m.', check: (r) => r.score >= 500 },
+    { id: 'runner-1000', icon: '🏅', name: 'Marathon', desc: 'Runner: run 1,000 m.', check: (r) => r.score >= 1000 },
+  ]),
 
   // ---- puzzle ----
   ...game('2048', [
@@ -75,6 +85,16 @@ export const ACHIEVEMENTS = [
     { id: 'solitaire-draw3', icon: '🂡', name: 'Three card trick', desc: 'Solitaire: finish a Draw 3 game.', check: (r) => scored(r) && r.variant === 'Draw 3' },
     { id: 'solitaire-fast', icon: '🏎️', name: 'Card shark', desc: 'Solitaire: finish a game in under 5 minutes.', check: (r) => scored(r) && r.score < 5 * MIN },
   ]),
+  ...game('slide', [
+    { id: 'slide-3', icon: '🔢', name: 'In order', desc: 'Sliding Puzzle: solve a 3×3.', check: (r) => scored(r) && r.variant === '3×3' },
+    { id: 'slide-4-2min', icon: '⏱️', name: 'Smooth slider', desc: 'Sliding Puzzle: solve a 4×4 in under 2 minutes.', check: (r) => scored(r) && r.variant === '4×4' && r.score < 2 * MIN },
+    { id: 'slide-5', icon: '🧊', name: 'Big puzzle', desc: 'Sliding Puzzle: solve a 5×5.', check: (r) => scored(r) && r.variant === '5×5' },
+  ]),
+  ...game('gems', [
+    { id: 'gems-five', icon: '💎', name: 'Five in a row', desc: 'Gem Swap: line up 5 of a colour.', check: (r, v) => v.biggest >= 5 },
+    { id: 'gems-chain4', icon: '⛓️', name: 'Chain reaction', desc: 'Gem Swap: set off a chain of 4.', check: (r, v) => v.bestChain >= 4 },
+    { id: 'gems-3000', icon: '💰', name: 'Treasure', desc: 'Gem Swap: score 3,000.', check: (r) => r.score >= 3000 },
+  ]),
 
   // ---- brain ----
   ...game('word-guess', [
@@ -85,6 +105,16 @@ export const ACHIEVEMENTS = [
   ...game('simon', [
     { id: 'simon-10', icon: '🟢', name: 'Good memory', desc: 'Simon: repeat a sequence of 10.', check: (r) => r.score >= 10 },
     { id: 'simon-20', icon: '🧠', name: 'Elephant', desc: 'Simon: repeat a sequence of 20.', check: (r) => r.score >= 20 },
+  ]),
+  ...game('maths', [
+    { id: 'maths-20', icon: '➕', name: 'Number whiz', desc: 'Quick Maths: 20 right in one go.', check: (r) => r.score >= 20 },
+    { id: 'maths-40', icon: '🧮', name: 'Human calculator', desc: 'Quick Maths: 40 right in one go.', check: (r) => r.score >= 40 },
+    { id: 'maths-perfect', icon: '✅', name: 'No mistakes', desc: 'Quick Maths: 15 or more right without a wrong one.', check: (r, v) => r.score >= 15 && v.wrong === 0 },
+  ]),
+  ...game('colours', [
+    { id: 'colours-20', icon: '🎨', name: 'Not fooled', desc: 'Colour Trap: 20 right in one go.', check: (r) => r.score >= 20 },
+    { id: 'colours-40', icon: '🌈', name: 'Colour master', desc: 'Colour Trap: 40 right in one go.', check: (r) => r.score >= 40 },
+    { id: 'colours-streak', icon: '🔥', name: 'Unshakeable', desc: 'Colour Trap: 25 right in a row.', check: (r, v) => v.bestStreak >= 25 },
   ]),
   ...game('reaction', [
     { id: 'reaction-300', icon: '⚡', name: 'Quick', desc: 'Reaction Rush: average under 300 ms.', check: (r) => scored(r) && r.score < 300 },
