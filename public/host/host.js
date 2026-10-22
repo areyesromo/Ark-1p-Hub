@@ -88,10 +88,11 @@
       return;
     }
     el.className = 'seat filled' + (p.connected ? '' : ' away');
+    el.style.setProperty('--seat', p.profile ? p.profile.colour : '');
     el.innerHTML =
       '<button class="kick' + (kickArmed ? ' armed' : '') + '" data-kick title="Free the seat">' + (kickArmed ? 'Remove?' : '✕') + '</button>' +
       '<span class="label">Player</span>' +
-      '<span class="who">' + Ark.escapeHtml(p.name) + '</span>' +
+      '<span class="who"><button class="seat-avatar" data-profile title="Change avatar and colour">' + Ark.avatarHtml(p.profile) + '</button><span class="nm">' + Ark.escapeHtml(p.name) + '</span></span>' +
       '<span class="status">' + deviceOf(p) + ' · ' + (p.connected ? 'Ready' : 'Reconnecting…') + '</span>' +
       (state.achievements ? '<a class="ach-link" href="' + Ark.achievementsUrl(p.name) + '">⭐ ' + state.achievements.got + ' / ' + state.achievements.total + ' achievements</a>' : '');
   }
@@ -159,6 +160,25 @@
     }
     kickArmed = setTimeout(function () { kickArmed = null; if (state) renderLobby(); }, 4000);
     renderLobby();
+  });
+
+  // The player's avatar and colour, picked here (a click, or X / Q on a controller or the keyboard).
+  let picker = null;
+  function openPicker() {
+    if (!state || !state.player || picker) return;
+    picker = Ark.profilePicker({
+      profile: state.player.profile,
+      title: state.player.name + '\'s avatar and colour',
+      onPick: function (fields) {
+        socket.emit('profile:set', fields, function (res) {
+          if (res && res.error) flashPad('⚠️ ' + res.error);
+        });
+      },
+      onClose: function () { picker = null; },
+    });
+  }
+  $('seat').addEventListener('click', function (e) {
+    if (e.target.closest('[data-profile]')) openPicker();
   });
 
   $('fullscreen').addEventListener('click', function () {
@@ -311,6 +331,11 @@
     }
     state = s;
     reconcilePad();
+    // The picker follows the seat: closed when the player leaves or a game starts.
+    if (picker) {
+      if (!s.player || s.phase === 'playing') picker.close();
+      else picker.update(s.player.profile);
+    }
     const playing = s.phase === 'playing';
     $('lobby').classList.toggle('hidden', playing);
     $('stage').classList.toggle('hidden', !playing);
@@ -426,7 +451,7 @@
   function renderPadHint() {
     let text;
     if (padMessage) text = padMessage;
-    else if (padSeat) text = '🎮 D-pad / arrows pick a game · A / Enter play · Y / E change name · B / Backspace leave';
+    else if (padSeat) text = '🎮 D-pad / arrows pick a game · A / Enter play · Y / E change name · X / Q avatar · B / Backspace leave';
     else if (state && state.player) text = '';
     else if (connectedPads.length) text = '🎮 Press A (or Enter) to play here without a phone.';
     else text = '🎮 Got a controller? Connect it to this screen and press A. Or use the keyboard: arrows + Enter.';
@@ -548,6 +573,8 @@
       return;
     }
     if (!mine) return;
+    if (picker) return picker.press(btn);
+    if (btn === 'X') return openPicker();
     const cards = lobbyCards();
     const n = cards.length;
     if (btn === 'Y') return renamePad();

@@ -3,6 +3,7 @@ import { getGame, listGames } from './games/index.js';
 import { ACHIEVEMENTS, newlyEarned, describe } from './achievements.js';
 import { challengeFor, dayOf, variantFor } from './daily.js';
 import { seeded } from './rng.js';
+import { defaultProfile } from './profiles.js';
 
 const NAME_MAX = 16;
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ'; // no I or O, they look like 1 and 0
@@ -32,10 +33,11 @@ const isValidToken = (t) => typeof t === 'string' && /^[0-9a-f]{32}$/.test(t);
  * pushes them out, and records the score when a run ends.
  */
 export class Room {
-  constructor(code, io, { stats = null, hostToken = null } = {}) {
+  constructor(code, io, { stats = null, profiles = null, hostToken = null } = {}) {
     this.code = code;
     this.io = io;
     this.stats = stats; // score history (see stats.js), optional
+    this.profiles = profiles; // avatars and colours (see profiles.js), optional
     this.hostToken = hostToken || newToken();
     this.hostSockets = new Set();
     this.player = null; // { name, token, socketId, connected, local }
@@ -110,6 +112,16 @@ export class Room {
     p.name = name;
     this.broadcastState();
     return { ok: true, name };
+  }
+
+  /** The seated player's avatar and colour (set from the phone, or from the TV). */
+  setProfile(fields) {
+    const p = this.player;
+    if (!p || !this.profiles) return { error: 'Nobody to change.' };
+    const profile = this.profiles.set(p.name, fields);
+    if (!profile) return { error: 'Pick an avatar or a colour from the list.' };
+    this.broadcastState();
+    return { ok: true, profile };
   }
 
   removePlayer() {
@@ -334,12 +346,17 @@ export class Room {
       gameId: this.gameId,
       hostConnected: this.hostSockets.size > 0,
       readyToPlay: this.readyToPlay,
-      player: p ? { name: p.name, connected: p.connected, local: Boolean(p.local) } : null,
+      player: p ? { name: p.name, connected: p.connected, local: Boolean(p.local), profile: this.profileOf(p.name) } : null,
       achievements: p ? (({ got, total }) => ({ got, total }))(this.achievementCounts()) : null,
       games: this.lobbyGames(),
       daily: this.dailyInfo(),
       knownNames: this.stats ? this.stats.knownNames() : [],
     };
+  }
+
+  /** A name's avatar and colour (a default from the name when there's no profile store). */
+  profileOf(name) {
+    return this.profiles ? this.profiles.get(name) : defaultProfile(name);
   }
 
   broadcastState() {
@@ -386,9 +403,10 @@ export class Room {
 }
 
 export class RoomManager {
-  constructor(io, { stats = null } = {}) {
+  constructor(io, { stats = null, profiles = null } = {}) {
     this.io = io;
     this.stats = stats;
+    this.profiles = profiles;
     this.rooms = new Map();
   }
 
@@ -404,7 +422,7 @@ export class RoomManager {
       } while (this.rooms.has(code));
       hostToken = null;
     }
-    const room = new Room(code, this.io, { stats: this.stats, hostToken: isValidToken(hostToken) ? hostToken : null });
+    const room = new Room(code, this.io, { stats: this.stats, profiles: this.profiles, hostToken: isValidToken(hostToken) ? hostToken : null });
     this.rooms.set(code, room);
     return room;
   }

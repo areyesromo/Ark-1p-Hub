@@ -10,6 +10,12 @@ container on your home network.
 It's the one-player sibling of [Ark 2P Hub](https://github.com/areyesromo/Ark-2P-Hub)
 (1v1 party games), built the same way. See [docs/PLAN.md](docs/PLAN.md) for the plan.
 
+<p align="center">
+  <img src="docs/screenshots/tv-lobby.jpg" alt="The TV lobby: the player on the left, the games grouped into Arcade, Puzzle and Brain, with today's daily challenge at the top" width="68%">
+  <img src="docs/screenshots/phone-lobby.jpg" alt="The phone's lobby: pick a game, see your best in each" width="24%">
+</p>
+
+
 ## Games
 
 Once someone has taken the seat, the lobby on the TV puts the player in a narrow column on the left and gives the
@@ -57,6 +63,21 @@ the settings, or pick another game.
 | **Colour Trap** | A colour's name shows up written in another colour: tap the colour of the **ink**, not what the word says (BLUE written in red is red). Your brain wants to read the word; that's the trap. 45 seconds; a wrong answer costs 3 of them. Score: right answers. |
 | **Trivia** | Twelve questions, four answers each, 15 seconds a question. A right answer scores 100, plus up to 100 more the faster you are; wrong or too slow scores nothing, and the right answer shows for a moment either way. 152 questions in six subjects (science & nature, geography, history, sport & games, film, music & books, food & drink): play a mix, or pick one (each has its own scores). You won't see a question again until you've seen them all. Score: points. |
 
+### Screenshots
+
+| | | |
+| --- | --- | --- |
+| <img src="docs/screenshots/tv-blocks.jpg" alt="Blocks on the TV"> **Blocks** | <img src="docs/screenshots/tv-invaders.jpg" alt="Invaders on the TV"> **Invaders** | <img src="docs/screenshots/tv-gems.jpg" alt="Gem Swap on the TV"> **Gem Swap** |
+| <img src="docs/screenshots/tv-sudoku.jpg" alt="Sudoku on the TV"> **Sudoku** | <img src="docs/screenshots/tv-solitaire.jpg" alt="Solitaire on the TV"> **Solitaire** | <img src="docs/screenshots/tv-nonogram.jpg" alt="Nonograms on the TV"> **Nonograms** |
+| <img src="docs/screenshots/tv-word-guess.jpg" alt="Word Guess on the TV"> **Word Guess** | <img src="docs/screenshots/tv-trivia.jpg" alt="Trivia on the TV"> **Trivia** | <img src="docs/screenshots/tv-2048.jpg" alt="2048 on the TV"> **2048** |
+
+The phone is the controller: each game gets its own (the Snake pad, Blocks' buttons, Trivia's answers),
+and the TV page waits with a QR code until someone takes the seat.
+
+| | | | |
+| --- | --- | --- | --- |
+| <img src="docs/screenshots/phone-snake.jpg" alt="The Snake pad on the phone"> | <img src="docs/screenshots/phone-blocks.jpg" alt="Blocks' buttons on the phone"> | <img src="docs/screenshots/phone-trivia.jpg" alt="Trivia's four answers on the phone"> | <img src="docs/screenshots/tv-join.jpg" alt="The TV waiting for a player, with the QR code"> |
+
 ### 📅 Daily challenge
 
 Next to Random game in the lobby: one game a day, **the same deal for everyone** (the same falling
@@ -78,6 +99,7 @@ on the TV to play there.
 | Lobby | **A** / **Start** | **Enter** / **Space** | Take the seat (as "Controller 1" or "Keyboard"), then start the picked game |
 | Lobby | **D-pad** / stick | **Arrows** / **WASD** | Pick a game |
 | Lobby | **Y** | **E** | Change your name: cycles through the names on the high-score table (so your scores count for you), then ready-made ones (Ace, Blaze, Comet…) |
+| Lobby | **X** | **Q** | Pick your avatar and colour (D-pad to move, **A** to pick, **B** to close) |
 | Lobby | **B** | **Backspace** | Leave the seat |
 | Setup screen | **↑↓** row, **←→** change, **A** start | Arrows, **Enter** | |
 | Any game | **Back / Select** | **Esc** | Back to the lobby |
@@ -108,6 +130,15 @@ Browsers only notice a controller after one of its buttons is pressed, so press
 A once if the TV doesn't react. A phone can take the seat only when nobody is
 playing; tap ✕ on the player card on the TV (then **Remove?**) to free it.
 
+## Profiles
+
+Every player has an **avatar** (a fox, a robot, a rocket…) and a **colour**. They show on the TV's
+player card, on the phone (its header and buttons take your colour) and next to your name in the
+high scores and achievements. Pick them on the phone (tap your avatar at the top, or ⋯ → 🎨 Avatar
+and colour), or on the TV: click the avatar on the player card, or press **X** on a controller
+(**Q** on the keyboard). Until you pick, your name gives you one of its own, the same every time.
+They're kept per name in `profiles.json` in the data folder, so they survive updates.
+
 ## Sound and music
 
 The TV plays sound effects (countdowns, bites, bricks, merges, Simon's notes, a
@@ -119,6 +150,8 @@ time the TV shows **🔈 Tap for sound**: click it, or press any key. 🔊 mutes
 
 ## High scores
 
+<img src="docs/screenshots/stats.jpg" alt="The high scores page: a top 10 for every game" width="60%">
+
 Every finished run is saved in `stats.json` in the data folder (so it survives
 updates). The lobby shows your best in each game, and the TV shows the best to
 beat while you play. The 🏆 button on the TV (and the link in the phone lobby)
@@ -128,6 +161,8 @@ name each time. A run that scores nothing, or a lost Minesweeper, isn't
 recorded. Settings (`/admin/`) can clear all scores.
 
 ## Achievements
+
+<img src="docs/screenshots/achievements.jpg" alt="A player's achievements page: done and to do, per game" width="60%">
 
 Goals to chase on your own: 69 of them, a few for every game (eat 25 in Snake, clear four rows at
 once in Blocks, solve a Hard Sudoku, find the word in 3 guesses…) and some for the hub as a whole
@@ -215,6 +250,23 @@ To update automatically, schedule it:
 - **Linux (cron):** `*/10 * * * * /path/to/Ark-1p-Hub/update.sh >> /var/log/ark-update.log 2>&1`
 - **Windows (Task Scheduler):** run `powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\path\to\Ark-1p-Hub\update.ps1` on a timer.
 
+### Raspberry Pi 4/5 as a plug-in console
+
+The Pi runs the server *and* shows the TV screen full-screen from boot, pairs
+Bluetooth controllers and updates itself from GitHub (never mid-run; the TV
+keeps its room code and your phone reconnects by itself). On Raspberry Pi OS
+(64-bit, with desktop), as your normal user:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/areyesromo/Ark-1p-Hub/main/deploy/pi/install.sh | bash
+sudo reboot
+/opt/ark-1p/pair-controller.sh   # once per Bluetooth controller
+```
+
+It uses port **3001** and `/opt/ark-1p`, so it can share a Pi with Ark 2P Hub
+(install one of them with `ARK_NO_KIOSK=1`, since only one can be the TV
+screen). Full guide: [docs/raspberry-pi.md](docs/raspberry-pi.md).
+
 ### Local development
 
 ```bash
@@ -252,6 +304,9 @@ server/
   sockets.js              the socket protocol (join, start game, input…)
   rooms.js                the room, its one seat, running a game, recording scores
   stats.js                runs, bests and high-score tables
+  achievements.js         goals to chase, checked at the end of every run
+  daily.js                the daily challenge: today's game and its seed
+  profiles.js             each player's avatar and colour
   games/                  one file per game (pure logic, unit-tested)
 public/
   host/                   TV page (and gamepads.js: controllers + keyboard)
@@ -259,5 +314,7 @@ public/
   games/<id>/host.js      how a game looks on the TV
   games/<id>/player.js    how a game looks and behaves on the phone
   stats/, admin/          high scores, settings
+  achievements/           a player's achievements
+deploy/pi/                Raspberry Pi installer, compose, kiosk, updater, controller pairing
 update.sh / update.ps1     pull from GitHub, rebuild and redeploy
 ```

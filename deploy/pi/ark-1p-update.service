@@ -1,0 +1,11 @@
+# Installed by install.sh, which fills in User and the folder.
+[Unit]
+Description=Update Ark 1P Hub (waits until nobody is playing)
+Wants=network-online.target
+After=network-online.target docker.service
+
+[Service]
+Type=oneshot
+User=@USER@
+WorkingDirectory=@DIR@
+ExecStart=@DIR@/ark-1p-update.sh

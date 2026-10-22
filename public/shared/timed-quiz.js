@@ -70,7 +70,7 @@
     return {
       update: function (v) {
         root.querySelector('.tq-clock').textContent = v.reveal ? '' : '⏱ ' + clock(v.timeLeft); // no clock while the answer shows
-        root.querySelector('.tq-score').innerHTML = (opts.score ? opts.score(v) : '✔ <strong>' + v.right + '</strong>') + (v.best === null || v.best === undefined ? '' : ' · best ' + v.best);
+        root.querySelector('.tq-score').innerHTML = (opts.score ? opts.score(v) : '✔ <strong>' + v.right + '</strong>') + (v.best === null || v.best === undefined ? '' : ' · best ' + Ark.formatScore(v.best, 'pts'));
         if (v.last && v.last.n !== seen.n && !v.last.ok) api.vibrate([50, 30, 50]);
         flash(root, v.last, seen);
         const k = JSON.stringify([v.phase, v.question, v.reveal]);

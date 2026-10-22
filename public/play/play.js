@@ -132,6 +132,7 @@
 
   function showJoin() {
     unmountGame();
+    if (picker) picker.close();
     $('controller').classList.add('hidden');
     $('join-screen').classList.remove('hidden');
     syncZoom();
@@ -172,7 +173,8 @@
   // ---- lobby -----------------------------------------------------------
 
   function renderLobby() {
-    $('lobby-status').innerHTML = 'Hi <strong>' + Ark.escapeHtml(me.name) + '</strong>! Pick a game and beat your best.';
+    $('lobby-status').innerHTML = 'Hi <strong>' + Ark.escapeHtml(me.name) + '</strong>! Pick a game and beat your best.' +
+      ' <span class="muted">Tap your avatar to change it.</span>';
     $('ach-link').href = Ark.achievementsUrl(me.name);
     $('ach-link').textContent = '⭐ Achievements' + (state.achievements ? ' · ' + state.achievements.got + ' / ' + state.achievements.total : '');
     $('phone-games').innerHTML =
@@ -257,8 +259,36 @@
     if (me) applyState();
   });
 
+  // Your avatar and colour: shown in the header, and the phone's accent colour follows it.
+  let picker = null;
+  function renderMe() {
+    const p = state && state.player;
+    const profile = p && me && p.name === me.name ? p.profile : null;
+    if (!profile) return;
+    $('me-avatar').innerHTML = Ark.avatarHtml(profile);
+    document.body.style.setProperty('--me', profile.colour);
+    if (picker) picker.update(profile);
+  }
+  function openPicker() {
+    const p = state && state.player;
+    $('menu').classList.add('hidden');
+    if (!p || picker) return;
+    picker = Ark.profilePicker({
+      profile: p.profile,
+      onPick: function (fields) {
+        socket.emit('profile:set', fields, function (res) {
+          if (res && res.error) alert(res.error);
+        });
+      },
+      onClose: function () { picker = null; },
+    });
+  }
+  $('me-avatar').addEventListener('click', openPicker);
+  $('profile-btn').addEventListener('click', openPicker);
+
   function applyState() {
     const s = state;
+    renderMe();
     const playing = s.phase === 'playing';
     $('phone-lobby').classList.toggle('hidden', playing);
     $('lobby-btn').disabled = !playing;
