@@ -59,7 +59,7 @@ end screen.
 
 ## Later
 
-- More games: Tetris-style blocks, Flappy, Sudoku, Solitaire, Asteroids, Word of the day, daily
+- More games (Blocks and Flappy are in): Sudoku, Solitaire, Asteroids, Word of the day, daily
   challenge (same seed for everyone each day).
 - Pi deploy scripts (kiosk, controller pairing) as in Ark 2P Hub's `deploy/pi/` (`update.sh` / `update.ps1` are already here).
 - Screenshots in the README.

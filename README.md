@@ -26,6 +26,8 @@ the settings, or pick another game.
 | --- | --- |
 | **Snake** | The classic: eat the glowing food to grow, don't hit a wall or your own tail. Every 4 bites the snake speeds up. Tap a side of the phone pad or swipe to turn (turns can be chained in one swipe). Before you start, pick the speed (Normal or ⚡ Fast) and the walls (🧱 Solid, or 🌀 Wrap round: come out on the other side). ⏸ Pause on the phone (or Start on a controller). Score: food eaten; each speed and wall setting keeps its own bests. |
 | **Brick Breaker** | Keep the ball in play with your paddle and smash the wall. Slide a finger along the phone's strip to move the paddle (or the stick / D-pad). Where the ball hits the paddle sets its angle, and it speeds up a little on every hit. Higher rows score more (1, 3, 5, 7 points). Clear the wall for a new, faster level with a different pattern (and a life back); lose the ball 3 times and it's over. 🚀 Launch on the phone, or it goes by itself after 3 s. Pick 3 lives or 5 (easy, with its own scores). |
+| **Blocks** | The falling-block classic: pieces of four squares drop into a 10×20 well. Move and turn them so they fill whole rows, which clear. Every 10 rows the level goes up and pieces fall faster. Clearing several rows at once scores far more (100, 300, 500 or 800 points for 1 to 4 rows, times the level), plus a point a row when you drop a piece yourself. **Hold** puts a piece aside for later (once per piece); the TV shows it, the next three pieces and a shadow where yours will land. On the phone: ◀ ▶ move (hold to repeat), ⟲ ⟳ turn, ▼ soft drop, **⤓ Drop** drops it at once. Pieces come in shuffled sets of seven, so you never wait long for a straight piece. The run ends when a new piece has no room. |
+| **Flappy** | Tap the phone's big button to flap; the bird falls the rest of the time. Fly through the gaps between the pipes without touching them or the ground (the top just stops you). The pipes come a little faster and the gaps get a little smaller as you go. The first tap starts the run. Score: pipes passed. |
 
 ### 🧩 Puzzle
 
@@ -59,6 +61,8 @@ on the TV to play there.
 | Game over | **A** play again · **Y** change settings · **B** lobby | **Enter** · **E** · **Backspace** | |
 | Snake | **D-pad** / stick (or **Y**↑ **A**↓ **X**← **B**→), **Start** pauses | Arrows, **P** pauses | Turn |
 | Brick Breaker | Stick or **D-pad ← →**, **A** launches, **Start** pauses | Arrows, **Enter**, **P** | Move the paddle |
+| Blocks | **D-pad ← →** move, **↓** soft drop, **↑** / **RT** drop, **A** / **X** turn ⟳, **B** turn ⟲, **Y** / **LB** / **RB** hold, **Start** pauses | Arrows, **Enter** ⟳, **Backspace** ⟲, **E** hold, **P** | Held directions repeat |
+| Flappy | **A**, **↑** or any face button, bumper or trigger; **Start** pauses | **Space**, **Enter** or **↑**; **P** | Flap |
 | 2048 | **D-pad** / stick | Arrows | Slide |
 | Minesweeper | **D-pad** moves a cursor on the TV, **A** opens, **X** / **B** flags | Arrows, **Enter**, **Q** / **Backspace** | |
 | Simon | **A** green, **B** red, **Y** yellow, **X** blue, or the **D-pad** by position (↑ green, → red, ← yellow, ↓ blue) | Arrows by position | |

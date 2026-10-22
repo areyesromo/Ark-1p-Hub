@@ -9,6 +9,8 @@ import { listGames } from '../server/games/index.js';
 import { Snake, TIMING as SNAKE_TIMING } from '../server/games/snake.js';
 import { Breaker, TIMING as BREAKER_TIMING } from '../server/games/breaker.js';
 import { Game2048 } from '../server/games/2048.js';
+import { Blocks, W as BLOCKS_W, H as BLOCKS_H } from '../server/games/blocks.js';
+import { Flappy } from '../server/games/flappy.js';
 import { Minesweeper } from '../server/games/minesweeper.js';
 import { Simon } from '../server/games/simon.js';
 import { ReactionRush } from '../server/games/reaction.js';
@@ -86,6 +88,18 @@ test('sound hooks name real effects', () => {
   simon.start();
   const heard = hear('simon', simon, ctx, Array.from({ length: 40 }, () => () => ctx.advance(100)).concat([() => simon.onInput({ type: 'press', pad: simon.seq[0] })]));
   assert.ok([...heard].some((n) => /^pad\d$/.test(n)), 'Simon plays its pad notes');
+
+  ctx = fakeCtx();
+  const blocks = new Blocks(ctx, seeded(3));
+  blocks.start();
+  const fillBottom = () => { blocks.board.fill('.'); for (let x = 0; x < BLOCKS_W; x++) blocks.board[(BLOCKS_H - 1) * BLOCKS_W + x] = x < 4 ? '.' : 'Z'; };
+  const blockSounds = hear('blocks', blocks, ctx, [() => blocks.onInput({ type: 'drop' }), fillBottom, () => { blocks.piece = { kind: 'I', rot: 0, x: 0, y: 0 }; blocks.onInput({ type: 'drop' }); }]);
+  assert.ok(blockSounds.has('correct'), 'a cleared row sounds');
+
+  ctx = fakeCtx();
+  const flappy = new Flappy(ctx, () => 0.5);
+  flappy.start();
+  hear('flappy', flappy, ctx, [() => flappy.onInput({ type: 'flap' }), () => ctx.advance(300), () => flappy.onInput({ type: 'flap' }), () => ctx.advance(6000)]);
 
   ctx = fakeCtx();
   const reaction = new ReactionRush(ctx, () => 0.5);
