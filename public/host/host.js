@@ -552,10 +552,13 @@
       socket.emit('pad:leave');
       padSeat = null;
       savePad();
-    } else if (btn === 'LEFT' || btn === 'UP') {
+    } else if (btn === 'LEFT') {
       focus = (focus + n - 1) % n;
-    } else if (btn === 'RIGHT' || btn === 'DOWN') {
+    } else if (btn === 'RIGHT') {
       focus = (focus + 1) % n;
+    } else if (btn === 'UP' || btn === 'DOWN') {
+      // Up and down go to the card above or below on screen, not the next in the list.
+      focus = Ark.stepVertical($('game-list').querySelectorAll('.game-card'), focus, btn === 'UP' ? -1 : 1);
     } else if (btn === 'A' || btn === 'START') {
       socket.emit('lobby:start', { gameId: cards[focus].id }, function (res) {
         if (res && res.error) flashPad('⚠️ ' + res.error);
