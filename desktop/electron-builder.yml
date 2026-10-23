@@ -1,0 +1,43 @@
+# Builds the desktop app: `npm run dist:linux` (AppImage, for the Steam Deck) and
+# `npm run dist:win` (installer; on Windows or in CI). See desktop/README.md.
+appId: com.arkhub.ark1p
+productName: Ark 1P Hub
+artifactName: Ark-1P-Hub-${version}-${arch}.${ext}
+directories:
+  output: dist
+# Linux: a launcher in front of the app binary that keeps Steam's overlay library out (see the file).
+# (Electron fuses, if ever added, are flipped on the binary after this: point them at <name>.bin.)
+afterPack: desktop/after-pack.cjs
+extraMetadata:
+  main: desktop/main.js # the app starts here (the Docker image still runs server/index.js)
+files:
+  - package.json
+  - desktop/**
+  - server/**
+  - public/**
+  - "!**/*.test.js"
+  - "!desktop/steam/**" # Steam artwork: attached to releases, not needed inside the app
+  - "!desktop/after-pack.cjs" # a build step, not part of the app
+# Self-update reads releases from GitHub (builds write latest.yml / latest-linux.yml for it).
+publish:
+  provider: github
+  owner: areyesromo
+  repo: Ark-1p-Hub
+# The app icon (tools/desktop-art.mjs draws it); electron-builder makes the .ico from it.
+icon: desktop/icons/icon.png
+linux:
+  # No version in the AppImage's name: an update replaces this same file, so a Steam shortcut to it
+  # keeps working.
+  artifactName: Ark-1P-Hub-${arch}.${ext}
+  target:
+    - target: AppImage
+      arch: [x64]
+  category: Game
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true

@@ -11,7 +11,10 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "desktop": "electron desktop/main.js",
+    "dist:linux": "electron-builder --config desktop/electron-builder.yml --linux",
+    "dist:win": "electron-builder --config desktop/electron-builder.yml --win"
   },
   "license": "Apache-2.0",
   "dependencies": {
@@ -21,6 +24,13 @@
     "word-list": "^4.1.0"
   },
   "devDependencies": {
+    "@electron/asar": "3.4.1",
+    "electron": "37.10.3",
+    "electron-builder": "26.15.3",
     "socket.io-client": "^4.8.4"
-  }
+  },
+  "optionalDependencies": {
+    "electron-updater": "6.8.9"
+  },
+  "author": "Ark 1P Hub"
 }
