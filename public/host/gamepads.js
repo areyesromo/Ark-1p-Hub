@@ -7,7 +7,7 @@
 //
 // The TV's keyboard is a controller too (index ArkPads.KEYBOARD), so a laptop
 // plays on its own: arrows or WASD move, Enter / Space = A, Backspace = B,
-// Q = X, E = Y, P = Start (pause), Esc = Back (lobby).
+// Q = X, E = Y, P = Start (pause), Esc = Back (lobby), U = RT (the desktop app's update banner).
 (function () {
   const BUTTONS = {
     0: 'A', 1: 'B', 2: 'X', 3: 'Y', 4: 'LB', 5: 'RB', 6: 'LT', 7: 'RT',
@@ -18,7 +18,7 @@
   const KEYS = {
     ArrowUp: 'UP', ArrowDown: 'DOWN', ArrowLeft: 'LEFT', ArrowRight: 'RIGHT',
     KeyW: 'UP', KeyS: 'DOWN', KeyA: 'LEFT', KeyD: 'RIGHT',
-    Enter: 'A', NumpadEnter: 'A', Space: 'A', Backspace: 'B', KeyQ: 'X', KeyE: 'Y', KeyP: 'START', Escape: 'BACK',
+    Enter: 'A', NumpadEnter: 'A', Space: 'A', Backspace: 'B', KeyQ: 'X', KeyE: 'Y', KeyP: 'START', Escape: 'BACK', KeyU: 'RT',
   };
   const keysDown = {}; // key code -> button name, while held
   let typing = null; // fn(key) -> true when a game took the key as typing (see setTyping)

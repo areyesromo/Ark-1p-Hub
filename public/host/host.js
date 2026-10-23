@@ -181,11 +181,35 @@
     if (e.target.closest('[data-profile]')) openPicker();
   });
 
+  // In the desktop app (window.arkDesktop, see desktop/preload.cjs) ⛶ switches the app's window
+  // between full screen and windowed, and Quit closes it: tap it, then "Quit?" again within 3 s
+  // (a quick double-click doesn't count as both taps).
+  const desktop = window.arkDesktop;
   $('fullscreen').addEventListener('click', function () {
+    if (desktop) return desktop.toggleFullScreen();
     const root = document.documentElement;
     if (document.fullscreenElement) document.exitFullscreen();
     else if (root.requestFullscreen) root.requestFullscreen();
   });
+  if (desktop) {
+    let armed = null;
+    let armedAt = 0;
+    $('quit').classList.remove('hidden');
+    $('quit').addEventListener('click', function () {
+      if (armed) {
+        if (Date.now() - armedAt >= 400) desktop.quit();
+        return;
+      }
+      armedAt = Date.now();
+      $('quit').textContent = 'Quit?';
+      $('quit').classList.add('armed');
+      armed = setTimeout(function () {
+        armed = null;
+        $('quit').textContent = 'Quit';
+        $('quit').classList.remove('armed');
+      }, 3000);
+    });
+  }
 
   function currentGame() {
     return state && (state.games || []).find(function (g) { return g.id === state.gameId; });
@@ -396,6 +420,9 @@
         ? '↑↓ picks a row, ←→ changes it, <strong>A</strong> (or Enter) starts.'
         : 'Pick the settings on your phone, then press <strong>Start</strong>.') + '</p>' +
       Ark.setup.html(parts.view, parts.rows, focusKey);
+    // A tall setup scrolls: keep the controller's row in view.
+    const row = $('hub-setup').querySelector('.row.focus');
+    if (row && row.scrollIntoView) row.scrollIntoView({ block: 'nearest' });
   }
 
   // ---- controllers and the keyboard --------------------------------------
@@ -408,6 +435,38 @@
   let focus = 0; // the game card the controller has selected in the lobby
   let padMessage = '';
   let padMessageTimer = null;
+
+  // Self-update (desktop app): a banner in the lobby. Tap it, or press RT on a controller (U on the keyboard).
+  let update = { state: 'idle' };
+  const UPDATE_TEXT = {
+    available: function (u) { return '⬆ Version ' + u.version + ' is out · <strong>Update</strong>'; },
+    downloading: function (u) { return 'Downloading version ' + u.version + '… ' + u.percent + ' %'; },
+    ready: function (u) {
+      return 'Version ' + u.version + ' is downloaded · <strong>' + (u.relaunch === false ? 'Install and close' : 'Restart now') + '</strong>';
+    },
+    error: function () { return 'Couldn\'t update · <strong>Download page</strong>'; },
+  };
+  function updateActionable() {
+    return update.state === 'available' || update.state === 'ready' || update.state === 'error';
+  }
+  function renderUpdate() {
+    const show = Boolean(UPDATE_TEXT[update.state]);
+    $('update').classList.toggle('hidden', !show);
+    if (!show) return;
+    $('update').innerHTML = UPDATE_TEXT[update.state](update) +
+      (updateActionable() && connectedPads.length ? ' <span class="pad-key">RT</span>' : '');
+    $('update').disabled = !updateActionable();
+    $('update').classList.toggle('busy', update.state === 'downloading');
+  }
+  if (desktop) {
+    desktop.onUpdate(function (u) {
+      update = u || { state: 'idle' };
+      renderUpdate();
+    });
+    $('update').addEventListener('click', function () {
+      if (updateActionable()) desktop.update();
+    });
+  }
 
   const padName = function (idx) { return idx === ArkPads.KEYBOARD ? 'Keyboard' : 'Controller ' + (idx + 1); };
 
@@ -456,6 +515,7 @@
     else if (connectedPads.length) text = '🎮 Press A (or Enter) to play here without a phone.';
     else text = '🎮 Got a controller? Connect it to this screen and press A. Or use the keyboard: arrows + Enter.';
     $('pad-hint').textContent = text;
+    renderUpdate(); // its RT tag shows while a controller is connected
   }
 
   function renderPadFooter() {
@@ -564,7 +624,8 @@
       return;
     }
 
-    // Lobby.
+    // Lobby. RT (any controller, or U on the keyboard) presses the update banner.
+    if (btn === 'RT' && desktop && updateActionable()) return desktop.update();
     if (!padSeat) {
       if (btn === 'A' || btn === 'START') {
         if (state.player && state.player.connected) flashPad('📱 ' + state.player.name + ' is playing on a phone.');

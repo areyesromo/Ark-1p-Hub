@@ -109,7 +109,16 @@ export function createApp({
     io,
     rooms,
     https,
-    listen: () => new Promise((resolve) => listener.listen(port, () => resolve(listener.address()))),
+    // Fails (e.g. EADDRINUSE: the port is taken) instead of hanging.
+    listen: () =>
+      new Promise((resolve, reject) => {
+        const failed = (err) => reject(err);
+        listener.once('error', failed);
+        listener.listen(port, () => {
+          listener.off('error', failed);
+          resolve(listener.address());
+        });
+      }),
     close: () =>
       new Promise((resolve) => {
         clearInterval(sweeper);

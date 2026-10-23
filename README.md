@@ -104,6 +104,7 @@ on the TV to play there.
 | Lobby | **D-pad** / stick | **Arrows** / **WASD** | Pick a game |
 | Lobby | **Y** | **E** | Change your name: cycles through the names on the high-score table (so your scores count for you), then ready-made ones (Ace, Blaze, Comet…) |
 | Lobby | **X** | **Q** | Pick your avatar and colour (D-pad to move, **A** to pick, **B** to close) |
+| Lobby (desktop app) | **RT** | **U** | Press the **Update** banner when a new version is out |
 | Lobby | **B** | **Backspace** | Leave the seat |
 | Setup screen | **↑↓** row, **←→** change, **A** start | Arrows, **Enter** | |
 | Any game | **Back / Select** | **Esc** | Back to the lobby |
@@ -189,6 +190,16 @@ first time. None of the games so far need it (it's for future tilt and motion
 games). Set `HTTPS=off` to serve plain http only.
 
 ## Quick start
+
+### Desktop app (Steam Deck, Linux, Windows)
+
+One app runs the hub and opens the TV screen full screen: an **AppImage** for the Steam Deck and
+Linux (add it to Steam as a non-Steam game to launch it from Game Mode) and an **installer** for
+Windows. No Docker needed. Download them from the repository's **Releases** page. GitHub builds
+them with **Actions → Desktop app → Run workflow**. The app updates itself: a new version shows an
+**Update** banner in the lobby. Each release also has Steam library artwork. It uses port 3001, so it
+can run next to Ark 2P Hub's app. See [desktop/README.md](desktop/README.md), and for the Deck the
+step-by-step [Steam Deck guide](docs/STEAM-DECK.md).
 
 ### Docker (any machine on your network)
 
@@ -324,5 +335,6 @@ public/
   stats/, admin/          high scores, settings
   achievements/           a player's achievements
 deploy/pi/                Raspberry Pi installer, compose, kiosk, updater, controller pairing
+desktop/                  the desktop app (Electron): AppImage for the Steam Deck / Linux, Windows installer
 update.sh / update.ps1     pull from GitHub, rebuild and redeploy
 ```
