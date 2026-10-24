@@ -61,6 +61,7 @@ the settings, or pick another game.
 | **KenKen** | Fill the grid so each row and column has every number once (1 to 4 on a 4 × 4, up to 6). The heavy outlines are cages: each cage's numbers make its target with its sign (add them, multiply them, or for two squares the difference or the division, bigger first); a one-square cage just gives its number. Tap a square on the phone, then a number; clashes show in red. Every puzzle is new and has exactly one answer. 4 × 4, 5 × 5 or 6 × 6. Score: your time, per size. |
 | **Mastermind** | The hub picks a secret code of coloured pegs (a colour can come up more than once). Tap colours on the phone to fill a row of pegs and press **Guess**: you're told how many are the right colour in the right place (⚫) and how many more are a right colour in the wrong place (⚪), but not which. Crack it in ten guesses. Every colour has a number too, so it plays without colour. Easy (4 pegs, 6 colours), Normal (4, 8) or Hard (5, 8). Score: the guesses it took (fewer is better), per level; a code you don't crack doesn't count. |
 | **Flood-It** | A square of coloured cells, and you own the top-left corner. Pick a colour on the phone: your whole area turns that colour and swallows the matching cells beside it. Flood the entire board before the moves run out. The move limit is worked out for each board (a computer player's best go, plus two spare), so every board can be done. Every colour has a number and a shape too. 10 × 10, 14 × 14 or 18 × 18. Score: the moves you used (fewer is better), per size; running out doesn't count. |
+| **Color Lines** | A 9 × 9 board with a few coloured balls. Tap a ball, then an empty square it can walk to (up, down, left, right, round the other balls). Then three more balls drop in, and the next three colours are shown ahead. Line up five or more of one colour, across, down or diagonally, and they vanish; a move that clears a line earns the turn back, with no new balls. Every colour has a shape too. It ends when the board is full. Score: points (the longer the line, the more it's worth), higher is better. |
 | **Lights Out** | A 5 × 5 grid of lights, some on. Tap a light to flip it and the four next to it (on goes off, off goes on): switch them all off. Every puzzle is made by flipping lights on a dark board, so it can always be solved, and par is how many flips made it. ↺ **Start again** puts the board back (the moves keep counting). Easy (par 4), Medium (8) or Hard (13). Score: the moves it took (fewer is better), per level. |
 | **Word Search** | Words are hidden in a grid of letters in straight lines: drag on the phone from a word's first letter to its last (or tap both) to mark it. The list says which words to find and crosses them off. 8 × 8 hides 6 words across and down, 10 × 10 hides 8 with diagonals too, and 12 × 12 hides 10 any way at all, even backwards. Score: your time to find them all, per size. |
 
@@ -152,6 +153,7 @@ on the TV to play there.
 | KenKen | **D-pad** moves, **A** next number, **Y** the one before, **X** / **B** clear | Arrows, type the number, **Backspace** / **Delete** clear | |
 | Mastermind | **← →** pick a peg, **↑ ↓** change its colour, **A** guesses (or jumps to the next empty peg), **B** clears the peg | Type **1**–**8** to set a peg, **Backspace**, **Enter** guesses | |
 | Flood-It | **← →** pick a colour, **A** floods with it | Press **1**–**6** | |
+| Color Lines | **D-pad** moves the cursor, **A** picks up a ball and then sends it to an empty square, **B** puts it down | | |
 | Lights Out | **D-pad** moves, **A** flips, **Y** starts again | Arrows, **Enter**, **E** | |
 | Word Search | **D-pad** moves, **A** on a word's first letter then **A** on its last, **B** lets go | Arrows, **Enter**, **Backspace** | Drag from the first letter to the last |
 | Word Guess | **D-pad** picks a key on the TV's keyboard, **A** types it, **B** deletes, **Start** / **X** enters | Just type: letters, **Backspace**, **Enter** | |
@@ -205,7 +207,7 @@ recorded. Settings (`/admin/`) can clear all scores.
 
 <img src="docs/screenshots/achievements.jpg" alt="A player's achievements page: done and to do, per game" width="60%">
 
-Goals to chase on your own: 123 of them, a few for every game (eat 25 in Snake, clear four rows at
+Goals to chase on your own: 126 of them, a few for every game (eat 25 in Snake, clear four rows at
 once in Blocks, solve a Hard Sudoku, find the word in 3 guesses…) and some for the hub as a whole
 (score in every game, set 10 personal bests, hold a top score, play 7 days in a row, play 7 daily challenges). They're
 checked at the end of every run, and new ones pop up on the end screen on the TV and the phone.

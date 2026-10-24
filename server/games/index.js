@@ -19,6 +19,7 @@ import kenken, { SIZES as KENKEN_SIZES } from './kenken.js';
 import numbers from './numbers.js';
 import oddone from './oddone.js';
 import hangman from './hangman.js';
+import lines from './lines.js';
 import flood, { SIZES as FLOOD_SIZES } from './flood.js';
 import mastermind, { LEVELS as MASTER_LEVELS } from './mastermind.js';
 import { LEVELS as SOKOBAN_LEVELS } from './sokoban-levels.js';
@@ -136,6 +137,7 @@ const GAMES = [
   withSetup(flood, {
     size: { title: 'Board', values: ['medium', 'small', 'large'], label: (k) => `${FLOOD_SIZES[k].name}${k === 'small' ? ' (a quick one)' : k === 'large' ? ' (a long one)' : ''}` },
   }),
+  lines,
   withSetup(sokoban, {
     level: {
       title: 'Level',
