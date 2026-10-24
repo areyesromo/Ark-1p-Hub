@@ -31,6 +31,10 @@ export const POOL = [
   { game: 'maths', settings: {} },
   { game: 'flappy', settings: {} },
   { game: 'colours', settings: {} },
+  { game: 'lights', settings: { level: 'hard' } },
+  { game: 'wordsearch', settings: { size: 'medium' } },
+  { game: 'anagram', settings: {} },
+  { game: 'cave', settings: {} },
 ];
 
 /**

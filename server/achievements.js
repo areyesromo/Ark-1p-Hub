@@ -61,6 +61,11 @@ export const ACHIEVEMENTS = [
     { id: 'stack-25', icon: '🏙️', name: 'Skyscraper', desc: 'Stack: stack 25 blocks.', check: (r) => r.score >= 25 },
     { id: 'stack-perfect5', icon: '🎯', name: 'Spot on', desc: 'Stack: 5 perfect drops in a row.', check: (r, v) => v.bestPerfects >= 5 },
   ]),
+  ...game('cave', [
+    { id: 'cave-100', icon: '🚁', name: 'Lift off', desc: 'Helicopter Cave: fly 100 m.', check: (r) => r.score >= 100 },
+    { id: 'cave-500', icon: '🦇', name: 'Cave diver', desc: 'Helicopter Cave: fly 500 m.', check: (r) => r.score >= 500 },
+    { id: 'cave-1000', icon: '🏔️', name: 'Deep down', desc: 'Helicopter Cave: fly 1,000 m.', check: (r) => r.score >= 1000 },
+  ]),
   ...game('invaders', [
     { id: 'invaders-wave2', icon: '👾', name: 'Defender', desc: 'Invaders: clear a whole wave.', check: (r, v) => v.wave >= 2 },
     { id: 'invaders-saucer', icon: '🛸', name: 'Saucer spotter', desc: 'Invaders: shoot down a saucer.', check: (r, v) => v.saucers >= 1 },
@@ -102,6 +107,16 @@ export const ACHIEVEMENTS = [
     { id: 'nonogram-10-5', icon: '⏱️', name: 'Quick sketch', desc: 'Nonograms: solve a 10×10 in under 5 minutes.', check: (r, v) => scored(r) && v.n === 10 && r.score < 5 * MIN },
     { id: 'nonogram-15', icon: '🎨', name: 'Big picture', desc: 'Nonograms: solve a 15×15.', check: (r, v) => scored(r) && v.n === 15 },
   ]),
+  ...game('lights', [
+    { id: 'lights-solve', icon: '💡', name: 'Lights out', desc: 'Lights Out: switch every light off.', check: (r) => scored(r) },
+    { id: 'lights-par', icon: '⭐', name: 'On par', desc: 'Lights Out: solve a Hard puzzle in par or fewer.', check: (r, v) => scored(r) && r.variant === 'Hard' && r.score <= v.par },
+    { id: 'lights-noreset', icon: '🔦', name: 'No going back', desc: 'Lights Out: solve a Hard puzzle without starting again.', check: (r, v) => scored(r) && r.variant === 'Hard' && v.resets === 0 },
+  ]),
+  ...game('wordsearch', [
+    { id: 'wordsearch-solve', icon: '🔍', name: 'Word finder', desc: 'Word Search: find every word.', check: (r) => scored(r) },
+    { id: 'wordsearch-fast', icon: '⏱️', name: 'Eagle eyes', desc: 'Word Search: clear the 8 × 8 in under a minute.', check: (r) => scored(r) && r.variant === '8 × 8' && r.score < MIN },
+    { id: 'wordsearch-large', icon: '🗺️', name: 'Every which way', desc: 'Word Search: clear the 12 × 12.', check: (r) => scored(r) && r.variant === '12 × 12' },
+  ]),
   ...game('freecell', [
     { id: 'freecell-win', icon: '🃏', name: 'Free and clear', desc: 'FreeCell: win a game.', check: (r) => scored(r) },
     { id: 'freecell-8min', icon: '⏱️', name: 'Card sharp', desc: 'FreeCell: win in under 8 minutes.', check: (r) => scored(r) && r.score < 8 * MIN },
@@ -142,6 +157,11 @@ export const ACHIEVEMENTS = [
     { id: 'trivia-1500', icon: '🧠', name: 'Know-it-all', desc: 'Trivia: score 1,500.', check: (r) => r.score >= 1500 },
     { id: 'trivia-perfect', icon: '🎓', name: 'Full marks', desc: 'Trivia: get all 12 right.', check: (r, v) => v.of > 0 && v.right === v.of },
     { id: 'trivia-fast', icon: '⚡', name: 'Buzzer beater', desc: 'Trivia: a right answer in under 2 seconds.', check: (r, v) => v.fastest !== null && v.fastest < 2000 },
+  ]),
+  ...game('anagram', [
+    { id: 'anagram-10', icon: '🔤', name: 'Wordsmith', desc: 'Anagram Rush: make 10 words.', check: (r) => r.score >= 10 },
+    { id: 'anagram-20', icon: '📚', name: 'Lexicon', desc: 'Anagram Rush: make 20 words.', check: (r) => r.score >= 20 },
+    { id: 'anagram-streak', icon: '🔥', name: 'On a roll', desc: 'Anagram Rush: 8 words in a row without a skip.', check: (r, v) => v.bestStreak >= 8 },
   ]),
   ...game('memory', [
     { id: 'memory-solve', icon: '🃏', name: 'Total recall', desc: 'Memory Pairs: find every pair.', check: (r) => scored(r) },

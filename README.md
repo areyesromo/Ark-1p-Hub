@@ -40,6 +40,7 @@ the settings, or pick another game.
 | **Invaders** | Rows of aliens march side to side, step down at each edge and drop bombs: slide your cannon along the bottom and shoot them all before they land. One shot on screen at a time. Four bunkers give cover, and get chewed away by shots from both sides. The fewer aliens left, the faster they march; now and then a saucer flies across the top for a bonus. Clear a wave and the next starts a little lower. On the phone: slide a finger along the strip to move, tap 🔫 Fire. 3 lives. Score: 10 to 30 an alien (the top rows are worth more), 50 to 300 a saucer. |
 | **Runner** | You run on and on: jump the cactuses (one to three together, short or tall) and duck under the birds (low ones you can jump, high ones fly over you). Hold JUMP for a higher jump. The run gets faster the further you go. Your first jump starts it. Score: how far you got, in metres. |
 | **Stack** | A block slides back and forth above the tower: tap (the phone's big DROP button) to drop it. The part hanging over the edge is cut off and falls away, so the blocks get narrower; drop it right on top for a **Perfect!** and nothing is lost, and every third perfect drop in a row wins a little width back. Miss the tower and it's over. It speeds up as the tower grows. Score: blocks stacked. |
+| **Helicopter Cave** | Hold the phone's big CLIMB button to rise, let go to drop, and fly down a winding cave without touching the walls. The cave gets narrower and faster the further you go, and after a while rocks stick out of the ceiling and the floor. The first hold takes off. Score: metres flown. |
 
 ### 🧩 Puzzle
 
@@ -54,6 +55,8 @@ the settings, or pick another game.
 | **Sliding Puzzle** | Numbered tiles in a square with one gap: slide them back into order, 1, 2, 3… with the gap at the bottom right. Tap a tile in line with the gap to slide it (and any tiles between) over, or swipe. Every shuffle is made of real slides, so it can always be solved. 3×3, 4×4 or 5×5. The clock starts with your first slide. Score: your time, per size. |
 | **Gem Swap** | Swap two touching gems to line up three or more of a colour: they vanish, the gems above fall and new ones drop in, and any new lines vanish too (a chain, each step scoring more). A swap that makes no line doesn't happen. Swipe a gem into its neighbour, or tap one then the other. 30 swaps; a board with no moves left is reshuffled. Score: 10 a gem, +50 for a line of four, +150 for five, times the chain step. |
 | **Nonograms** | Picture logic: the numbers by each row and column are the runs of filled squares in that line, in order ("3 1" means three filled, a gap, then one). Fill squares until every line matches and the picture appears. On the phone tap a square, or drag across several, to fill them; switch to ✕ **Cross out** to mark squares you know are empty. A line whose filled squares match its numbers turns grey. Every puzzle is a fresh random picture that can be solved one line at a time, without guessing. 5×5, 10×10 or 15×15. Pausing hides the grid. Score: your time, per size. |
+| **Lights Out** | A 5 × 5 grid of lights, some on. Tap a light to flip it and the four next to it (on goes off, off goes on): switch them all off. Every puzzle is made by flipping lights on a dark board, so it can always be solved, and par is how many flips made it. ↺ **Start again** puts the board back (the moves keep counting). Easy (par 4), Medium (8) or Hard (13). Score: the moves it took (fewer is better), per level. |
+| **Word Search** | Words are hidden in a grid of letters in straight lines: drag on the phone from a word's first letter to its last (or tap both) to mark it. The list says which words to find and crosses them off. 8 × 8 hides 6 words across and down, 10 × 10 hides 8 with diagonals too, and 12 × 12 hides 10 any way at all, even backwards. Score: your time to find them all, per size. |
 
 ### 🧠 Brain
 
@@ -65,6 +68,7 @@ the settings, or pick another game.
 | **Reaction Rush** | The screen says **Wait…** (red), then after a random moment **TAP!** (green): hit the phone's big button as fast as you can. Five rounds. Tap before green and it's a false start: that round starts again and 100 ms goes on your time. Score: your average time plus penalties, in ms (lower is better). No music, so you can concentrate. |
 | **Quick Maths** | Sums against the clock: pick the right answer of four on the phone's big buttons. They start easy (adding small numbers) and get harder every 5 right answers: taking away, times tables, then a mix with dividing and bigger numbers. 60 seconds; a wrong answer costs 3 of them. Score: right answers. |
 | **Colour Trap** | A colour's name shows up written in another colour: tap the colour of the **ink**, not what the word says (BLUE written in red is red). Your brain wants to read the word; that's the trap. 45 seconds; a wrong answer costs 3 of them. Score: right answers. |
+| **Anagram Rush** | Five mixed-up letters: tap them in order to make a word that uses all five, and it goes off by itself once the last letter's in (⌫ takes one back). Any real word counts, not only the one they came from. 60 seconds; ⏭ **Skip** shows the word but costs 3 seconds. Score: words made. |
 | **Trivia** | Twelve questions, four answers each, 15 seconds a question. A right answer scores 100, plus up to 100 more the faster you are; wrong or too slow scores nothing, and the right answer shows for a moment either way. 152 questions in six subjects (science & nature, geography, history, sport & games, film, music & books, food & drink): play a mix, or pick one (each has its own scores). You won't see a question again until you've seen them all. Score: points. |
 
 ### Screenshots
@@ -117,6 +121,7 @@ on the TV to play there.
 | Invaders | Stick / **D-pad ← →** move, **A** / **X** / **RT** fire, **Start** pauses | Arrows, **Enter** / **Space**, **P** | |
 | Runner | **A** / **↑** (or any face button) jump, hold for higher; **↓** / **LT** / **LB** duck; **Start** pauses | **↑** / **Space** jump, **↓** duck, **P** | |
 | Stack | **A** (or any face button, bumper or trigger) drops, **Start** pauses | **Space** / **Enter**, **P** | |
+| Helicopter Cave | Hold **A**, **↑** (or any face button, bumper or trigger) to climb; **Start** pauses | Hold **Space**, **Enter** or **↑**; **P** | Climb |
 | 2048 | **D-pad** / stick | Arrows | Slide |
 | Minesweeper | **D-pad** moves a cursor on the TV, **A** opens, **X** / **B** flags | Arrows, **Enter**, **Q** / **Backspace** | |
 | Sudoku | **D-pad** moves, **A** places the pen number, **X** / **Y** change it, **B** clears, **Start** pauses | Arrows, type **1**–**9**, **0** / **Backspace** clears, **P** | |
@@ -126,12 +131,15 @@ on the TV to play there.
 | Sliding Puzzle | **D-pad** / stick | Arrows | Slide a tile into the gap (from the side the arrow points away from) |
 | Gem Swap | **D-pad** moves, **A** picks a gem, then a direction swaps it; **B** lets go | Arrows, **Enter**, **Backspace** | |
 | Nonograms | **D-pad** moves, **A** fills, **X** / **B** crosses out (again to clear), **Start** pauses | Arrows, **Enter**, **Q** / **Backspace**, **P** | |
+| Lights Out | **D-pad** moves, **A** flips, **Y** starts again | Arrows, **Enter**, **E** | |
+| Word Search | **D-pad** moves, **A** on a word's first letter then **A** on its last, **B** lets go | Arrows, **Enter**, **Backspace** | Drag from the first letter to the last |
 | Word Guess | **D-pad** picks a key on the TV's keyboard, **A** types it, **B** deletes, **Start** / **X** enters | Just type: letters, **Backspace**, **Enter** | |
 | Simon | **A** green, **B** red, **Y** yellow, **X** blue, or the **D-pad** by position (↑ green, → red, ← yellow, ↓ blue) | Arrows by position | |
 | Memory Pairs | **D-pad** moves, **A** turns a card over | Arrows, **Enter** | |
 | Reaction Rush | Any face button, bumper or trigger | **Enter** / **Space** | Tap |
 | Quick Maths | **A**, **B**, **X**, **Y**: the answer next to that letter on the TV | **1**–**4** | |
 | Colour Trap | The face button of that colour: **B** red, **X** blue, **A** green, **Y** yellow | **R**, **B**, **G**, **Y** (or **1**–**4**) | |
+| Anagram Rush | **D-pad ← →** picks a letter, **A** uses it, **B** takes one back, **Y** skips | Just type the word, **Backspace**, **Tab** skips | |
 | Trivia | **A**, **B**, **X**, **Y**: the answer next to that letter on the TV | **1**–**4** | |
 
 Buttons use Xbox names. On a PlayStation controller A = ✕, B = ○, X = □, Y = △.
@@ -173,7 +181,7 @@ recorded. Settings (`/admin/`) can clear all scores.
 
 <img src="docs/screenshots/achievements.jpg" alt="A player's achievements page: done and to do, per game" width="60%">
 
-Goals to chase on your own: 81 of them, a few for every game (eat 25 in Snake, clear four rows at
+Goals to chase on your own: 93 of them, a few for every game (eat 25 in Snake, clear four rows at
 once in Blocks, solve a Hard Sudoku, find the word in 3 guesses…) and some for the hub as a whole
 (score in every game, set 10 personal bests, hold a top score, play 7 days in a row, play 7 daily challenges). They're
 checked at the end of every run, and new ones pop up on the end screen on the TV and the phone.

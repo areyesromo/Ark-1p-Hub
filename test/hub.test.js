@@ -56,7 +56,7 @@ test('every game is well formed', () => {
     assert.ok(CATEGORIES.includes(g.category), `${g.id} category`);
     assert.ok(MUSIC_MOODS.includes(g.music), `${g.id} music`);
     assert.ok(['higher', 'lower'].includes(g.score.better), `${g.id} score.better`);
-    assert.ok(['pts', 'ms', 'time', 'tries'].includes(g.score.unit), `${g.id} score.unit`);
+    assert.ok(['pts', 'ms', 'time', 'tries', 'moves', 'm'].includes(g.score.unit), `${g.id} score.unit`);
     assert.ok(fs.existsSync(`public/games/${g.id}/host.js`), `${g.id} TV renderer`);
     assert.ok(fs.existsSync(`public/games/${g.id}/player.js`), `${g.id} phone renderer`);
     assert.equal(typeof getGame(g.id).create, 'function');
