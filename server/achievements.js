@@ -70,6 +70,16 @@ export const ACHIEVEMENTS = [
     { id: 'cave-ice', icon: '🧊', name: 'Thin ice', desc: 'Helicopter Cave: fly 300 m in the Ice Tunnel.', check: (r) => r.variant === 'Ice Tunnel' && r.score >= 300 },
     { id: 'cave-volcano', icon: '🌋', name: 'Through the fire', desc: 'Helicopter Cave: fly 300 m in the Volcano.', check: (r) => r.variant === 'Volcano' && r.score >= 300 },
   ]),
+  ...game('bubbles', [
+    { id: 'bubbles-clear', icon: '🫧', name: 'Clean sweep', desc: 'Bubble Shooter: clear a whole board.', check: (r, v) => v.cleared >= 1 },
+    { id: 'bubbles-combo', icon: '💥', name: 'Avalanche', desc: 'Bubble Shooter: bring down 10 bubbles with one shot.', check: (r, v) => v.bestCombo >= 10 },
+    { id: 'bubbles-5k', icon: '🎈', name: 'Bubble trouble', desc: 'Bubble Shooter: score 5,000.', check: (r) => r.score >= 5000 },
+  ]),
+  ...game('hopper', [
+    { id: 'hopper-cross', icon: '🐸', name: 'Why did the frog…', desc: 'Road Hopper: make it across.', check: (r, v) => v.crossings >= 1 },
+    { id: 'hopper-5', icon: '🛣️', name: 'Road warrior', desc: 'Road Hopper: make 5 crossings in one run.', check: (r, v) => v.crossings >= 5 },
+    { id: 'hopper-1000', icon: '🏆', name: 'Hop star', desc: 'Road Hopper: score 1,000.', check: (r) => r.score >= 1000 },
+  ]),
   ...game('invaders', [
     { id: 'invaders-wave2', icon: '👾', name: 'Defender', desc: 'Invaders: clear a whole wave.', check: (r, v) => v.wave >= 2 },
     { id: 'invaders-saucer', icon: '🛸', name: 'Saucer spotter', desc: 'Invaders: shoot down a saucer.', check: (r, v) => v.saucers >= 1 },
@@ -110,6 +120,16 @@ export const ACHIEVEMENTS = [
     { id: 'nonogram-solve', icon: '🖼️', name: 'Picture this', desc: 'Nonograms: solve a puzzle.', check: (r) => scored(r) },
     { id: 'nonogram-10-5', icon: '⏱️', name: 'Quick sketch', desc: 'Nonograms: solve a 10×10 in under 5 minutes.', check: (r, v) => scored(r) && v.n === 10 && r.score < 5 * MIN },
     { id: 'nonogram-15', icon: '🎨', name: 'Big picture', desc: 'Nonograms: solve a 15×15.', check: (r, v) => scored(r) && v.n === 15 },
+  ]),
+  ...game('sokoban', [
+    { id: 'sokoban-3', icon: '📦', name: 'Warehouse worker', desc: 'Sokoban: solve level 3.', check: (r) => scored(r) && r.variant === 'Level 3' },
+    { id: 'sokoban-par', icon: '⭐', name: 'By the book', desc: 'Sokoban: solve a level from 4 on in par.', check: (r, v) => scored(r) && v.levelNo >= 4 && r.score <= v.par },
+    { id: 'sokoban-10', icon: '🏭', name: 'Head of logistics', desc: 'Sokoban: solve level 10.', check: (r) => scored(r) && r.variant === 'Level 10' },
+  ]),
+  ...game('kenken', [
+    { id: 'kenken-solve', icon: '➗', name: 'Number cruncher', desc: 'KenKen: solve a puzzle.', check: (r) => scored(r) },
+    { id: 'kenken-5-3', icon: '⏱️', name: 'Mental maths', desc: 'KenKen: solve a 5 × 5 in under 3 minutes.', check: (r, v) => scored(r) && v.n === 5 && r.score < 3 * MIN },
+    { id: 'kenken-6', icon: '🧮', name: 'Calculator brain', desc: 'KenKen: solve a 6 × 6.', check: (r, v) => scored(r) && v.n === 6 },
   ]),
   ...game('lights', [
     { id: 'lights-solve', icon: '💡', name: 'Lights out', desc: 'Lights Out: switch every light off.', check: (r) => scored(r) },
@@ -166,6 +186,16 @@ export const ACHIEVEMENTS = [
     { id: 'anagram-10', icon: '🔤', name: 'Wordsmith', desc: 'Anagram Rush: make 10 words.', check: (r) => r.score >= 10 },
     { id: 'anagram-20', icon: '📚', name: 'Lexicon', desc: 'Anagram Rush: make 20 words.', check: (r) => r.score >= 20 },
     { id: 'anagram-streak', icon: '🔥', name: 'On a roll', desc: 'Anagram Rush: 8 words in a row without a skip.', check: (r, v) => v.bestStreak >= 8 },
+  ]),
+  ...game('numbers', [
+    { id: 'numbers-7', icon: '🔢', name: 'Phone number', desc: 'Number Memory: remember 7 digits.', check: (r) => r.score >= 7 },
+    { id: 'numbers-10', icon: '🧠', name: 'Ten digits', desc: 'Number Memory: remember 10 digits.', check: (r) => r.score >= 10 },
+    { id: 'numbers-14', icon: '🐘', name: 'Never forgets', desc: 'Number Memory: remember 14 digits.', check: (r) => r.score >= 14 },
+  ]),
+  ...game('oddone', [
+    { id: 'oddone-15', icon: '👁️', name: 'Keen eye', desc: 'Odd One Out: find 15.', check: (r) => r.score >= 15 },
+    { id: 'oddone-25', icon: '🦅', name: 'Eagle eye', desc: 'Odd One Out: find 25.', check: (r) => r.score >= 25 },
+    { id: 'oddone-clean', icon: '🎯', name: 'Sure thing', desc: 'Odd One Out: find 12 without a wrong tap.', check: (r, v) => r.score >= 12 && v.wrong === 0 },
   ]),
   ...game('memory', [
     { id: 'memory-solve', icon: '🃏', name: 'Total recall', desc: 'Memory Pairs: find every pair.', check: (r) => scored(r) },

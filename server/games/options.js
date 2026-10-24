@@ -22,8 +22,9 @@ const isLocked = (locked, key, value) => Boolean(locked[key] && Object.prototype
 
 /**
  * The choices this player hasn't unlocked yet: { key: { value: how to unlock it } }.
- * A spec option's lock(value, achievements) gives that line, or null when it's open;
- * achievements are the player's ({ id: when }, see ctx.achievements).
+ * A spec option's lock(value, achievements, ctx) gives that line, or null when it's open;
+ * achievements are the player's ({ id: when }, see ctx.achievements), and ctx.best(variant)
+ * their best in this game (for levels that open one after another).
  */
 export function lockedFor(ctx, spec) {
   const have = (ctx.achievements && ctx.achievements()) || {};
@@ -31,7 +32,7 @@ export function lockedFor(ctx, spec) {
   for (const [key, s] of Object.entries(spec)) {
     if (!s.lock) continue;
     for (const v of s.values) {
-      const why = s.lock(v, have);
+      const why = s.lock(v, have, ctx);
       if (why) (out[key] = out[key] || {})[v] = why;
     }
   }
