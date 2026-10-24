@@ -105,7 +105,7 @@ jobs:
           cat > notes.md <<'EOF'
           **Steam Deck / Linux:** download the `.AppImage`, make it executable (right-click → Properties → Permissions → Is executable / Allow executing file as program, or `chmod +x`), run it. On the Deck, add it to Steam as a non-Steam game to launch it from Game Mode. For its library art, unzip `Ark-1P-Hub-steam-artwork.zip` and set each picture in Steam. Step by step: [Steam Deck guide](https://github.com/areyesromo/Ark-1p-Hub/blob/main/docs/STEAM-DECK.md).
 
-          **Updates:** from v0.1.2 on, the app finds new versions by itself: an **Update** banner appears in the lobby.
+          **Updates:** the app finds new versions by itself: an **Update** banner appears in the lobby.
 
           **Windows:** download and run the `.exe` installer. It isn't signed yet, so Windows may say "Windows protected your PC": choose **More info → Run anyway**. Allow network access when asked (your phone needs it to join).
 

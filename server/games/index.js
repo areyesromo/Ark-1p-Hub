@@ -12,6 +12,10 @@ import slide, { SIZES as SLIDE_SIZES } from './slide.js';
 import gems from './gems.js';
 import memory, { SIZES as MEMORY_SIZES } from './memory.js';
 import stack from './stack.js';
+import cave from './cave.js';
+import lights, { LEVELS as LIGHTS_LEVELS } from './lights.js';
+import wordsearch, { SIZES as WORDSEARCH_SIZES } from './wordsearch.js';
+import anagram from './anagram.js';
 import mahjong from './mahjong.js';
 import freecell from './freecell.js';
 import nonogram from './nonogram.js';
@@ -33,8 +37,8 @@ import { withSetup } from './options.js';
  * category is 'arcade' (real time, quick reflexes), 'puzzle' (think at your
  * own pace) or 'brain' (memory and reaction). The lobby groups them.
  * score.better is 'higher' or 'lower'; score.unit says how to show a score:
- * 'pts', 'ms' (a reaction time), 'time' (a duration in ms, shown as m:ss.s) or
- * 'tries' (guesses it took).
+ * 'pts', 'ms' (a reaction time), 'time' (a duration in ms, shown as m:ss.s),
+ * 'tries' (guesses it took), 'moves' or 'm' (metres).
  *
  * create(ctx) returns an instance with:
  *   start()           begin (or restart) a run
@@ -74,6 +78,7 @@ const GAMES = [
   invaders,
   runner,
   stack,
+  cave,
   game2048,
   withSetup(minesweeper, {
     size: { title: 'Field', values: Object.keys(MINE_SIZES), label: (k) => `${MINE_SIZES[k].name} · ${MINE_SIZES[k].w}×${MINE_SIZES[k].h}, ${MINE_SIZES[k].mines} mines` },
@@ -93,6 +98,12 @@ const GAMES = [
   withSetup(nonogram, {
     size: { title: 'Size', values: [10, 5, 15], label: (n) => `${n} × ${n}${n === 5 ? ' (a warm-up)' : n === 15 ? ' (a long one)' : ''}` },
   }),
+  withSetup(lights, {
+    level: { title: 'Puzzle', values: ['medium', 'easy', 'hard'], label: (k) => `${LIGHTS_LEVELS[k].name} · par ${LIGHTS_LEVELS[k].presses}` },
+  }),
+  withSetup(wordsearch, {
+    size: { title: 'Grid', values: ['small', 'medium', 'large'], label: (k) => `${WORDSEARCH_SIZES[k].name} · ${WORDSEARCH_SIZES[k].words} words${k === 'small' ? ', across and down' : k === 'medium' ? ', diagonals too' : ', any way, even backwards'}` },
+  }),
   withSetup(wordGuess, {
     mode: { title: 'Word', values: ['daily', 'practice'], label: (m) => (m === 'daily' ? '📅 Today\'s word (the same for everyone, once a day)' : '🎲 Practice (a new word every time)') },
   }),
@@ -103,6 +114,7 @@ const GAMES = [
   reaction,
   maths,
   colours,
+  anagram,
   withSetup(trivia, {
     category: { title: 'Questions', values: ['mix', ...Object.keys(TRIVIA_CATEGORIES)], label: (c) => (c === 'mix' ? '🎲 A mix of everything' : `${TRIVIA_CATEGORIES[c]} (its own scores)`) },
   }),

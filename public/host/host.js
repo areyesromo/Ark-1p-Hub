@@ -583,13 +583,14 @@
   const send = function (input) { socket.emit('pad:input', { input: input }); };
 
   // Typing on the TV's keyboard, for games with a typing(key, view) hook (letters in Word Guess,
-  // digits in Sudoku): only while the keyboard holds the seat and the game is on.
+  // digits in Sudoku): only while the keyboard holds the seat and the game is on. The hook
+  // returns an input to send, true for a key it kept to itself, or null to leave the key alone.
   ArkPads.setTyping(function (key) {
     const r = current && current.renderer;
     if (!r || !r.typing || !padSeat || padSeat.idx !== ArkPads.KEYBOARD || !state || state.phase !== 'playing') return false;
     if (!lastView || Ark.setup.isHub(lastView) || lastView.phase === 'over') return false;
     const input = r.typing(key, lastView);
-    if (input) send(input);
+    if (input && input !== true) send(input);
     return Boolean(input);
   });
 
