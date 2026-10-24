@@ -196,6 +196,8 @@ export class Room {
       // This player's go at the game's daily puzzle, kept in the score history (see Stats#getDaily).
       // The player's achievements ({ id: when }), for choices they unlock (see lockedFor in options.js).
       achievements: () => (room.stats && room.playerName ? room.stats.achievementsOf(room.playerName) : {}),
+      // The player's best in this game for a variant (e.g. 'Level 3'), or null: for levels that open in turn.
+      best: (variant) => (room.stats && room.playerName ? room.stats.bestFor(def.id, variant, room.playerName, def.score.better) : null),
       daily: {
         get: (day) => (room.stats ? room.stats.getDaily(def.id, day, room.playerName) : null),
         set: (day, data) => { if (room.stats) room.stats.setDaily(def.id, day, room.playerName, data); },
