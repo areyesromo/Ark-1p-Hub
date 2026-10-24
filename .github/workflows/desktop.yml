@@ -1,11 +1,14 @@
 name: Desktop app
 
 # Builds the desktop app: the AppImage (Steam Deck / Linux) and the Windows installer.
-#   - Run workflow (Actions tab) with a version, e.g. 0.2.0: builds both and publishes the
-#     GitHub Release v0.2.0 with the files attached.
+#   - Every merge to main: builds both and publishes the next patch release (v0.1.1 after
+#     v0.1.0), with the files attached. The app finds it and offers the update.
+#   - Run workflow (Actions tab) with a version, e.g. 0.2.0: the same, for a bigger step.
 #   - Pull requests that change the desktop app: build both (downloadable from the run), no release.
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       version:
@@ -21,13 +24,39 @@ on:
 permissions:
   contents: read
 
-# A newer push to the same pull request cancels its older desktop builds.
+# A newer push to the same pull request cancels its older desktop builds. Releases from
+# main are never cut off half way: a merge waits for the one before to finish.
 concurrency:
   group: desktop-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  # The version to build: the one asked for, or after a merge the latest release's next patch.
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.pick.outputs.version }}
+    env:
+      ASKED: ${{ inputs.version }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - id: pick
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = workflow_dispatch ]; then
+            VERSION="$ASKED"
+          elif [ "$GITHUB_EVENT_NAME" = push ]; then
+            LAST=$(gh release view --repo "$GITHUB_REPOSITORY" --json tagName --jq .tagName 2>/dev/null || echo v0.0.0)
+            IFS=. read -r MAJOR MINOR PATCH <<< "${LAST#v}"
+            VERSION="$MAJOR.$MINOR.$((PATCH + 1))"
+          fi
+          if [ -n "$VERSION" ] && ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Version must look like 0.2.0, got '$VERSION'"; exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Version: ${VERSION:-(none, a test build)}"
+
   build:
+    needs: version
     strategy:
       fail-fast: false
       matrix:
@@ -49,23 +78,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       CSC_IDENTITY_AUTO_DISCOVERY: 'false' # no code-signing certificate (yet)
-      VERSION: ${{ inputs.version }}
+      VERSION: ${{ needs.version.outputs.version }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-      - name: Check the version
-        if: github.event_name == 'workflow_dispatch'
-        shell: bash
-        run: |
-          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "Version must look like 0.2.0, got '$VERSION'"; exit 1
-          fi
       - run: npm ci
       - name: Set the version
-        if: github.event_name == 'workflow_dispatch'
+        if: needs.version.outputs.version != ''
         shell: bash
         run: npm version "$VERSION" --no-git-tag-version --allow-same-version
       - name: Build
@@ -81,13 +103,13 @@ jobs:
 
   release:
     # Releases come from main only (Run workflow lets you pick another branch: that just builds).
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
-    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: [version, build]
     runs-on: ubuntu-latest
     permissions:
       contents: write
     env:
-      VERSION: ${{ inputs.version }}
+      VERSION: ${{ needs.version.outputs.version }}
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4

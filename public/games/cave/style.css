@@ -19,3 +19,4 @@
 .cave-hold .sub { color: inherit; opacity: 0.7; font-weight: 400; }
 .cave-hold.off { opacity: 0.4; }
 .cave-phone .pause { align-self: center; min-width: 10rem; }
+.cave-phone .info .where { font-weight: 400; font-size: var(--fs-sm); }

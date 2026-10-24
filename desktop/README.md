@@ -58,16 +58,18 @@ there and run it again; it rewrites the PNGs and `public/shared/icon.svg`, the b
 
 ## Making a release
 
-GitHub builds both files (`.github/workflows/desktop.yml`):
+GitHub builds both files (`.github/workflows/desktop.yml`), by itself on every merge to `main`:
+the release is the latest one's next patch (**v0.1.2** after v0.1.1). A few minutes after the
+merge it's on the Releases page with these attached:
 
-1. On GitHub, open **Actions → Desktop app → Run workflow**.
-2. Type the new version, e.g. `0.2.0`, and run it.
-3. A few minutes later, the release **v0.2.0** is on the Releases page with these attached:
-   - the AppImage and the installer;
-   - `latest.yml`, `latest-linux.yml` and the installer's `.blockmap`, which self-update reads;
-   - the Steam artwork zip.
+- the AppImage and the installer;
+- `latest.yml`, `latest-linux.yml` and the installer's `.blockmap`, which self-update reads;
+- the Steam artwork zip.
 
-   Running apps offer the new version in the lobby.
+Running apps offer the new version in the lobby.
+
+For a bigger step (say **v0.2.0**), open **Actions → Desktop app → Run workflow** on `main` and
+type the version; the merges after it carry on from there (v0.2.1, …).
 
 Pull requests that change the desktop app also build both. The files can be downloaded from the
 run's page under **Artifacts**, without making a release.

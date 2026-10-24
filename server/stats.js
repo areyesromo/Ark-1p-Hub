@@ -169,7 +169,7 @@ export class Stats {
     for (const r of this.runs) if (nameKey(r.player) === key && !String(r.variant || '').startsWith('Daily ')) lastVariant[r.game] = r.variant || '';
     const out = {};
     for (const [game, variant] of Object.entries(lastVariant)) {
-      const r = this.runs.find((x) => x.game === game);
+      const r = this.runs.findLast((x) => x.game === game); // the latest, in case the game changed its unit
       out[game] = { score: this.bestFor(game, variant, name, r.better), variant, unit: r.unit, better: r.better };
     }
     return out;
@@ -204,6 +204,8 @@ export class Stats {
       if (!boards.has(id)) boards.set(id, { game: r.game, gameName: r.gameName, variant: r.variant || '', better: r.better, unit: r.unit, runs: 0, bests: new Map() });
       const b = boards.get(id);
       b.runs++;
+      b.unit = r.unit; // the latest run's, in case a game changed how it shows its score
+      b.gameName = r.gameName;
       const k = nameKey(r.player);
       const cur = b.bests.get(k);
       if (!cur || beats(r.score, cur.score, r.better)) b.bests.set(k, { name: r.player, score: r.score, at: r.at });

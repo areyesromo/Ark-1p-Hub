@@ -40,7 +40,7 @@ the settings, or pick another game.
 | **Invaders** | Rows of aliens march side to side, step down at each edge and drop bombs: slide your cannon along the bottom and shoot them all before they land. One shot on screen at a time. Four bunkers give cover, and get chewed away by shots from both sides. The fewer aliens left, the faster they march; now and then a saucer flies across the top for a bonus. Clear a wave and the next starts a little lower. On the phone: slide a finger along the strip to move, tap 🔫 Fire. 3 lives. Score: 10 to 30 an alien (the top rows are worth more), 50 to 300 a saucer. |
 | **Runner** | You run on and on: jump the cactuses (one to three together, short or tall) and duck under the birds (low ones you can jump, high ones fly over you). Hold JUMP for a higher jump. The run gets faster the further you go. Your first jump starts it. Score: how far you got, in metres. |
 | **Stack** | A block slides back and forth above the tower: tap (the phone's big DROP button) to drop it. The part hanging over the edge is cut off and falls away, so the blocks get narrower; drop it right on top for a **Perfect!** and nothing is lost, and every third perfect drop in a row wins a little width back. Miss the tower and it's over. It speeds up as the tower grows. Score: blocks stacked. |
-| **Helicopter Cave** | Hold the phone's big CLIMB button to rise, let go to drop, and fly down a winding cave without touching the walls. The cave gets narrower and faster the further you go, and after a while rocks stick out of the ceiling and the floor. The first hold takes off. Score: metres flown. |
+| **Helicopter Cave** | Hold the phone's big CLIMB button to rise, let go to drop, and fly down a winding cave without touching the walls. The cave gets narrower and faster the further you go, and after a while rocks stick out of the ceiling and the floor. The first hold takes off. Four maps, each with its own scores: the 💎 Crystal Cave, then the ⛏️ Old Mine (wooden props everywhere, unlocked by flying 100 m), the 🧊 Ice Tunnel (twistier, icicles; 300 m in the mine) and the 🌋 Volcano (faster; 300 m on the ice). Flying far also unlocks new things to fly (just for looks): a Jet (500 m), a UFO (300 m in the Volcano) and a Dragon (1,000 m). Locked choices show on the setup screen with what opens them. Score: metres flown. |
 
 ### 🧩 Puzzle
 
@@ -181,7 +181,7 @@ recorded. Settings (`/admin/`) can clear all scores.
 
 <img src="docs/screenshots/achievements.jpg" alt="A player's achievements page: done and to do, per game" width="60%">
 
-Goals to chase on your own: 93 of them, a few for every game (eat 25 in Snake, clear four rows at
+Goals to chase on your own: 96 of them, a few for every game (eat 25 in Snake, clear four rows at
 once in Blocks, solve a Hard Sudoku, find the word in 3 guesses…) and some for the hub as a whole
 (score in every game, set 10 personal bests, hold a top score, play 7 days in a row, play 7 daily challenges). They're
 checked at the end of every run, and new ones pop up on the end screen on the TV and the phone.
@@ -203,8 +203,8 @@ games). Set `HTTPS=off` to serve plain http only.
 
 One app runs the hub and opens the TV screen full screen: an **AppImage** for the Steam Deck and
 Linux (add it to Steam as a non-Steam game to launch it from Game Mode) and an **installer** for
-Windows. No Docker needed. Download them from the repository's **Releases** page. GitHub builds
-them with **Actions → Desktop app → Run workflow**. The app updates itself: a new version shows an
+Windows. No Docker needed. Download them from the repository's **Releases** page: GitHub builds
+a new release every time a change is merged. The app updates itself: a new version shows an
 **Update** banner in the lobby. Each release also has Steam library artwork. It uses port 3001, so it
 can run next to Ark 2P Hub's app. See [desktop/README.md](desktop/README.md), and for the Deck the
 step-by-step [Steam Deck guide](docs/STEAM-DECK.md).

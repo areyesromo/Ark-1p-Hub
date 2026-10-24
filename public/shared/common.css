@@ -115,6 +115,8 @@ input {
 .ark-setup .seg { display: flex; flex-wrap: wrap; gap: 0.4em; }
 .ark-setup .opt { flex: 1 1 auto; min-width: 4.5em; min-height: 44px; padding: 0.6em 0.5em; background: var(--panel); color: inherit; font-weight: 800; }
 .ark-setup .opt.on { background: var(--good); color: var(--on-good); }
+.ark-setup .opt.locked { opacity: 0.55; cursor: default; border: 1px dashed var(--line-strong); }
+.ark-setup .opt .why { display: block; font-size: var(--fs-sm); font-weight: 400; color: var(--muted); margin-top: 0.2em; }
 
 /* How a finished run went (Ark.recordHtml), on the TV and the phone */
 .new-best { color: var(--warn); font-weight: 900; }
