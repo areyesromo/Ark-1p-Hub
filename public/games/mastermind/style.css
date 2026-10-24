@@ -19,7 +19,7 @@
 .mm-host { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
 .mm-top { display: flex; gap: 2.5rem; color: var(--muted); font-size: var(--fs-md); align-items: center; }
 .mm-top strong { color: var(--text); font-size: 1.4em; }
-.mm-host .mm-main { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; font-size: min(calc(60vh / 11), 3.4rem); }
+.mm-host .mm-main { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; font-size: min(calc((100vh - 250px) / 18), 2.8rem); }
 .mm-host .mm-row { gap: 1.2em; }
 .mm-host .mm-pegs-wrap { display: flex; }
 
@@ -28,8 +28,8 @@
 .mm-phone { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding: 10px 10px 14px; text-align: center; }
 .mm-phone .info { color: var(--muted); }
 .mm-phone .info strong { color: var(--me); }
-.mm-phone .mm-main { flex: 1; min-height: 0; overflow-y: auto; font-size: min(calc(60vh / 12), 2.2rem); touch-action: pan-y; }
-.mm-pal { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; font-size: 1.5rem; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+.mm-phone .mm-main { flex: 1; min-height: 0; overflow-y: auto; font-size: min(calc((100dvh - 270px) / 20), 2.2rem); touch-action: pan-y; }
+.mm-pal { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; font-size: 1.7rem; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
 .mm-pal button { background: none; padding: 4px; min-width: 0; }
 .mm-pal.off { opacity: 0.4; }
 .mm-pal .back { font-size: 1.2rem; min-width: 2.2em; }
