@@ -101,7 +101,7 @@ export function createApp({
       const game = p ? games[p.game] : day >= today ? games[challengeFor(day).game] : null; // a missed day's game isn't known any more
       let status = day > today ? 'future' : day === today ? 'today' : 'missed';
       if (p) status = p.score === null ? 'started' : 'done';
-      return { day, status, game: game ? game.id : null, gameName: game ? game.name : null, unit: game ? game.score.unit : null, score: p ? p.score : null };
+      return { day, today: day === today, status, game: game ? game.id : null, gameName: game ? game.name : null, unit: game ? game.score.unit : null, score: p ? p.score : null };
     });
     const oldest = shiftMonth(thisMonth, -12);
     res.json({

@@ -17,7 +17,7 @@
   function cell(d) {
     const label = { done: Ark.formatScore(d.score, d.unit), started: 'Started', today: 'Today', missed: '', future: '' }[d.status];
     const icon = { done: '✅ ', started: '🟡 ' }[d.status] || '';
-    return '<div class="day ' + d.status + '" title="' + esc(d.day + (d.gameName ? ' · ' + d.gameName : '')) + '"><span class="n">' + Number(d.day.slice(8)) + '</span>' +
+    return '<div class="day ' + d.status + (d.today ? ' is-today' : '') + '" title="' + esc(d.day + (d.gameName ? ' · ' + d.gameName : '')) + '"><span class="n">' + Number(d.day.slice(8)) + '</span>' +
       (d.gameName ? '<span class="g">' + esc(d.gameName) + '</span>' : '') + (label ? '<span class="s">' + icon + esc(label) + '</span>' : '') + '</div>';
   }
 

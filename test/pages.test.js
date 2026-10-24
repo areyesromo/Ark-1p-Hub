@@ -54,6 +54,8 @@ test('the calendar marks played, started and missed days, with streaks, in UTC',
   assert.equal(d.month, today.slice(0, 7));
   const by = Object.fromEntries(d.days.map((x) => [x.day, x]));
   assert.equal(by[today].status, 'done');
+  assert.equal(by[today].today, true, 'today stays marked once it is played');
+  assert.equal(by[day(1)].today, false);
   assert.equal(by[today].gameName, 'Snake');
   assert.equal(by[day(2)].status, 'started');
   assert.equal(d.total, 3);
