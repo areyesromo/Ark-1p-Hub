@@ -176,6 +176,8 @@
     $('lobby-status').innerHTML = 'Hi <strong>' + Ark.escapeHtml(me.name) + '</strong>! Pick a game and beat your best.' +
       ' <span class="muted">Tap your avatar to change it.</span>';
     $('ach-link').href = Ark.achievementsUrl(me.name);
+    $('col-link').href = '/collection/?name=' + encodeURIComponent(me.name);
+    $('cal-link').href = '/calendar/?name=' + encodeURIComponent(me.name);
     $('ach-link').textContent = '⭐ Achievements' + (state.achievements ? ' · ' + state.achievements.got + ' / ' + state.achievements.total : '');
     $('phone-games').innerHTML =
       '<button data-game="random" class="random"><strong>🎲 Random game</strong><span>Can\'t decide? Let the hub pick.</span></button>' +

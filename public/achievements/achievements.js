@@ -4,6 +4,10 @@
   const $ = function (id) { return document.getElementById(id); };
   if (/\/play\//.test(document.referrer)) $('back').href = '/play/';
   const name = new URLSearchParams(location.search).get('name') || '';
+  if (name) {
+    $('to-col').href = '/collection/?name=' + encodeURIComponent(name);
+    $('to-cal').href = '/calendar/?name=' + encodeURIComponent(name);
+  }
 
   function card(a) {
     const when = a.at ? new Date(a.at).toLocaleDateString() : '';
