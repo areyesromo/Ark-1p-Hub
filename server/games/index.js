@@ -12,6 +12,13 @@ import slide, { SIZES as SLIDE_SIZES } from './slide.js';
 import gems from './gems.js';
 import memory, { SIZES as MEMORY_SIZES } from './memory.js';
 import stack from './stack.js';
+import sokoban from './sokoban.js';
+import bubbles from './bubbles.js';
+import hopper from './hopper.js';
+import kenken, { SIZES as KENKEN_SIZES } from './kenken.js';
+import numbers from './numbers.js';
+import oddone from './oddone.js';
+import { LEVELS as SOKOBAN_LEVELS } from './sokoban-levels.js';
 import cave, { MAPS as CAVE_MAPS, VEHICLES as CAVE_VEHICLES } from './cave.js';
 import lights, { LEVELS as LIGHTS_LEVELS } from './lights.js';
 import wordsearch, { SIZES as WORDSEARCH_SIZES } from './wordsearch.js';
@@ -53,7 +60,8 @@ import { getAchievement } from '../achievements.js';
  * and the phone, saved (kept between launches), and rng: pass it on to the
  * game (create: (ctx) => new Game(ctx, ctx.rng)) so the daily challenge can
  * deal everyone the same game; it's undefined otherwise. ctx.challenge is true
- * in the daily challenge, and ctx.achievements() lists the player's achievements.
+ * in the daily challenge, ctx.achievements() lists the player's achievements and
+ * ctx.best(variant) is their best in this game for that variant (or null).
  *
  * When a run ends, hostView() has phase: 'over' and score (a number, or null
  * when the run doesn't count, like a lost Minesweeper). An optional variant
@@ -101,6 +109,8 @@ const GAMES = [
     map: { title: 'Map', values: Object.keys(CAVE_MAPS), label: (k) => CAVE_MAPS[k].name, lock: byAchievement(CAVE_MAPS) },
     vehicle: { title: 'Fly a', values: Object.keys(CAVE_VEHICLES), label: (k) => CAVE_VEHICLES[k].name, lock: byAchievement(CAVE_VEHICLES) },
   }),
+  bubbles,
+  hopper,
   game2048,
   withSetup(minesweeper, {
     size: { title: 'Field', values: Object.keys(MINE_SIZES), label: (k) => `${MINE_SIZES[k].name} · ${MINE_SIZES[k].w}×${MINE_SIZES[k].h}, ${MINE_SIZES[k].mines} mines` },
@@ -117,6 +127,18 @@ const GAMES = [
     size: { title: 'Size', values: [4, 3, 5], label: (n) => `${n} × ${n} (${n * n - 1} tiles${n === 3 ? ', a warm-up' : n === 5 ? ', a real test' : ''})` },
   }),
   gems,
+  withSetup(sokoban, {
+    level: {
+      title: 'Level',
+      values: SOKOBAN_LEVELS.map((_, i) => i + 1),
+      label: (n) => `${n} · par ${SOKOBAN_LEVELS[n - 1].par}`,
+      // Each level opens once the one before it is solved.
+      lock: (n, have, ctx) => (n === 1 || (ctx.best && ctx.best(`Level ${n - 1}`) !== null) ? null : `Solve level ${n - 1} to unlock`),
+    },
+  }),
+  withSetup(kenken, {
+    size: { title: 'Size', values: KENKEN_SIZES, label: (n) => `${n} × ${n} (numbers 1 to ${n})${n === 4 ? ', a warm-up' : n === 6 ? ', a real test' : ''}` },
+  }),
   withSetup(nonogram, {
     size: { title: 'Size', values: [10, 5, 15], label: (n) => `${n} × ${n}${n === 5 ? ' (a warm-up)' : n === 15 ? ' (a long one)' : ''}` },
   }),
@@ -137,6 +159,8 @@ const GAMES = [
   maths,
   colours,
   anagram,
+  numbers,
+  oddone,
   withSetup(trivia, {
     category: { title: 'Questions', values: ['mix', ...Object.keys(TRIVIA_CATEGORIES)], label: (c) => (c === 'mix' ? '🎲 A mix of everything' : `${TRIVIA_CATEGORIES[c]} (its own scores)`) },
   }),

@@ -41,6 +41,8 @@ the settings, or pick another game.
 | **Runner** | You run on and on: jump the cactuses (one to three together, short or tall) and duck under the birds (low ones you can jump, high ones fly over you). Hold JUMP for a higher jump. The run gets faster the further you go. Your first jump starts it. Run as someone else (just for looks): a 🤖 Robot (100 m), a 🦖 Dino (500 m) or a 🥷 Ninja (1,000 m). Score: how far you got, in metres. |
 | **Stack** | A block slides back and forth above the tower: tap (the phone's big DROP button) to drop it. The part hanging over the edge is cut off and falls away, so the blocks get narrower; drop it right on top for a **Perfect!** and nothing is lost, and every third perfect drop in a row wins a little width back. Miss the tower and it's over. It speeds up as the tower grows. Block styles to unlock (just for looks): 🍬 Candy (10 blocks), 🧊 Glass (25) and 👑 Gold (5 perfect drops in a row). Score: blocks stacked. |
 | **Helicopter Cave** | Hold the phone's big CLIMB button to rise, let go to drop, and fly down a winding cave without touching the walls. The cave gets narrower and faster the further you go, and after a while rocks stick out of the ceiling and the floor. The first hold takes off. Four maps, each with its own scores: the 💎 Crystal Cave, then the ⛏️ Old Mine (wooden props everywhere, unlocked by flying 100 m), the 🧊 Ice Tunnel (twistier, icicles; 300 m in the mine) and the 🌋 Volcano (faster; 300 m on the ice). Flying far also unlocks new things to fly (just for looks): a Jet (500 m), a UFO (300 m in the Volcano) and a Dragon (1,000 m). Locked choices show on the setup screen with what opens them. Score: metres flown. |
+| **Bubble Shooter** | Coloured bubbles hang from the ceiling. Drag on the phone to aim the launcher (the TV shows the line, bouncing off the walls) and let go to fire: the bubble sticks where it touches, three or more of a colour together pop, and anything left hanging from nothing falls (worth double). Five shots in a row that pop nothing and the whole ceiling comes down a row; a bubble on the red line at the bottom ends it. Clear the board for 1,000 and a new one with another colour. Score: points. |
+| **Road Hopper** | Get the frog to the far bank: hop across five lanes of traffic (cars and trucks, each lane its own speed), rest on the verge, then cross the river on the logs. Cars squash you, the water's deadly, and a log carries you along, off the edge if you stay on too long. Tap the phone's arrows or swipe. Three frogs, and 30 seconds for each go. Every crossing scores 50 plus 2 for each second left, and the next crossing is faster; each row further than before is 10. Score: points. |
 
 ### 🧩 Puzzle
 
@@ -54,7 +56,9 @@ the settings, or pick another game.
 | **Mahjong Solitaire** | A pile of 76 tiles in four layers: take away matching pairs until it's gone. A tile can be taken when nothing lies on top of it and its left or right side is open (those are bright; the others a little dimmer). Every deal can be cleared, since it's dealt by playing the game backwards. Stuck? **Undo**, or **🔀 Shuffle** what's left (+30 s); **💡 Hint** lights up a pair (+15 s). Score: your time; giving up doesn't count. |
 | **Sliding Puzzle** | Numbered tiles in a square with one gap: slide them back into order, 1, 2, 3… with the gap at the bottom right. Tap a tile in line with the gap to slide it (and any tiles between) over, or swipe. Every shuffle is made of real slides, so it can always be solved. 3×3, 4×4 or 5×5. The clock starts with your first slide. Score: your time, per size. |
 | **Gem Swap** | Swap two touching gems to line up three or more of a colour: they vanish, the gems above fall and new ones drop in, and any new lines vanish too (a chain, each step scoring more). A swap that makes no line doesn't happen. Swipe a gem into its neighbour, or tap one then the other. 30 swaps; a board with no moves left is reshuffled. Score: 10 a gem, +50 for a line of four, +150 for five, times the chain step. |
+| **Sokoban** | You're the warehouse worker: push every box onto a target (a box on one turns green). You can only push, one box at a time, never pull, so a box shoved into a corner is stuck: ↶ **Undo** or ↺ **Start again**. Ten levels, from one box to seven, each opened by solving the one before (the setup screen shows which are open), each with a par: the fewest moves it can be done in. Walk with the phone's arrows or swipe on the board. Score: the moves it took (fewer is better), per level. |
 | **Nonograms** | Picture logic: the numbers by each row and column are the runs of filled squares in that line, in order ("3 1" means three filled, a gap, then one). Fill squares until every line matches and the picture appears. On the phone tap a square, or drag across several, to fill them; switch to ✕ **Cross out** to mark squares you know are empty. A line whose filled squares match its numbers turns grey. Every puzzle is a fresh random picture that can be solved one line at a time, without guessing. 5×5, 10×10 or 15×15. Pausing hides the grid. Score: your time, per size. |
+| **KenKen** | Fill the grid so each row and column has every number once (1 to 4 on a 4 × 4, up to 6). The heavy outlines are cages: each cage's numbers make its target with its sign (add them, multiply them, or for two squares the difference or the division, bigger first); a one-square cage just gives its number. Tap a square on the phone, then a number; clashes show in red. Every puzzle is new and has exactly one answer. 4 × 4, 5 × 5 or 6 × 6. Score: your time, per size. |
 | **Lights Out** | A 5 × 5 grid of lights, some on. Tap a light to flip it and the four next to it (on goes off, off goes on): switch them all off. Every puzzle is made by flipping lights on a dark board, so it can always be solved, and par is how many flips made it. ↺ **Start again** puts the board back (the moves keep counting). Easy (par 4), Medium (8) or Hard (13). Score: the moves it took (fewer is better), per level. |
 | **Word Search** | Words are hidden in a grid of letters in straight lines: drag on the phone from a word's first letter to its last (or tap both) to mark it. The list says which words to find and crosses them off. 8 × 8 hides 6 words across and down, 10 × 10 hides 8 with diagonals too, and 12 × 12 hides 10 any way at all, even backwards. Score: your time to find them all, per size. |
 
@@ -69,6 +73,8 @@ the settings, or pick another game.
 | **Quick Maths** | Sums against the clock: pick the right answer of four on the phone's big buttons. They start easy (adding small numbers) and get harder every 5 right answers: taking away, times tables, then a mix with dividing and bigger numbers. 60 seconds; a wrong answer costs 3 of them. Score: right answers. |
 | **Colour Trap** | A colour's name shows up written in another colour: tap the colour of the **ink**, not what the word says (BLUE written in red is red). Your brain wants to read the word; that's the trap. 45 seconds; a wrong answer costs 3 of them. Score: right answers. |
 | **Anagram Rush** | Five mixed-up letters: tap them in order to make a word that uses all five, and it goes off by itself once the last letter's in (⌫ takes one back). Any real word counts, not only the one they came from. 60 seconds; ⏭ **Skip** shows the word but costs 3 seconds. Score: words made. |
+| **Number Memory** | A number shows on the TV for a moment (longer for longer numbers), then hides: type it back on the phone's keypad. Right, and the next one is a digit longer, starting from 3. Miss once and you get another number the same length; miss twice and it's over, with the digits you got wrong shown. Score: the most digits you remembered. |
+| **Odd One Out** | A grid of squares all the same colour, except one a shade lighter or darker: tap it (on the phone, the same grid). Each find makes the grid bigger (3 × 3 up to 8 × 8) and the difference smaller. A wrong tap costs 3 seconds; 60 seconds in all. Score: odd ones found. |
 | **Trivia** | Twelve questions, four answers each, 15 seconds a question. A right answer scores 100, plus up to 100 more the faster you are; wrong or too slow scores nothing, and the right answer shows for a moment either way. 152 questions in six subjects (science & nature, geography, history, sport & games, film, music & books, food & drink): play a mix, or pick one (each has its own scores). You won't see a question again until you've seen them all. Score: points. |
 
 ### Screenshots
@@ -124,6 +130,8 @@ on the TV to play there.
 | Runner | **A** / **↑** (or any face button) jump, hold for higher; **↓** / **LT** / **LB** duck; **Start** pauses | **↑** / **Space** jump, **↓** duck, **P** | |
 | Stack | **A** (or any face button, bumper or trigger) drops, **Start** pauses | **Space** / **Enter**, **P** | |
 | Helicopter Cave | Hold **A**, **↑** (or any face button, bumper or trigger) to climb; **Start** pauses | Hold **Space**, **Enter** or **↑**; **P** | Climb |
+| Bubble Shooter | Hold **←** / **→** (or the stick) to aim, **A** / **RT** / **↑** fires | Hold arrows to aim, **Space** / **Enter** / **↑** fires | |
+| Road Hopper | **D-pad** / arrows hop, **Start** pauses | Arrows, **P** | |
 | 2048 | **D-pad** / stick | Arrows | Slide |
 | Minesweeper | **D-pad** moves a cursor on the TV, **A** opens, **X** / **B** flags | Arrows, **Enter**, **Q** / **Backspace** | |
 | Sudoku | **D-pad** moves, **A** places the pen number, **X** / **Y** change it, **B** clears, **Start** pauses | Arrows, type **1**–**9**, **0** / **Backspace** clears, **P** | |
@@ -132,7 +140,9 @@ on the TV to play there.
 | Mahjong Solitaire | **D-pad** moves between tiles, **A** picks, **X** hint, **Y** undo, **LB** / **RB** shuffle, **Start** pauses | Arrows, **Enter**, **Q**, **E**, **P** | |
 | Sliding Puzzle | **D-pad** / stick | Arrows | Slide a tile into the gap (from the side the arrow points away from) |
 | Gem Swap | **D-pad** moves, **A** picks a gem, then a direction swaps it; **B** lets go | Arrows, **Enter**, **Backspace** | |
+| Sokoban | **D-pad** walks (and pushes), **Y** / **B** undo, **X** starts the level again | Arrows, **E** / **Backspace** undo, **Q** restart | |
 | Nonograms | **D-pad** moves, **A** fills, **X** / **B** crosses out (again to clear), **Start** pauses | Arrows, **Enter**, **Q** / **Backspace**, **P** | |
+| KenKen | **D-pad** moves, **A** next number, **Y** the one before, **X** / **B** clear | Arrows, type the number, **Backspace** / **Delete** clear | |
 | Lights Out | **D-pad** moves, **A** flips, **Y** starts again | Arrows, **Enter**, **E** | |
 | Word Search | **D-pad** moves, **A** on a word's first letter then **A** on its last, **B** lets go | Arrows, **Enter**, **Backspace** | Drag from the first letter to the last |
 | Word Guess | **D-pad** picks a key on the TV's keyboard, **A** types it, **B** deletes, **Start** / **X** enters | Just type: letters, **Backspace**, **Enter** | |
@@ -142,6 +152,8 @@ on the TV to play there.
 | Quick Maths | **A**, **B**, **X**, **Y**: the answer next to that letter on the TV | **1**–**4** | |
 | Colour Trap | The face button of that colour: **B** red, **X** blue, **A** green, **Y** yellow | **R**, **B**, **G**, **Y** (or **1**–**4**) | |
 | Anagram Rush | **D-pad ← →** picks a letter, **A** uses it, **B** takes one back, **Y** skips | Just type the word, **Backspace**, **Tab** skips | |
+| Number Memory | **← →** pick a digit, **A** types it, **B** deletes, **Start** / **X** done | Type the digits, **Backspace**, **Enter** | |
+| Odd One Out | **D-pad** moves, **A** picks | Arrows, **Enter** | |
 | Trivia | **A**, **B**, **X**, **Y**: the answer next to that letter on the TV | **1**–**4** | |
 
 Buttons use Xbox names. On a PlayStation controller A = ✕, B = ○, X = □, Y = △.
@@ -183,7 +195,7 @@ recorded. Settings (`/admin/`) can clear all scores.
 
 <img src="docs/screenshots/achievements.jpg" alt="A player's achievements page: done and to do, per game" width="60%">
 
-Goals to chase on your own: 96 of them, a few for every game (eat 25 in Snake, clear four rows at
+Goals to chase on your own: 114 of them, a few for every game (eat 25 in Snake, clear four rows at
 once in Blocks, solve a Hard Sudoku, find the word in 3 guesses…) and some for the hub as a whole
 (score in every game, set 10 personal bests, hold a top score, play 7 days in a row, play 7 daily challenges). They're
 checked at the end of every run, and new ones pop up on the end screen on the TV and the phone.
