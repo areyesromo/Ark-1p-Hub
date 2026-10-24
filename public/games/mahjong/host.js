@@ -71,6 +71,7 @@
       ready.then(render);
     },
     update: function (v) {
+      if (root) root.setAttribute('data-look', v.look || 'classic');
       const nope = view && v.nope > view.nope;
       if (!view || v.left > view.left + 2) cursor = null; // a new deal
       view = v;

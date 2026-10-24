@@ -65,6 +65,35 @@ export const LOOKS = {
     glass: { name: '🧊 Glass', unlock: 'stack-25' },
     gold: { name: '👑 Gold', unlock: 'stack-perfect5' },
   },
+  solitaire: {
+    classic: { name: 'Classic blue' },
+    midnight: { name: '🌌 Midnight', unlock: 'solitaire-win' },
+    rose: { name: '🌹 Rose', unlock: 'solitaire-draw3' },
+    gold: { name: '👑 Gold', unlock: 'solitaire-fast' },
+  },
+  freecell: {
+    classic: { name: 'Classic' },
+    four: { name: '🎨 Four colours', unlock: 'freecell-win' },
+    felt: { name: '🟩 Green felt', unlock: 'freecell-8min' },
+    night: { name: '🌙 Night cards', unlock: 'freecell-120' },
+  },
+  mahjong: {
+    classic: { name: 'Ivory' },
+    jade: { name: '🟢 Jade', unlock: 'mahjong-clear' },
+    ink: { name: '⚫ Ink', unlock: 'mahjong-nohelp' },
+    rose: { name: '🌸 Rose', unlock: 'mahjong-10min' },
+  },
+  memory: {
+    animals: { name: '🐶 Animals' },
+    food: { name: '🍕 Food', unlock: 'memory-solve' },
+    sea: { name: '🐠 Sea', unlock: 'memory-12' },
+    space: { name: '🚀 Space', unlock: 'memory-large' },
+  },
+  simon: {
+    classic: { name: 'Classic' },
+    pastel: { name: '🍬 Pastel', unlock: 'simon-10' },
+    neon: { name: '💜 Neon', unlock: 'simon-20' },
+  },
 };
 
 /** The look a game was started with, or its first one. */

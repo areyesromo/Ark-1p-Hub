@@ -18,7 +18,7 @@ before(async () => {
   dataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'ark1p-pages-'));
   // Ana: the daily played the last three days (the oldest quit, no score), and 100 m in Helicopter Cave.
   fs.writeFileSync(path.join(dataDir, 'stats.json'), JSON.stringify({
-    runs: [],
+    runs: [[10, 3], [14, 2], [8, 2]].map(([score, back]) => ({ at: Date.now() - back * 86400000, game: 'snake', player: 'Ana', score, better: 'higher', unit: 'pts', variant: 'Normal' })).concat([{ at: Date.now(), game: 'snake', player: 'Bo', score: 99, better: 'higher', unit: 'pts', variant: 'Normal' }]),
     dailies: {
       [`daily|${day(0)}|ana`]: { game: 'snake', score: 12 },
       [`daily|${day(1)}|ana`]: { game: 'gems', score: 900 },
@@ -76,4 +76,20 @@ test('the calendar copes with a bad month, a far month, and a player who hasn\'t
   assert.ok(old.days.filter((x) => x.status === 'missed').every((x) => x.gameName === null), 'a missed day\'s game isn\'t known any more');
   const none = await get('/api/calendar?name=nobody');
   assert.deepEqual([none.total, none.current, none.longest], [0, 0, 0]);
+});
+
+test('a player\'s stats: their runs, favourites, records and the daily streak, and nothing for a stranger', async () => {
+  const d = await get('/api/me?name=Ana');
+  assert.equal(d.runs, 3, 'only her own');
+  assert.equal(d.games, 1);
+  assert.equal(d.recordCount, 1);
+  assert.equal(d.favourites[0].gameName, 'Snake');
+  assert.equal(d.favourites[0].board.best, 14);
+  assert.equal(d.activity.length, 14);
+  assert.equal(d.achievements.got, 1);
+  assert.equal(d.daily.current, 3, 'same days as the calendar counts, a go that was started included');
+  assert.equal(d.trimmed, false);
+  const nobody = await get('/api/me?name=Zed');
+  assert.equal(nobody.runs, 0);
+  assert.equal((await get('/api/me')).runs, 0, 'no name, no stats');
 });

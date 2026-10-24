@@ -121,6 +121,21 @@ export const ACHIEVEMENTS = [
     { id: 'nonogram-10-5', icon: '⏱️', name: 'Quick sketch', desc: 'Nonograms: solve a 10×10 in under 5 minutes.', check: (r, v) => scored(r) && v.n === 10 && r.score < 5 * MIN },
     { id: 'nonogram-15', icon: '🎨', name: 'Big picture', desc: 'Nonograms: solve a 15×15.', check: (r, v) => scored(r) && v.n === 15 },
   ]),
+  ...game('flood', [
+    { id: 'flood-win', icon: '🌊', name: 'Flooded', desc: 'Flood-It: flood a whole board.', check: (r) => scored(r) },
+    { id: 'flood-par', icon: '🎯', name: 'Sharp tide', desc: 'Flood-It: flood a board in 20 moves or fewer.', check: (r) => scored(r) && r.score <= 20 },
+    { id: 'flood-large', icon: '🌍', name: 'Ocean', desc: 'Flood-It: flood the 18 × 18 board.', check: (r) => scored(r) && r.variant === '18 × 18' },
+  ]),
+  ...game('lines', [
+    { id: 'lines-first', icon: '🎱', name: 'Five of a kind', desc: 'Color Lines: finish a game with 10 points or more.', check: (r) => scored(r) && r.score >= 10 },
+    { id: 'lines-100', icon: '🌈', name: 'Rainbow runner', desc: 'Color Lines: score 100 points.', check: (r) => scored(r) && r.score >= 100 },
+    { id: 'lines-300', icon: '🧠', name: 'Board tamer', desc: 'Color Lines: score 300 points.', check: (r) => scored(r) && r.score >= 300 },
+  ]),
+  ...game('mastermind', [
+    { id: 'mastermind-solve', icon: '🔐', name: 'Code breaker', desc: 'Mastermind: crack a code.', check: (r) => scored(r) },
+    { id: 'mastermind-5', icon: '🕵️', name: 'Sharp deduction', desc: 'Mastermind: crack a code in 5 guesses or fewer.', check: (r) => scored(r) && r.score <= 5 },
+    { id: 'mastermind-hard', icon: '🧩', name: 'Cipher master', desc: 'Mastermind: crack a Hard code.', check: (r) => scored(r) && r.variant === 'Hard' },
+  ]),
   ...game('sokoban', [
     { id: 'sokoban-3', icon: '📦', name: 'Warehouse worker', desc: 'Sokoban: solve level 3.', check: (r) => scored(r) && r.variant === 'Level 3' },
     { id: 'sokoban-par', icon: '⭐', name: 'By the book', desc: 'Sokoban: solve a level from 4 on in par.', check: (r, v) => scored(r) && v.levelNo >= 4 && r.score <= v.par },

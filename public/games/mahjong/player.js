@@ -56,6 +56,7 @@
       ready.then(render);
     },
     update: function (v) {
+      if (root) root.setAttribute('data-look', v.look || 'classic');
       if (view && v.nope > view.nope) api.vibrate([30, 30, 30]);
       view = v;
       render();

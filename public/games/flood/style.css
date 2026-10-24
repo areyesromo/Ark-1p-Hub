@@ -1,0 +1,17 @@
+.fl-canvas { aspect-ratio: 1; width: 100%; border-radius: var(--r-md); image-rendering: pixelated; display: block; }
+.fl-keys { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.5em; }
+.fl-keys button { background: var(--c); color: rgba(0, 0, 0, 0.65); border: 0; border-radius: var(--r-md); font-weight: 800; padding: 0.7em 0; min-width: 0; font-size: var(--fs-md); }
+.fl-keys button b { font-size: 0.8em; }
+.fl-keys button.own { opacity: 0.35; }
+.fl-keys button.cursor { outline: 3px solid var(--text); outline-offset: 2px; }
+.low { color: var(--bad); font-weight: 800; }
+
+.fl-host { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.fl-host .fl-top { display: flex; gap: 2.5rem; align-items: center; font-size: var(--fs-md); color: var(--muted); }
+.fl-host .fl-top strong { color: var(--text); font-size: 1.4em; }
+.fl-host .fl-canvas { width: min(70vh, 90vw); flex: none; }
+.fl-host .fl-keys { width: min(70vh, 90vw); }
+
+.fl-phone { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding: 10px 10px 14px; text-align: center; }
+.fl-phone .info { display: flex; justify-content: space-between; color: var(--muted); }
+.fl-phone .info strong { color: var(--me); }

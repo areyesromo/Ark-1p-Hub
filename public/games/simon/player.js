@@ -41,7 +41,10 @@
         setTimeout(function () { btn.classList.remove('lit'); }, 180);
       });
     },
-    update: render,
+    update: function (v) {
+      if (root) root.setAttribute('data-look', v.look || 'classic');
+      render(v);
+    },
     unmount: function () {
       root = pads = msg = view = null;
     },

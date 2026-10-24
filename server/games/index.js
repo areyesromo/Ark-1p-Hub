@@ -19,6 +19,9 @@ import kenken, { SIZES as KENKEN_SIZES } from './kenken.js';
 import numbers from './numbers.js';
 import oddone from './oddone.js';
 import hangman from './hangman.js';
+import lines from './lines.js';
+import flood, { SIZES as FLOOD_SIZES } from './flood.js';
+import mastermind, { LEVELS as MASTER_LEVELS } from './mastermind.js';
 import { LEVELS as SOKOBAN_LEVELS } from './sokoban-levels.js';
 import cave, { MAPS as CAVE_MAPS, VEHICLES as CAVE_VEHICLES } from './cave.js';
 import lights, { LEVELS as LIGHTS_LEVELS } from './lights.js';
@@ -121,13 +124,21 @@ const GAMES = [
   }),
   withSetup(solitaire, {
     draw: { title: 'Turn from the stock', values: [1, 3], label: (n) => (n === 1 ? 'One card at a time' : 'Three at a time (harder, its own scores)') },
+    ...lookRow('solitaire', 'Card backs'),
   }),
-  freecell,
-  mahjong,
+  withSetup(freecell, lookRow('freecell', 'Cards')),
+  withSetup(mahjong, lookRow('mahjong', 'Tiles')),
   withSetup(slide, {
     size: { title: 'Size', values: [4, 3, 5], label: (n) => `${n} × ${n} (${n * n - 1} tiles${n === 3 ? ', a warm-up' : n === 5 ? ', a real test' : ''})` },
   }),
   withSetup(gems, lookRow('gems', 'Gems')),
+  withSetup(mastermind, {
+    level: { title: 'Code', values: Object.keys(MASTER_LEVELS), label: (k) => `${MASTER_LEVELS[k].name} · ${MASTER_LEVELS[k].pegs} pegs, ${MASTER_LEVELS[k].colours} colours` },
+  }),
+  withSetup(flood, {
+    size: { title: 'Board', values: ['medium', 'small', 'large'], label: (k) => `${FLOOD_SIZES[k].name}${k === 'small' ? ' (a quick one)' : k === 'large' ? ' (a long one)' : ''}` },
+  }),
+  lines,
   withSetup(sokoban, {
     level: {
       title: 'Level',
@@ -152,9 +163,10 @@ const GAMES = [
   withSetup(wordGuess, {
     mode: { title: 'Word', values: ['daily', 'practice'], label: (m) => (m === 'daily' ? '📅 Today\'s word (the same for everyone, once a day)' : '🎲 Practice (a new word every time)') },
   }),
-  simon,
+  withSetup(simon, lookRow('simon', 'Pads')),
   withSetup(memory, {
     size: { title: 'Cards', values: ['small', 'medium', 'large'], label: (k) => `${MEMORY_SIZES[k].w} × ${MEMORY_SIZES[k].h} (${(MEMORY_SIZES[k].w * MEMORY_SIZES[k].h) / 2} pairs)` },
+    ...lookRow('memory', 'Faces'),
   }),
   reaction,
   maths,

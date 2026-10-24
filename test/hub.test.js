@@ -147,10 +147,10 @@ test('a controller at the TV plays without a phone, and the TV can free the seat
   const phone = client();
   assert.match((await call(phone, 'player:join', { code, name: 'Dee' })).error, /Ace is playing/);
 
-  const view = next(host, 'game:view', (m) => m.gameId === 'simon');
-  assert.ok((await call(host, 'lobby:start', { gameId: 'simon' })).ok);
+  const view = next(host, 'game:view', (m) => m.gameId === 'maths');
+  assert.ok((await call(host, 'lobby:start', { gameId: 'maths' })).ok);
   assert.equal((await view).view.phase, 'ready');
-  host.emit('pad:input', { input: { type: 'press', pad: 0 } }); // ignored while it shows the sequence: no crash
+  host.emit('pad:input', { input: { type: 'answer', choice: 0 } }); // ignored before the countdown ends: no crash
 
   assert.ok((await call(host, 'host:kick')).ok);
   assert.equal(server.rooms.get(code).player, null);

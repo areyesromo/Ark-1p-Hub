@@ -3,12 +3,8 @@
 (function () {
   const esc = Ark.escapeHtml;
   const $ = function (id) { return document.getElementById(id); };
-  if (/\/play\//.test(document.referrer)) $('back').href = '/play/';
+  Ark.mountNav('collection');
   const name = new URLSearchParams(location.search).get('name') || '';
-  if (name) {
-    $('to-ach').href = Ark.achievementsUrl(name);
-    $('to-cal').href = '/calendar/?name=' + encodeURIComponent(name);
-  }
 
   function item(i) {
     return '<div class="item' + (i.open ? ' open' : '') + '"><strong>' + esc(i.label) + '</strong>' +

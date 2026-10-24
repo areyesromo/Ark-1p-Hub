@@ -4,9 +4,17 @@
 // tries it took (lower is better), per size.
 
 import { settingOf } from './options.js';
+import { lookOf } from './looks.js';
 
 export const SIZES = { small: { w: 4, h: 4 }, medium: { w: 6, h: 4 }, large: { w: 6, h: 6 } };
 export const FACES = ['🐶', '🐱', '🦊', '🐼', '🐸', '🐵', '🦁', '🐯', '🐨', '🐷', '🐙', '🦄', '🐝', '🐢', '🦋', '🐳', '🦉', '🐧'];
+// The faces each look deals from (a 6 × 6 board needs 18 pairs, so each set has at least 18).
+export const FACE_SETS = {
+  animals: FACES,
+  food: ['🍕', '🍔', '🍟', '🌭', '🍿', '🍩', '🍪', '🎂', '🍦', '🍉', '🍌', '🥑', '🥕', '🌽', '🍞', '🧀', '🍣', '🥨'],
+  sea: ['🐠', '🐟', '🐡', '🦈', '🐬', '🐳', '🦀', '🦞', '🦐', '🦑', '🐙', '🐚', '🏖️', '⛵', '🐢', '🦦', '🌊', '⚓'],
+  space: ['🚀', '🛸', '🪐', '🌍', '🌙', '⭐', '🎆', '☄️', '🌞', '👽', '🛰️', '🔭', '🌌', '🌠', '👾', '🌑', '🌕', '🌓'],
+};
 export const PEEK_MS = 900; // how long two different cards stay up
 
 export class Memory {
@@ -15,12 +23,13 @@ export class Memory {
     this.rng = rng;
     const size = settingOf(ctx, 'size', 'small');
     this.size = Object.prototype.hasOwnProperty.call(SIZES, size) ? size : 'small';
+    this.look = lookOf(ctx, 'memory');
     this.timer = null;
   }
 
   start() {
     const { w, h } = SIZES[this.size];
-    const faces = this.shuffle(FACES).slice(0, (w * h) / 2);
+    const faces = this.shuffle(FACE_SETS[this.look]).slice(0, (w * h) / 2);
     this.cards = this.shuffle([...faces, ...faces]);
     this.matched = Array(this.cards.length).fill(false);
     this.up = []; // the one or two cards turned over right now
@@ -102,6 +111,7 @@ export class Memory {
   view() {
     const { w, h } = SIZES[this.size];
     return {
+      look: this.look,
       phase: this.phase,
       w,
       h,

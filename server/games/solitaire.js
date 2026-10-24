@@ -7,6 +7,7 @@
 // draw-1 or draw-3; a game you can't finish doesn't count.
 
 import { settingOf } from './options.js';
+import { lookOf } from './looks.js';
 
 const SUITS = ['s', 'h', 'd', 'c']; // spades, hearts, diamonds, clubs
 const red = (c) => c.s === 'h' || c.s === 'd';
@@ -21,6 +22,7 @@ export class Solitaire {
     this.rng = rng;
     this.drawCount = settingOf(ctx, 'draw', 1) === 3 ? 3 : 1;
     this.timer = null;
+    this.look = lookOf(ctx, 'solitaire');
   }
 
   start() {
@@ -207,6 +209,7 @@ export class Solitaire {
   view() {
     const won = this.phase === 'over' && this.found.every((f) => f.length === 13);
     return {
+      look: this.look,
       phase: this.phase,
       // Face-down cards are just '#': what they are stays secret until they turn over.
       tab: this.tab.map((col) => col.map((c) => (c.up ? code(c) : '#'))),

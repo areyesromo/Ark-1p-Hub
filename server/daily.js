@@ -40,6 +40,9 @@ export const POOL = [
   { game: 'kenken', settings: { size: 5 } },
   { game: 'numbers', settings: {} },
   { game: 'oddone', settings: {} },
+  { game: 'lines', settings: {} },
+  { game: 'flood', settings: { size: 'small' } },
+  { game: 'mastermind', settings: { level: 'normal' } },
 ];
 
 /**
