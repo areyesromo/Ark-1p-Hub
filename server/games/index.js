@@ -19,6 +19,7 @@ import kenken, { SIZES as KENKEN_SIZES } from './kenken.js';
 import numbers from './numbers.js';
 import oddone from './oddone.js';
 import hangman from './hangman.js';
+import flood, { SIZES as FLOOD_SIZES } from './flood.js';
 import mastermind, { LEVELS as MASTER_LEVELS } from './mastermind.js';
 import { LEVELS as SOKOBAN_LEVELS } from './sokoban-levels.js';
 import cave, { MAPS as CAVE_MAPS, VEHICLES as CAVE_VEHICLES } from './cave.js';
@@ -131,6 +132,9 @@ const GAMES = [
   withSetup(gems, lookRow('gems', 'Gems')),
   withSetup(mastermind, {
     level: { title: 'Code', values: Object.keys(MASTER_LEVELS), label: (k) => `${MASTER_LEVELS[k].name} · ${MASTER_LEVELS[k].pegs} pegs, ${MASTER_LEVELS[k].colours} colours` },
+  }),
+  withSetup(flood, {
+    size: { title: 'Board', values: ['medium', 'small', 'large'], label: (k) => `${FLOOD_SIZES[k].name}${k === 'small' ? ' (a quick one)' : k === 'large' ? ' (a long one)' : ''}` },
   }),
   withSetup(sokoban, {
     level: {

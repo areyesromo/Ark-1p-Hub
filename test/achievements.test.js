@@ -7,7 +7,7 @@ import { listGames } from '../server/games/index.js';
 
 const DAY = 86400000;
 const ids = (list) => list.map((a) => a.id).sort();
-const history = (over = {}) => ({ runs: 1, games: 1, bests: 1, topSpots: 0, streak: 1, dailyWords: 0, dailyChallenges: 0, gamesInHub: 36, ...over });
+const history = (over = {}) => ({ runs: 1, games: 1, bests: 1, topSpots: 0, streak: 1, dailyWords: 0, dailyChallenges: 0, gamesInHub: 37, ...over });
 
 test('every achievement has an id, an icon, words, a known game and a check', () => {
   const games = new Set(listGames().map((g) => g.id));
@@ -41,7 +41,7 @@ test('checks read the game\'s last view, and a missing field just means "not yet
 
 test('hub-wide goals come from the player\'s history', () => {
   const have = { 'first-run': 1 };
-  const got = newlyEarned({ game: 'simon', score: 3 }, {}, history({ runs: 30, games: 36, bests: 10, topSpots: 1, streak: 7, dailyChallenges: 7 }), have);
+  const got = newlyEarned({ game: 'simon', score: 3 }, {}, history({ runs: 30, games: 37, bests: 10, topSpots: 1, streak: 7, dailyChallenges: 7 }), have);
   assert.deepEqual(ids(got), ['bests-10', 'daily-1', 'daily-7', 'explorer', 'runs-25', 'streak-3', 'streak-7', 'taster', 'top-spot']);
 });
 

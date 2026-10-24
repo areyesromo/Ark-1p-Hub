@@ -121,6 +121,11 @@ export const ACHIEVEMENTS = [
     { id: 'nonogram-10-5', icon: '⏱️', name: 'Quick sketch', desc: 'Nonograms: solve a 10×10 in under 5 minutes.', check: (r, v) => scored(r) && v.n === 10 && r.score < 5 * MIN },
     { id: 'nonogram-15', icon: '🎨', name: 'Big picture', desc: 'Nonograms: solve a 15×15.', check: (r, v) => scored(r) && v.n === 15 },
   ]),
+  ...game('flood', [
+    { id: 'flood-win', icon: '🌊', name: 'Flooded', desc: 'Flood-It: flood a whole board.', check: (r) => scored(r) },
+    { id: 'flood-par', icon: '🎯', name: 'Sharp tide', desc: 'Flood-It: flood a board in 20 moves or fewer.', check: (r) => scored(r) && r.score <= 20 },
+    { id: 'flood-large', icon: '🌍', name: 'Ocean', desc: 'Flood-It: flood the 18 × 18 board.', check: (r) => scored(r) && r.variant === '18 × 18' },
+  ]),
   ...game('mastermind', [
     { id: 'mastermind-solve', icon: '🔐', name: 'Code breaker', desc: 'Mastermind: crack a code.', check: (r) => scored(r) },
     { id: 'mastermind-5', icon: '🕵️', name: 'Sharp deduction', desc: 'Mastermind: crack a code in 5 guesses or fewer.', check: (r) => scored(r) && r.score <= 5 },
