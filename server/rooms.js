@@ -194,6 +194,8 @@ export class Room {
       // (not for the daily challenge, which is played as it's dealt).
       saved: challenge ? {} : (this.saved[def.id] = this.saved[def.id] || {}),
       // This player's go at the game's daily puzzle, kept in the score history (see Stats#getDaily).
+      // The player's achievements ({ id: when }), for choices they unlock (see lockedFor in options.js).
+      achievements: () => (room.stats && room.playerName ? room.stats.achievementsOf(room.playerName) : {}),
       daily: {
         get: (day) => (room.stats ? room.stats.getDaily(def.id, day, room.playerName) : null),
         set: (day, data) => { if (room.stats) room.stats.setDaily(def.id, day, room.playerName, data); },

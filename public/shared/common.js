@@ -132,12 +132,20 @@
     return list.every(function (x) { return typeof x === 'number'; }) ? list.sort(function (a, b) { return a - b; }) : list;
   }
 
+  /** How to unlock a choice the player hasn't earned yet (v.locked, from the server), or null. */
+  function lockedWhy(v, key, value) {
+    const l = v.locked && v.locked[key];
+    return l && Object.prototype.hasOwnProperty.call(l, value) ? l[value] : null;
+  }
+
   /** The settings as rows of buttons (phones tap them: data-key / data-value). focusKey outlines one row (TV). */
   function setupHtml(v, rows, focusKey) {
     return '<div class="ark-setup">' + rows.map(function (row) {
       return '<div class="row' + (row.key === focusKey ? ' focus' : '') + '"><div class="title">' + row.title + '</div><div class="seg">' +
         setupChoices(v, row.key).map(function (value) {
           const on = v.settings[row.key] === value;
+          const why = lockedWhy(v, row.key, value);
+          if (why) return '<button type="button" class="opt locked" disabled>🔒 ' + row.fmt(value) + '<span class="why">' + escapeHtml(why) + '</span></button>';
           return '<button type="button" class="opt' + (on ? ' on' : '') + '" aria-pressed="' + on + '" data-key="' + row.key + '" data-value="' + escapeHtml(value) + '">' +
             row.fmt(value) + '</button>';
         }).join('') + '</div></div>';
@@ -157,7 +165,8 @@
     }
     if (btn === 'LEFT' || btn === 'RIGHT') {
       const key = rows[state.row || 0].key;
-      const list = setupChoices(v, key);
+      // Locked choices are shown but stepped over.
+      const list = setupChoices(v, key).filter(function (value) { return value === v.settings[key] || !lockedWhy(v, key, value); });
       // Wraps round, so the far end of a long list is one press away.
       const i = (list.indexOf(v.settings[key]) + (btn === 'LEFT' ? -1 : 1) + list.length) % list.length;
       return { type: 'setting', key: key, value: list[i] };
@@ -175,7 +184,7 @@
     const h = v.hubSetup;
     return {
       rows: h.rows.map(function (r) { return { key: r.key, title: escapeHtml(r.title), fmt: function (value) { return escapeHtml(r.labels[value] || String(value)); } }; }),
-      view: { settings: h.settings, options: h.options },
+      view: { settings: h.settings, options: h.options, locked: h.locked || {} },
     };
   }
 
@@ -183,7 +192,7 @@
   function bindSetup(el, api) {
     el.addEventListener('click', function (e) {
       const btn = e.target.closest && e.target.closest('.ark-setup .opt');
-      if (!btn) return;
+      if (!btn || btn.classList.contains('locked')) return;
       // Numbers go as numbers; word choices ('fast', 'hard') as they are.
       const raw = btn.getAttribute('data-value');
       api.send({ type: 'setting', key: btn.getAttribute('data-key'), value: raw !== '' && !isNaN(raw) ? Number(raw) : raw });

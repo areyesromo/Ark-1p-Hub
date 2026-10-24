@@ -12,7 +12,7 @@ import slide, { SIZES as SLIDE_SIZES } from './slide.js';
 import gems from './gems.js';
 import memory, { SIZES as MEMORY_SIZES } from './memory.js';
 import stack from './stack.js';
-import cave from './cave.js';
+import cave, { MAPS as CAVE_MAPS, VEHICLES as CAVE_VEHICLES } from './cave.js';
 import lights, { LEVELS as LIGHTS_LEVELS } from './lights.js';
 import wordsearch, { SIZES as WORDSEARCH_SIZES } from './wordsearch.js';
 import anagram from './anagram.js';
@@ -28,6 +28,7 @@ import minesweeper, { SIZES as MINE_SIZES } from './minesweeper.js';
 import simon from './simon.js';
 import reaction from './reaction.js';
 import { withSetup } from './options.js';
+import { getAchievement } from '../achievements.js';
 
 /**
  * Every game is a module exporting:
@@ -51,7 +52,7 @@ import { withSetup } from './options.js';
  * and the phone, saved (kept between launches), and rng: pass it on to the
  * game (create: (ctx) => new Game(ctx, ctx.rng)) so the daily challenge can
  * deal everyone the same game; it's undefined otherwise. ctx.challenge is true
- * in the daily challenge.
+ * in the daily challenge, and ctx.achievements() lists the player's achievements.
  *
  * When a run ends, hostView() has phase: 'over' and score (a number, or null
  * when the run doesn't count, like a lost Minesweeper). An optional variant
@@ -62,6 +63,18 @@ import { withSetup } from './options.js';
  * To add a game: write the module, list it below, and add the two renderers
  * under public/games/<id>/.
  */
+/**
+ * A lock for choices opened by an achievement (the choice's `unlock` id): null once the
+ * player has it, else how to get it, e.g. "Fly 100 m to unlock".
+ */
+const byAchievement = (list) => (k, have) => {
+  const id = list[k].unlock;
+  if (!id || have[id]) return null;
+  const a = getAchievement(id);
+  const how = a.desc.replace(/^[^:]*: /, '').replace(/\.$/, '');
+  return how.charAt(0).toUpperCase() + how.slice(1) + ' to unlock';
+};
+
 // Setup screens for the games that have choices (see withSetup in options.js).
 // The first value of each list is the default.
 const GAMES = [
@@ -78,7 +91,10 @@ const GAMES = [
   invaders,
   runner,
   stack,
-  cave,
+  withSetup(cave, {
+    map: { title: 'Map', values: Object.keys(CAVE_MAPS), label: (k) => CAVE_MAPS[k].name, lock: byAchievement(CAVE_MAPS) },
+    vehicle: { title: 'Fly a', values: Object.keys(CAVE_VEHICLES), label: (k) => CAVE_VEHICLES[k].name, lock: byAchievement(CAVE_VEHICLES) },
+  }),
   game2048,
   withSetup(minesweeper, {
     size: { title: 'Field', values: Object.keys(MINE_SIZES), label: (k) => `${MINE_SIZES[k].name} · ${MINE_SIZES[k].w}×${MINE_SIZES[k].h}, ${MINE_SIZES[k].mines} mines` },
