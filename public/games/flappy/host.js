@@ -79,29 +79,87 @@
     g.save();
     g.translate(b.x, y);
     g.rotate(tilt);
-    g.fillStyle = '#facc15';
-    g.beginPath();
-    g.ellipse(0, 0, b.r * 1.2, b.r, 0, 0, Math.PI * 2);
-    g.fill();
-    g.fillStyle = '#fde68a'; // wing
-    g.beginPath();
-    g.ellipse(-0.6, 0.4 + (play && b.vy < 0 ? -0.6 : 0.3), b.r * 0.6, b.r * 0.35, 0, 0, Math.PI * 2);
-    g.fill();
-    g.fillStyle = '#fff';
-    g.beginPath();
-    g.arc(b.r * 0.55, -b.r * 0.35, 0.7, 0, Math.PI * 2);
-    g.fill();
-    g.fillStyle = '#05070f';
-    g.beginPath();
-    g.arc(b.r * 0.7, -b.r * 0.35, 0.35, 0, Math.PI * 2);
-    g.fill();
+    drawFlyer(g, view.look, b.r, now, play && b.vy < 0);
+    g.restore();
+  }
+
+  // The flyers (see server/games/looks.js), round (0, 0) facing right; r is the hit circle's radius.
+  // Their colours are the creatures themselves.
+  function drawFlyer(g, look, r, now, flapping) {
+    const blob = function (fill, x, yy, rx, ry) {
+      g.fillStyle = fill;
+      g.beginPath();
+      g.ellipse(x, yy, rx, ry, 0, 0, Math.PI * 2);
+      g.fill();
+    };
+    const eye = function (x, yy) {
+      blob('#fff', x, yy, 0.7, 0.7);
+      blob('#05070f', x + 0.15, yy, 0.35, 0.35);
+    };
+    if (look === 'bat') {
+      const up = flapping ? -1.6 : 0.6 + Math.sin(now / 90) * 0.4;
+      g.fillStyle = '#4c1d95'; // wings
+      [-1, 1].forEach(function (side) {
+        g.beginPath();
+        g.moveTo(side * r * 0.3, 0);
+        g.lineTo(side * r * 1.9, up);
+        g.lineTo(side * r * 1.3, r * 0.5);
+        g.lineTo(side * r * 0.9, r * 0.2);
+        g.closePath();
+        g.fill();
+      });
+      blob('#6d28d9', 0, 0, r * 0.9, r * 0.85);
+      g.fillStyle = '#6d28d9'; // ears
+      g.beginPath();
+      g.moveTo(-r * 0.6, -r * 0.6); g.lineTo(-r * 0.3, -r * 1.3); g.lineTo(0, -r * 0.7);
+      g.moveTo(r * 0.1, -r * 0.7); g.lineTo(r * 0.5, -r * 1.3); g.lineTo(r * 0.7, -r * 0.5);
+      g.fill();
+      blob('#fde047', r * 0.35, -r * 0.2, 0.35, 0.35);
+      return;
+    }
+    if (look === 'penguin') {
+      blob('#111827', 0, 0, r * 1.15, r);
+      blob('#f9fafb', r * 0.25, r * 0.15, r * 0.75, r * 0.7);
+      g.fillStyle = '#111827'; // flipper
+      g.beginPath();
+      g.ellipse(-r * 0.4, r * 0.2, r * 0.5, r * 0.22, flapping ? -0.9 : 0.5, 0, Math.PI * 2);
+      g.fill();
+      eye(r * 0.55, -r * 0.4);
+      g.fillStyle = '#fb923c';
+      g.beginPath();
+      g.moveTo(r * 1.05, -r * 0.2); g.lineTo(r * 1.05 + 1.3, 0.1); g.lineTo(r * 1.05, r * 0.25);
+      g.fill();
+      return;
+    }
+    if (look === 'dragon') {
+      const flap = flapping ? -1 : Math.sin(now / 120);
+      g.fillStyle = '#16a34a';
+      g.beginPath(); // tail
+      g.moveTo(-r * 0.8, 0);
+      g.quadraticCurveTo(-r * 1.8, r * 0.3, -r * 2.3, -r * 0.3);
+      g.lineTo(-r * 0.8, r * 0.4);
+      g.fill();
+      blob('#16a34a', 0, 0, r * 1.15, r * 0.75);
+      blob('#16a34a', r * 1.1, -r * 0.45, r * 0.55, r * 0.42);
+      g.fillStyle = '#22c55e'; // wing
+      g.beginPath();
+      g.moveTo(-r * 0.5, -r * 0.3);
+      g.lineTo(0, -r * (0.5 + 1.2 * flap));
+      g.lineTo(r * 0.5, -r * 0.3);
+      g.fill();
+      blob('#fde047', r * 1.3, -r * 0.55, 0.3, 0.3);
+      if (flapping) blob('rgba(251, 146, 60, 0.8)', r * 1.9, -r * 0.4, 0.6, 0.35); // a puff of fire
+      return;
+    }
+    blob('#facc15', 0, 0, r * 1.2, r);
+    blob('#fde68a', -0.6, 0.4 + (flapping ? -0.6 : 0.3), r * 0.6, r * 0.35); // wing
+    eye(r * 0.55, -r * 0.35);
     g.fillStyle = '#fb923c'; // beak
     g.beginPath();
-    g.moveTo(b.r * 1.1, -0.2);
-    g.lineTo(b.r * 1.1 + 1.4, 0.3);
-    g.lineTo(b.r * 1.1, 0.8);
+    g.moveTo(r * 1.1, -0.2);
+    g.lineTo(r * 1.1 + 1.4, 0.3);
+    g.lineTo(r * 1.1, 0.8);
     g.fill();
-    g.restore();
   }
 
   function render(v) {

@@ -7,6 +7,8 @@
 // The sliding block moves on a fixed schedule, so it needs no ticking: the
 // screens draw it from its start time, and a drop says when the player saw it.
 
+import { lookOf } from './looks.js';
+
 export const FIELD = { w: 100 };
 export const BASE = { x: 20, w: 60 };
 export const SPEED = { start: 45, perBlock: 1.6, max: 120 }; // units per second
@@ -17,6 +19,7 @@ export const LAG = { early: 600, late: 120 }; // how far a drop's own time may b
 export class Stack {
   constructor(ctx) {
     this.ctx = ctx;
+    this.look = lookOf(ctx, 'stack');
     this.timer = null;
   }
 
@@ -138,6 +141,7 @@ export class Stack {
       perfects: this.perfects,
       bestPerfects: this.bestPerfects,
       score: this.placed,
+      look: this.look,
     };
   }
 

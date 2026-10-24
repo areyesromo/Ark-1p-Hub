@@ -28,6 +28,7 @@ import minesweeper, { SIZES as MINE_SIZES } from './minesweeper.js';
 import simon from './simon.js';
 import reaction from './reaction.js';
 import { withSetup } from './options.js';
+import { LOOKS } from './looks.js';
 import { getAchievement } from '../achievements.js';
 
 /**
@@ -75,22 +76,26 @@ const byAchievement = (list) => (k, have) => {
   return how.charAt(0).toUpperCase() + how.slice(1) + ' to unlock';
 };
 
+/** A setup row for a game's unlockable looks (see looks.js). */
+const lookRow = (game, title) => ({ look: { title, values: Object.keys(LOOKS[game]), label: (k) => LOOKS[game][k].name, lock: byAchievement(LOOKS[game]) } });
+
 // Setup screens for the games that have choices (see withSetup in options.js).
 // The first value of each list is the default.
 const GAMES = [
   withSetup(snake, {
     speed: { title: 'Speed', values: ['normal', 'fast'], label: (s) => (s === 'fast' ? '⚡ Fast' : 'Normal') },
     walls: { title: 'Walls', values: ['solid', 'wrap'], label: (w) => (w === 'wrap' ? '🌀 Wrap round (come out the other side)' : '🧱 Solid') },
+    ...lookRow('snake', 'Snake'),
   }),
   withSetup(breaker, {
     lives: { title: 'Lives', values: ['normal', 'easy'], label: (l) => (l === 'easy' ? '5 lives (easy, its own scores)' : '3 lives') },
   }),
   blocks,
-  flappy,
+  withSetup(flappy, lookRow('flappy', 'Fly as')),
   asteroids,
   invaders,
   runner,
-  stack,
+  withSetup(stack, lookRow('stack', 'Blocks')),
   withSetup(cave, {
     map: { title: 'Map', values: Object.keys(CAVE_MAPS), label: (k) => CAVE_MAPS[k].name, lock: byAchievement(CAVE_MAPS) },
     vehicle: { title: 'Fly a', values: Object.keys(CAVE_VEHICLES), label: (k) => CAVE_VEHICLES[k].name, lock: byAchievement(CAVE_VEHICLES) },
