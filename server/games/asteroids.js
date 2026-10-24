@@ -5,6 +5,8 @@
 // edges. Score: 20 for a big rock, 50 a middle one, 100 a small one; an extra
 // ship every 10,000 points.
 
+import { lookOf } from './looks.js';
+
 export const FIELD = { w: 160, h: 90 };
 export const SHIP = { r: 2.2, turn: 4.2, thrust: 60, drag: 0.6, maxSpeed: 55 }; // turn: radians/s; thrust: units/s²
 export const SHOT = { speed: 90, lifeMs: 900, max: 5, cooldownMs: 180 };
@@ -28,6 +30,7 @@ function dist2(a, b) {
 export class Asteroids {
   constructor(ctx, rng = Math.random) {
     this.ctx = ctx;
+    this.look = lookOf(ctx, 'asteroids');
     this.rng = rng;
     this.timer = null;
   }
@@ -228,6 +231,7 @@ export class Asteroids {
     const s = this.ship;
     const r1 = (v) => Math.round(v * 100) / 100;
     return {
+      look: this.look,
       phase: this.phase,
       player: this.ctx.player,
       field: FIELD,

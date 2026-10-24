@@ -44,6 +44,54 @@
     xs.forEach(function (px) { ys.forEach(function (py) { fn(px, py); }); });
   }
 
+  // The unlockable looks (see server/games/looks.js): the ship, facing right, r its size.
+  // Their colours are the ships themselves.
+  function drawShip(g, look, r, now) {
+    g.lineWidth = 0.4;
+    g.beginPath();
+    if (look === 'rocket') {
+      g.strokeStyle = '#f87171';
+      g.moveTo(r * 1.5, 0);
+      g.quadraticCurveTo(r * 0.8, -r * 0.6, -r * 0.8, -r * 0.5);
+      g.lineTo(-r * 1.1, -r * 1);
+      g.lineTo(-r * 0.8, 0);
+      g.lineTo(-r * 1.1, r * 1);
+      g.lineTo(-r * 0.8, r * 0.5);
+      g.quadraticCurveTo(r * 0.8, r * 0.6, r * 1.5, 0);
+      g.stroke();
+      g.beginPath();
+      g.arc(r * 0.4, 0, r * 0.22, 0, Math.PI * 2);
+      g.strokeStyle = '#93c5fd';
+      g.stroke();
+      return;
+    }
+    if (look === 'saucer') {
+      g.strokeStyle = '#a3e635';
+      g.ellipse(0, 0, r * 1.3, r * 0.55, 0, 0, Math.PI * 2);
+      g.stroke();
+      g.beginPath();
+      g.arc(0, 0, r * 0.55, 0, Math.PI * 2);
+      g.stroke();
+      // A nose light, so you can see which way it points.
+      g.fillStyle = Math.floor(now / 200) % 2 ? '#fde047' : '#a3e635';
+      g.beginPath();
+      g.arc(r * 1.3, 0, 0.35, 0, Math.PI * 2);
+      g.fill();
+      return;
+    }
+    g.strokeStyle = look === 'gold' ? '#facc15' : color;
+    g.moveTo(r * 1.4, 0);
+    g.lineTo(-r, -r * 0.9);
+    g.lineTo(-r * 0.6, 0);
+    g.lineTo(-r, r * 0.9);
+    g.closePath();
+    if (look === 'gold') {
+      g.fillStyle = 'rgba(250, 204, 21, 0.35)';
+      g.fill();
+    }
+    g.stroke();
+  }
+
   function draw(now) {
     raf = requestAnimationFrame(draw);
     if (!view) return;
@@ -102,15 +150,7 @@
         g.save();
         g.translate(px, py);
         g.rotate(a);
-        g.strokeStyle = color;
-        g.lineWidth = 0.4;
-        g.beginPath();
-        g.moveTo(s.r * 1.4, 0);
-        g.lineTo(-s.r, -s.r * 0.9);
-        g.lineTo(-s.r * 0.6, 0);
-        g.lineTo(-s.r, s.r * 0.9);
-        g.closePath();
-        g.stroke();
+        drawShip(g, view.look, s.r, now);
         if (s.thrust && Math.floor(now / 60) % 2) {
           g.strokeStyle = '#fb923c';
           g.beginPath();

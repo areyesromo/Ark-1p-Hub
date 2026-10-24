@@ -32,6 +32,9 @@
   }
 
   // The desert: sand, cactuses and birds are the scene's own colours.
+  // The unlockable looks (see server/games/looks.js): the runner's colour. These colours are the runner.
+  const LOOK_COLOURS = { robot: '#94a3b8', dino: '#22c55e', ninja: '#334155' };
+
   function draw(now) {
     raf = requestAnimationFrame(draw);
     if (!view) return;
@@ -84,14 +87,36 @@
     let y = r.y;
     if (view.phase === 'play' && (r.y > 0 || r.vy > 0)) y = Math.max(0, r.y + r.vy * dt - (view.gravity * dt * dt) / 2);
     const top = ground - y - r.h;
-    g.fillStyle = g.shadowColor = color;
+    const look = view.look || 'runner';
+    const body = LOOK_COLOURS[look] || color;
+    g.fillStyle = g.shadowColor = body;
     g.shadowBlur = 2;
     g.fillRect(r.x, top + (r.ducking ? 0.6 : 1.8), r.w, r.h - (r.ducking ? 1.4 : 3));
     if (r.ducking) g.fillRect(r.x + r.w * 0.6, top, r.w * 0.6, 1.6);
     else g.fillRect(r.x + r.w * 0.25, top, r.w * 0.7, 1.9);
-    g.fillStyle = '#05070f';
+    // The head's top-left corner, for the eye and each look's extras.
+    const hx = r.x + r.w * (r.ducking ? 0.6 : 0.25);
+    const hw = r.w * (r.ducking ? 0.6 : 0.7);
+    g.fillStyle = look === 'robot' ? '#ef4444' : '#05070f';
     g.fillRect(r.x + r.w * (r.ducking ? 0.95 : 0.7), top + 0.5, 0.45, 0.45);
-    g.fillStyle = color;
+    if (look === 'robot') {
+      g.fillStyle = '#cbd5e1'; // antenna with a blinking light
+      g.fillRect(hx + hw / 2 - 0.1, top - 0.9, 0.2, 0.9);
+      g.fillStyle = Math.floor(now / 300) % 2 ? '#ef4444' : '#fca5a5';
+      g.fillRect(hx + hw / 2 - 0.3, top - 1.3, 0.6, 0.5);
+    } else if (look === 'dino') {
+      g.fillStyle = '#15803d'; // spikes down the back, and a tail
+      for (let k = 0; k < 3; k++) g.fillRect(r.x - 0.1 + k * 0.7, top + 1.4 + k * 0.5, 0.5, 0.5);
+      g.fillStyle = body;
+      g.fillRect(r.x - 1.2, top + (r.ducking ? 1.2 : 3), 1.3, 0.7);
+    } else if (look === 'ninja') {
+      g.fillStyle = '#dc2626'; // a headband with its ends flying behind
+      g.fillRect(hx, top + 0.15, hw, 0.35);
+      const flap = Math.sin(now / 80) * 0.3;
+      g.fillRect(hx - 1.1, top + 0.1 + flap, 1.1, 0.25);
+      g.fillRect(hx - 0.9, top + 0.45 - flap, 0.9, 0.25);
+    }
+    g.fillStyle = body;
     // Legs: running in step on the ground, tucked in the air.
     const step = view.phase === 'play' && y === 0 ? Math.floor(now / 90) % 2 : 2;
     const legY = ground - y - 1.3;

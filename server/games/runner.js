@@ -3,6 +3,8 @@
 // Hold jump for a higher jump. The run gets faster the further you go.
 // Score: how far you got, in metres.
 
+import { lookOf } from './looks.js';
+
 export const FIELD = { w: 100, h: 40, ground: 34 };
 export const RUNNER = { x: 14, w: 4, h: 7, duckH: 3.5 };
 export const PHYS = { gravity: 220, jump: 66, holdGravity: 120, maxHoldMs: 260 }; // units/s and units/s²
@@ -13,6 +15,7 @@ export const TIMING = { tickMs: 1000 / 60, sendEvery: 2, readyMs: 1200 };
 export class Runner {
   constructor(ctx, rng = Math.random) {
     this.ctx = ctx;
+    this.look = lookOf(ctx, 'runner');
     this.rng = rng;
     this.timer = null;
   }
@@ -150,6 +153,7 @@ export class Runner {
   hostView() {
     const r = (v) => Math.round(v * 100) / 100;
     return {
+      look: this.look,
       phase: this.phase,
       player: this.ctx.player,
       field: FIELD,

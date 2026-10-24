@@ -16,6 +16,15 @@
   let statsKey = '';
   let overlayKey = '';
   let color = '#22d3ee';
+  // The unlockable looks (see server/games/looks.js): the paddle, the ball and its trail.
+  // These colours are the paddle and ball themselves.
+  const LOOKS = {
+    classic: { paddle: function () { return color; }, ball: function () { return '#fff'; }, trail: 0 },
+    fire: { paddle: function () { return '#f97316'; }, ball: function () { return '#fde047'; }, trail: 8, trailColour: function (i) { return 'hsl(' + (40 - i * 4) + ', 95%, 55%)'; } },
+    crystal: { paddle: function () { return '#a5f3fc'; }, ball: function () { return '#e0f2fe'; }, trail: 6, trailColour: function () { return '#67e8f9'; }, edge: '#fff' },
+    rainbow: { paddle: function (now) { return 'hsl(' + Math.round(now / 8) % 360 + ', 90%, 60%)'; }, ball: function () { return '#fff'; }, trail: 10, trailColour: function (i, now) { return 'hsl(' + Math.round(now / 8 + i * 30) % 360 + ', 90%, 60%)'; } },
+  };
+  const trail = []; // where the ball has been lately, newest first (drawn only)
 
   function resize() {
     const f = view.field;
@@ -32,8 +41,9 @@
     }
   }
 
-  function draw() {
+  function draw(now) {
     raf = requestAnimationFrame(draw);
+    now = now || 0;
     if (!view) return;
     resize();
     const f = view.field;
@@ -50,23 +60,44 @@
       g.fillRect(b[0], b[1], b[2], b[3] * 0.3);
     });
 
+    const look = LOOKS[view.look] || LOOKS.classic;
     const p = view.paddle;
-    g.fillStyle = g.shadowColor = color;
+    g.fillStyle = g.shadowColor = look.paddle(now);
     g.shadowBlur = 3;
     g.beginPath();
     if (g.roundRect) g.roundRect(p.x - p.w / 2, p.y, p.w, p.h, p.h / 2);
     else g.rect(p.x - p.w / 2, p.y, p.w, p.h);
     g.fill();
+    if (look.edge) {
+      g.strokeStyle = look.edge;
+      g.lineWidth = 0.25;
+      g.stroke();
+    }
 
     const b = view.ball;
     const dt = view.phase === 'play' ? Math.min(performance.now() - viewAt, MAX_EXTRAPOLATE_MS) / 1000 : 0;
     if (view.phase !== 'lost' && view.phase !== 'over') {
-      g.fillStyle = g.shadowColor = '#fff';
+      const x = b.x + b.vx * dt;
+      const y = b.y + b.vy * dt;
+      if (look.trail) {
+        trail.unshift([x, y]);
+        trail.length = Math.min(trail.length, look.trail);
+        g.shadowBlur = 0;
+        for (let i = trail.length - 1; i >= 1; i--) {
+          g.globalAlpha = 0.5 * (1 - i / trail.length);
+          g.fillStyle = look.trailColour(i, now);
+          g.beginPath();
+          g.arc(trail[i][0], trail[i][1], b.r * (1 - i / (trail.length + 2)), 0, Math.PI * 2);
+          g.fill();
+        }
+        g.globalAlpha = 1;
+      }
+      g.fillStyle = g.shadowColor = look.ball(now);
       g.shadowBlur = 4;
       g.beginPath();
-      g.arc(b.x + b.vx * dt, b.y + b.vy * dt, b.r, 0, Math.PI * 2);
+      g.arc(x, y, b.r, 0, Math.PI * 2);
       g.fill();
-    }
+    } else trail.length = 0;
     g.shadowBlur = 0;
   }
 
