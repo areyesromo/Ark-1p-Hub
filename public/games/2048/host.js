@@ -15,6 +15,7 @@
 
   function render(v) {
     size = v.size;
+    board.parentNode.className = 'g2048-board look-' + (v.look || 'classic'); // the unlockable looks: see style.css
     const seen = {};
     v.tiles.forEach(function (t) {
       seen[t.id] = true;

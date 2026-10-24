@@ -42,6 +42,23 @@ export const LOOKS = {
     spooky: { name: '👻 Spooky', unlock: 'invaders-saucer' },
     candy: { name: '🍭 Candy', unlock: 'invaders-5k' },
   },
+  '2048': {
+    classic: { name: 'Classic' },
+    ocean: { name: '🌊 Ocean', unlock: '2048-512' },
+    neon: { name: '💜 Neon', unlock: '2048-2048' },
+  },
+  blocks: {
+    classic: { name: 'Classic' },
+    candy: { name: '🍬 Candy', unlock: 'blocks-four' },
+    retro: { name: '🟩 Retro green', unlock: 'blocks-40' },
+    neon: { name: '💜 Neon', unlock: 'blocks-10k' },
+  },
+  gems: {
+    classic: { name: 'Classic' },
+    fruit: { name: '🍒 Fruit', unlock: 'gems-five' },
+    space: { name: '🪐 Space', unlock: 'gems-chain4' },
+    candy: { name: '🍬 Candy', unlock: 'gems-3000' },
+  },
   stack: {
     classic: { name: 'Classic' },
     candy: { name: '🍬 Candy', unlock: 'stack-10' },

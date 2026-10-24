@@ -3,6 +3,8 @@
 // After every move a new 2 (sometimes a 4) appears. Reach 2048 and you can
 // keep going; the run ends when no move changes the board.
 
+import { lookOf } from './looks.js';
+
 export const SIZE = 4;
 export const GOAL = 2048;
 const FOUR_CHANCE = 0.1;
@@ -18,6 +20,7 @@ export class Game2048 {
   constructor(ctx, rng = Math.random) {
     this.ctx = ctx;
     this.rng = rng;
+    this.look = lookOf(ctx, '2048');
   }
 
   start() {
@@ -130,6 +133,7 @@ export class Game2048 {
     return {
       phase: this.phase,
       player: this.ctx.player,
+      look: this.look,
       size: SIZE,
       tiles: this.cells.map((c, i) => (c ? { id: c.id, v: c.v, x: i % SIZE, y: Math.floor(i / SIZE), merged: Boolean(c.merged), fresh: Boolean(c.fresh) } : null)).filter(Boolean),
       score: this.score,
