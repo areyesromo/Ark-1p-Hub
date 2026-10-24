@@ -197,6 +197,11 @@ export const ACHIEVEMENTS = [
     { id: 'oddone-25', icon: '🦅', name: 'Eagle eye', desc: 'Odd One Out: find 25.', check: (r) => r.score >= 25 },
     { id: 'oddone-clean', icon: '🎯', name: 'Sure thing', desc: 'Odd One Out: find 12 without a wrong tap.', check: (r, v) => r.score >= 12 && v.wrong === 0 },
   ]),
+  ...game('hangman', [
+    { id: 'hangman-5', icon: '🔠', name: 'Wordsmith', desc: 'Hangman: guess 5 words in one run.', check: (r, v) => v.solved >= 5 },
+    { id: 'hangman-10', icon: '🗝️', name: 'Escape artist', desc: 'Hangman: guess 10 words in one run.', check: (r, v) => v.solved >= 10 },
+    { id: 'hangman-flawless', icon: '✨', name: 'Not a slip', desc: 'Hangman: guess 3 words with no wrong guess in one run.', check: (r, v) => v.perfects >= 3 },
+  ]),
   ...game('memory', [
     { id: 'memory-solve', icon: '🃏', name: 'Total recall', desc: 'Memory Pairs: find every pair.', check: (r) => scored(r) },
     { id: 'memory-12', icon: '🧠', name: 'Sharp memory', desc: 'Memory Pairs: clear 4 × 4 in 12 tries or fewer.', check: (r, v) => scored(r) && v.w === 4 && v.h === 4 && r.score <= 12 },
