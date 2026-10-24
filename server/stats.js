@@ -136,6 +136,25 @@ export class Stats {
     };
   }
 
+  /**
+   * The days a player took part in the daily challenge: Map of 'YYYY-MM-DD' -> { game, score },
+   * score null for a go they started and didn't finish. Taken from the saved goes (which are only
+   * kept for a couple of months) and from the finished runs (which are kept much longer).
+   */
+  dailyDaysOf(name) {
+    const key = nameKey(name);
+    const out = new Map();
+    for (const k of Object.keys(this.dailies)) {
+      const m = /^daily\|(\d{4}-\d{2}-\d{2})\|(.*)$/.exec(k);
+      if (m && m[2] === key) out.set(m[1], { game: this.dailies[k].game, score: this.dailies[k].score === undefined ? null : this.dailies[k].score });
+    }
+    for (const r of this.runs) {
+      const m = /^Daily (\d{4}-\d{2}-\d{2})$/.exec(r.variant || '');
+      if (m && nameKey(r.player) === key && r.score !== null && r.score !== undefined) out.set(m[1], { game: r.game, score: r.score });
+    }
+    return out;
+  }
+
   /** A player's go at a game's daily puzzle (day: 'YYYY-MM-DD'), or null. */
   getDaily(game, day, name) {
     return this.dailies[`${game}|${day}|${nameKey(name)}`] || null;

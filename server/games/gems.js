@@ -5,6 +5,8 @@
 // left it's reshuffled. Score: points (10 a gem, more for lines of 4 and 5,
 // times the chain step).
 
+import { lookOf } from './looks.js';
+
 export const SIZE = 8;
 export const COLORS = 6;
 export const MOVES = 30;
@@ -14,6 +16,7 @@ export class Gems {
   constructor(ctx, rng = Math.random) {
     this.ctx = ctx;
     this.rng = rng;
+    this.look = lookOf(ctx, 'gems');
   }
 
   start() {
@@ -152,6 +155,7 @@ export class Gems {
   view() {
     return {
       phase: this.phase,
+      look: this.look,
       size: SIZE,
       board: this.board,
       last: this.last,

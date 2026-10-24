@@ -16,6 +16,9 @@ import { adminRouter } from './admin.js';
 import { Stats } from './stats.js';
 import { Profiles, AVATARS, COLOURS } from './profiles.js';
 import { ACHIEVEMENTS, describe } from './achievements.js';
+import { collectionFor, countOpen } from './collection.js';
+import { monthDays, shiftMonth, weekOffset, streaks } from './calendar.js';
+import { challengeFor, dayOf } from './daily.js';
 import { listGames } from './games/index.js';
 
 const ROOT_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -76,6 +79,43 @@ export function createApp({
     const games = Object.fromEntries(listGames().map((g) => [g.id, g.name]));
     const list = ACHIEVEMENTS.map((a) => ({ ...describe(a, have[a.id] || null), gameName: a.game ? games[a.game] : null }));
     res.json({ name, profile: name ? profiles.get(name) : null, got: list.filter((a) => a.at).length, total: list.length, list });
+  });
+  // What a player has unlocked in each game, and what's still locked (?name=).
+  app.get('/api/collection', (req, res) => {
+    const name = String(req.query.name || '').slice(0, 32);
+    const groups = collectionFor({ have: name ? stats.achievementsOf(name) : {}, bestOf: (game, variant, better) => (name ? stats.bestFor(game, variant, name, better) : null) });
+    res.json({ name, profile: name ? profiles.get(name) : null, ...countOpen(groups), groups });
+  });
+  // A month of the daily challenge for a player (?name=&month=YYYY-MM): each day's game, whether they
+  // took part, and their streaks.
+  app.get('/api/calendar', (req, res) => {
+    const name = String(req.query.name || '').slice(0, 32);
+    const today = dayOf(Date.now());
+    const thisMonth = today.slice(0, 7);
+    let month = monthDays(String(req.query.month || '')) ? String(req.query.month) : thisMonth;
+    if (month > thisMonth) month = thisMonth; // nothing to show beyond the current month
+    const games = Object.fromEntries(listGames().map((g) => [g.id, g]));
+    const played = name ? stats.dailyDaysOf(name) : new Map();
+    const days = monthDays(month).map((day) => {
+      const p = played.get(day);
+      const game = p ? games[p.game] : day >= today ? games[challengeFor(day).game] : null; // a missed day's game isn't known any more
+      let status = day > today ? 'future' : day === today ? 'today' : 'missed';
+      if (p) status = p.score === null ? 'started' : 'done';
+      return { day, today: day === today, status, game: game ? game.id : null, gameName: game ? game.name : null, unit: game ? game.score.unit : null, score: p ? p.score : null };
+    });
+    const oldest = shiftMonth(thisMonth, -12);
+    res.json({
+      name,
+      profile: name ? profiles.get(name) : null,
+      today,
+      month,
+      offset: weekOffset(month),
+      prev: month > oldest ? shiftMonth(month, -1) : null,
+      next: month < thisMonth ? shiftMonth(month, 1) : null,
+      ...streaks(played.keys(), today),
+      total: played.size,
+      days,
+    });
   });
   app.use(
     '/api/admin',

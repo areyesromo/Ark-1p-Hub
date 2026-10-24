@@ -1,7 +1,14 @@
 (function () {
   Ark.loadCss('/games/blocks/style.css');
   // The shapes' colours are part of the game (the classic set: a cyan I, a yellow O…).
-  const COLORS = { I: '#22d3ee', O: '#facc15', T: '#a855f7', S: '#4ade80', Z: '#f87171', J: '#3b82f6', L: '#fb923c' };
+  // The unlockable looks (see server/games/looks.js): a colour per piece. These colours are the pieces themselves.
+  const THEMES = {
+    classic: { I: '#22d3ee', O: '#facc15', T: '#a855f7', S: '#4ade80', Z: '#f87171', J: '#3b82f6', L: '#fb923c' },
+    candy: { I: '#a5f3fc', O: '#fde68a', T: '#d8b4fe', S: '#bbf7d0', Z: '#fecaca', J: '#bfdbfe', L: '#fed7aa' },
+    retro: { I: '#c4e538', O: '#a3cf2a', T: '#86b81f', S: '#6a9f1a', Z: '#4f8715', J: '#3b6f12', L: '#d9f06b' },
+    neon: { I: '#00f0ff', O: '#fff200', T: '#c400ff', S: '#00ff6a', Z: '#ff2a6d', J: '#2d6bff', L: '#ff9100' },
+  };
+  let COLORS = THEMES.classic;
   // The same shapes as the server (server/games/blocks.js), for the hold and next previews.
   const SHAPES = {
     I: [[0, 1], [1, 1], [2, 1], [3, 1]], O: [[0, 0], [1, 0], [0, 1], [1, 1]], T: [[1, 0], [0, 1], [1, 1], [2, 1]],
@@ -148,6 +155,7 @@
       raf = requestAnimationFrame(draw);
     },
     update: function (v) {
+      COLORS = THEMES[v.look] || THEMES.classic;
       if (view && v.clears !== view.clears && v.cleared) {
         flash = { rows: v.cleared.rows, until: performance.now() + 400 };
         const call = root.querySelector('.blocks-callout');

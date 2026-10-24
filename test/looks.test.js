@@ -19,7 +19,7 @@ test('a new player sees the looks locked with how to open them; an earned one ca
     const def = getGame(game);
     const ctx = fakeCtx();
     ctx.achievements = () => ({});
-    assert.equal(Object.keys(lockedFor(ctx, def.spec).look).length, 3, game);
+    assert.equal(Object.keys(lockedFor(ctx, def.spec).look).length, Object.keys(LOOKS[game]).length - 1, game);
     const [, second] = Object.keys(LOOKS[game]);
     ctx.achievements = () => ({ [LOOKS[game][second].unlock]: 1 });
     const setup = def.create(ctx);

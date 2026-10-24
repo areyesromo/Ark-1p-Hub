@@ -18,6 +18,7 @@ import hopper from './hopper.js';
 import kenken, { SIZES as KENKEN_SIZES } from './kenken.js';
 import numbers from './numbers.js';
 import oddone from './oddone.js';
+import hangman from './hangman.js';
 import { LEVELS as SOKOBAN_LEVELS } from './sokoban-levels.js';
 import cave, { MAPS as CAVE_MAPS, VEHICLES as CAVE_VEHICLES } from './cave.js';
 import lights, { LEVELS as LIGHTS_LEVELS } from './lights.js';
@@ -99,7 +100,7 @@ const GAMES = [
     lives: { title: 'Lives', values: ['normal', 'easy'], label: (l) => (l === 'easy' ? '5 lives (easy, its own scores)' : '3 lives') },
     ...lookRow('breaker', 'Ball and paddle'),
   }),
-  blocks,
+  withSetup(blocks, lookRow('blocks', 'Pieces')),
   withSetup(flappy, lookRow('flappy', 'Fly as')),
   withSetup(asteroids, lookRow('asteroids', 'Ship')),
   withSetup(invaders, lookRow('invaders', 'Invaders')),
@@ -111,7 +112,7 @@ const GAMES = [
   }),
   bubbles,
   hopper,
-  game2048,
+  withSetup(game2048, lookRow('2048', 'Tiles')),
   withSetup(minesweeper, {
     size: { title: 'Field', values: Object.keys(MINE_SIZES), label: (k) => `${MINE_SIZES[k].name} · ${MINE_SIZES[k].w}×${MINE_SIZES[k].h}, ${MINE_SIZES[k].mines} mines` },
   }),
@@ -126,7 +127,7 @@ const GAMES = [
   withSetup(slide, {
     size: { title: 'Size', values: [4, 3, 5], label: (n) => `${n} × ${n} (${n * n - 1} tiles${n === 3 ? ', a warm-up' : n === 5 ? ', a real test' : ''})` },
   }),
-  gems,
+  withSetup(gems, lookRow('gems', 'Gems')),
   withSetup(sokoban, {
     level: {
       title: 'Level',
@@ -161,6 +162,7 @@ const GAMES = [
   anagram,
   numbers,
   oddone,
+  hangman,
   withSetup(trivia, {
     category: { title: 'Questions', values: ['mix', ...Object.keys(TRIVIA_CATEGORIES)], label: (c) => (c === 'mix' ? '🎲 A mix of everything' : `${TRIVIA_CATEGORIES[c]} (its own scores)`) },
   }),

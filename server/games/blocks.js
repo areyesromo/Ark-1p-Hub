@@ -8,6 +8,8 @@
 // Pieces come in "bags": every 7 pieces have one of each shape, so a long
 // wait for a straight piece can't happen.
 
+import { lookOf } from './looks.js';
+
 export const W = 10;
 export const H = 20;
 export const LINE_POINTS = [0, 100, 300, 500, 800];
@@ -46,6 +48,7 @@ export class Blocks {
   constructor(ctx, rng = Math.random) {
     this.ctx = ctx;
     this.rng = rng;
+    this.look = lookOf(ctx, 'blocks');
     this.timer = null;
   }
 
@@ -257,6 +260,7 @@ export class Blocks {
     return {
       phase: this.phase,
       player: this.ctx.player,
+      look: this.look,
       w: W,
       h: H,
       // The well, one character a square: '.' empty, else the shape that filled it. Hidden while paused.

@@ -2,11 +2,26 @@
 // played back step by step: the two gems trade places, each line pops, the
 // gems fall and new ones drop in, then the next step of a chain.
 (function () {
-  // Each colour also has its own shape, so the gems tell apart without colour too.
-  const GEMS = [
-    { c: '#ef4444', s: '♥' }, { c: '#3b82f6', s: '◆' }, { c: '#22c55e', s: '●' },
-    { c: '#eab308', s: '★' }, { c: '#a855f7', s: '▲' }, { c: '#f97316', s: '■' },
-  ];
+  // Each gem also has its own shape, in every look, so the gems tell apart without colour too.
+  // The unlockable looks (see server/games/looks.js) change the shapes and colours; these are the gems themselves.
+  const THEMES = {
+    classic: [
+      { c: '#ef4444', s: '♥' }, { c: '#3b82f6', s: '◆' }, { c: '#22c55e', s: '●' },
+      { c: '#eab308', s: '★' }, { c: '#a855f7', s: '▲' }, { c: '#f97316', s: '■' },
+    ],
+    fruit: [
+      { c: '#fecaca', s: '🍒' }, { c: '#bfdbfe', s: '🫐' }, { c: '#bbf7d0', s: '🍏' },
+      { c: '#fef08a', s: '🍋' }, { c: '#e9d5ff', s: '🍇' }, { c: '#fed7aa', s: '🍊' },
+    ],
+    space: [
+      { c: '#1e40af', s: '🌍' }, { c: '#475569', s: '🌙' }, { c: '#a16207', s: '⭐' },
+      { c: '#9a3412', s: '🪐' }, { c: '#6b21a8', s: '☄️' }, { c: '#be123c', s: '🚀' },
+    ],
+    candy: [
+      { c: '#fbcfe8', s: '🍬' }, { c: '#ddd6fe', s: '🍭' }, { c: '#fde68a', s: '🍩' },
+      { c: '#fed7aa', s: '🍪' }, { c: '#a5f3fc', s: '🧁' }, { c: '#d6b9a0', s: '🍫' },
+    ],
+  };
   const STEP_MS = 230;
 
   function create(el) {
@@ -17,6 +32,7 @@
     let timers = [];
     let marks = { selected: null, cursor: null };
     let cells = [];
+    let gems = THEMES.classic;
 
     function build(n) {
       size = n;
@@ -38,7 +54,7 @@
     function paint(board, cls) {
       board.forEach(function (g, i) {
         const span = cells[i].firstChild;
-        const gem = GEMS[g] || { c: 'transparent', s: '' };
+        const gem = gems[g] || { c: 'transparent', s: '' };
         if (span.textContent !== gem.s || span.style.getPropertyValue('--c') !== gem.c) {
           span.textContent = gem.s;
           span.style.setProperty('--c', gem.c);
@@ -84,6 +100,7 @@
       /** marks: { selected, cursor } cells to outline. */
       show: function (v, m) {
         marks = m || marks;
+        gems = THEMES[v.look] || THEMES.classic;
         if (v.size !== size) build(v.size);
         if (v.last && !v.last.nope && v.last.n !== lastN) {
           const first = lastN === null;

@@ -43,6 +43,35 @@
 .tile.v2048 span { background: #facc15; color: #1c1402; font-size: clamp(0.9rem, 4cqmin, 3rem); box-shadow: 0 0 2rem #facc15; }
 .tile.v4096 span { background: #fde047; color: #1c1402; font-size: clamp(0.9rem, 4cqmin, 3rem); box-shadow: 0 0 2.5rem #fde047; }
 
+/* The unlockable looks (see server/games/looks.js): the tile colours again. They're the tiles themselves. */
+.look-ocean .tile.v2 span { background: #164e63; color: #ecfeff; }
+.look-ocean .tile.v4 span { background: #155e75; color: #ecfeff; }
+.look-ocean .tile.v8 span { background: #0e7490; color: #ecfeff; }
+.look-ocean .tile.v16 span { background: #0891b2; color: #ecfeff; }
+.look-ocean .tile.v32 span { background: #06b6d4; color: #ecfeff; }
+.look-ocean .tile.v64 span { background: #22d3ee; color: #0b1220; }
+.look-ocean .tile.v128 span { background: #2dd4bf; color: #0b1220; }
+.look-ocean .tile.v256 span { background: #14b8a6; color: #0b1220; }
+.look-ocean .tile.v512 span { background: #34d399; color: #0b1220; }
+.look-ocean .tile.v1024 span { background: #a3e635; color: #0b1220; }
+.look-ocean .tile.v2048 span { background: #fde047; color: #0b1220; }
+.look-ocean .tile.v4096 span { background: #fef08a; color: #0b1220; }
+
+.look-neon .tile.v2 span { background: #0b0f1a; color: #00f0ff; box-shadow: inset 0 0 0 0.18rem #00f0ff, 0 0 0.9rem #00f0ff; }
+.look-neon .tile.v4 span { background: #0b0f1a; color: #2d9bff; box-shadow: inset 0 0 0 0.18rem #2d9bff, 0 0 0.9rem #2d9bff; }
+.look-neon .tile.v8 span { background: #0b0f1a; color: #6d6bff; box-shadow: inset 0 0 0 0.18rem #6d6bff, 0 0 0.9rem #6d6bff; }
+.look-neon .tile.v16 span { background: #0b0f1a; color: #a855f7; box-shadow: inset 0 0 0 0.18rem #a855f7, 0 0 0.9rem #a855f7; }
+.look-neon .tile.v32 span { background: #0b0f1a; color: #e040fb; box-shadow: inset 0 0 0 0.18rem #e040fb, 0 0 0.9rem #e040fb; }
+.look-neon .tile.v64 span { background: #0b0f1a; color: #ff2a8a; box-shadow: inset 0 0 0 0.18rem #ff2a8a, 0 0 0.9rem #ff2a8a; }
+.look-neon .tile.v128 span { background: #0b0f1a; color: #ff5a4d; box-shadow: inset 0 0 0 0.18rem #ff5a4d, 0 0 0.9rem #ff5a4d; }
+.look-neon .tile.v256 span { background: #0b0f1a; color: #ff9100; box-shadow: inset 0 0 0 0.18rem #ff9100, 0 0 0.9rem #ff9100; }
+.look-neon .tile.v512 span { background: #0b0f1a; color: #ffd000; box-shadow: inset 0 0 0 0.18rem #ffd000, 0 0 0.9rem #ffd000; }
+.look-neon .tile.v1024 span { background: #0b0f1a; color: #c6ff00; box-shadow: inset 0 0 0 0.18rem #c6ff00, 0 0 0.9rem #c6ff00; }
+.look-neon .tile.v2048 span { background: #0b0f1a; color: #00ff6a; box-shadow: inset 0 0 0 0.18rem #00ff6a, 0 0 0.9rem #00ff6a; }
+.look-neon .tile.v4096 span { background: #0b0f1a; color: #ffffff; box-shadow: inset 0 0 0 0.18rem #ffffff, 0 0 0.9rem #ffffff; }
+.look-ocean { background: #0c2a3a; }
+.look-neon { background: #05060d; }
+
 /* ---- phone ---- */
 
 .g2048-phone { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding: 12px 16px 16px; text-align: center; }
