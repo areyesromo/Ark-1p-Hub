@@ -175,6 +175,6 @@ export default {
   name: 'Runner',
   tagline: 'Run, jump the cactuses, duck the birds. How far can you go?',
   category: 'arcade',
-  score: { better: 'higher', unit: 'pts' },
+  score: { better: 'higher', unit: 'm' },
   create: (ctx) => new Runner(ctx, ctx.rng),
 };
