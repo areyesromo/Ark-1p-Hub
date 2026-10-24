@@ -3,6 +3,8 @@
 // The pipes come a little faster and their gaps get a little smaller as you
 // go. Score: pipes passed.
 
+import { lookOf } from './looks.js';
+
 export const FIELD = { w: 100, h: 60 };
 export const BIRD = { x: 26, r: 2.2 };
 export const PHYS = { gravity: 150, flap: -52, maxFall: 70 }; // units per second (squared)
@@ -15,6 +17,7 @@ export class Flappy {
   constructor(ctx, rng = Math.random) {
     this.ctx = ctx;
     this.rng = rng;
+    this.look = lookOf(ctx, 'flappy');
     this.timer = null;
   }
 
@@ -150,6 +153,7 @@ export class Flappy {
       gravity: PHYS.gravity,
       crashed: this.crashed,
       score: this.passed,
+      look: this.look,
     };
   }
 

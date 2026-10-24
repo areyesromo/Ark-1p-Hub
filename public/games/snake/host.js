@@ -14,6 +14,14 @@
   let overlayKey = '';
   let statsKey = '';
   let color = '#22d3ee';
+  // The unlockable looks (see server/games/looks.js): a colour per segment (0 is the head).
+  // These colours are the snake itself.
+  const LOOKS = {
+    classic: { glow: 10, colour: function () { return color; } },
+    rainbow: { glow: 10, colour: function (i, now) { return 'hsl(' + Math.round((i * 24 + now / 12) % 360) + ', 90%, 60%)'; } },
+    neon: { glow: 22, colour: function (i) { return i % 2 ? '#c026d3' : '#e879f9'; } },
+    gold: { glow: 14, colour: function (i) { return i % 3 === 1 ? '#ca8a04' : '#facc15'; } },
+  };
 
   function renderOverlay(v) {
     let big = '';
@@ -94,16 +102,30 @@
     }
 
     const body = view.body;
-    g.fillStyle = g.shadowColor = color;
-    g.shadowBlur = 10;
+    const look = LOOKS[view.look] || LOOKS.classic;
+    g.shadowBlur = look.glow;
     for (let i = body.length - 1; i >= 1; i--) {
+      g.fillStyle = g.shadowColor = look.colour(i, now || 0);
       g.globalAlpha = 0.55 + 0.45 * (1 - i / body.length); // the tail fades a little
       roundCell(g, body[i][0], body[i][1], 0.08, 0.22);
     }
     g.globalAlpha = 1;
     const h = body[0];
+    g.fillStyle = g.shadowColor = look.colour(0, now || 0);
     roundCell(g, h[0], h[1], 0.02, 0.3);
     g.shadowBlur = 0;
+    if (view.look === 'neon') {
+      // A bright line down the middle of each segment.
+      g.fillStyle = 'rgba(255, 255, 255, 0.7)';
+      for (let i = 0; i < body.length; i++) roundCell(g, body[i][0], body[i][1], 0.38, 0.1);
+    } else if (view.look === 'gold') {
+      // A glint that runs along the body.
+      const at = Math.floor((now || 0) / 90) % (body.length + 6);
+      if (body[at]) {
+        g.fillStyle = 'rgba(255, 255, 255, 0.75)';
+        roundCell(g, body[at][0], body[at][1], 0.3, 0.2);
+      }
+    }
     // Eyes looking the way it's heading
     g.fillStyle = '#05070f';
     EYES[view.dir].forEach(function (e) {

@@ -3,6 +3,7 @@
 // walls you come out on the other side instead of crashing into them.
 
 import { settingOf } from './options.js';
+import { lookOf } from './looks.js';
 
 export const GRID = { w: 24, h: 14 };
 export const START_LENGTH = 4;
@@ -24,6 +25,7 @@ export class Snake {
     this.rng = rng;
     this.speed = SPEEDS[settingOf(ctx, 'speed', 'normal')] ? settingOf(ctx, 'speed', 'normal') : 'normal';
     this.wrap = settingOf(ctx, 'walls', 'solid') === 'wrap';
+    this.look = lookOf(ctx, 'snake');
     this.timer = null;
   }
 
@@ -175,6 +177,7 @@ export class Snake {
       cps: this.cps,
       score: this.eaten,
       variant: this.variant,
+      look: this.look,
     };
   }
 

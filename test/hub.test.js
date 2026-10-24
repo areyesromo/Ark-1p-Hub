@@ -165,7 +165,7 @@ test('a game with a setup screen waits for go; random picks a real game', async 
   await call(phone, 'player:join', { code, name: 'Eve' });
   const setup = next(phone, 'game:view', (m) => m.gameId === 'snake' && m.view.phase === 'setup');
   await call(phone, 'lobby:start', { gameId: 'snake' });
-  assert.deepEqual((await setup).view.hubSetup.settings, { speed: 'normal', walls: 'solid' });
+  assert.deepEqual((await setup).view.hubSetup.settings, { speed: 'normal', walls: 'solid', look: 'classic' });
   const picked = next(phone, 'game:view', (m) => m.view.hubSetup && m.view.hubSetup.settings.walls === 'wrap');
   phone.emit('game:input', { type: 'setting', key: 'walls', value: 'wrap' });
   await picked;

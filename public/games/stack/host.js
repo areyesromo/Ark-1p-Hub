@@ -14,6 +14,15 @@
   let camera = 0; // the level the view is centred on, eased towards the top
 
   const hue = function (level) { return (200 + level * 13) % 360; };
+  // The unlockable looks (see server/games/looks.js): each block's body and top edge, by level.
+  // These colours are the blocks themselves.
+  const THEMES = {
+    classic: function (level) { return { body: 'hsl(' + hue(level) + ', 70%, 55%)', top: 'hsl(' + hue(level) + ', 75%, 70%)' }; },
+    candy: function (level) { return level % 2 ? { body: '#f472b6', top: '#fbcfe8' } : { body: '#fef3c7', top: '#ffffff' }; },
+    glass: function (level) { return { body: 'hsla(' + (190 + (level % 4) * 8) + ', 90%, 65%, 0.45)', top: 'rgba(255, 255, 255, 0.85)', edge: 'rgba(224, 242, 254, 0.9)' }; },
+    gold: function (level) { return level % 2 ? { body: '#eab308', top: '#fde047' } : { body: '#ca8a04', top: '#facc15' }; },
+  };
+  const themeOf = function (v) { return THEMES[v.look] || THEMES.classic; };
 
   function draw(now) {
     raf = requestAnimationFrame(draw);
@@ -40,13 +49,20 @@
     camera += (topLevel - camera) * 0.12;
     const yOf = function (level) { return H * 0.62 - (level - camera) * BLOCK_H * s; };
 
+    const theme = themeOf(v);
     const block = function (x, w, level, alpha) {
       const y = yOf(level);
+      const c = theme(level);
       g.globalAlpha = alpha === undefined ? 1 : alpha;
-      g.fillStyle = 'hsl(' + hue(level) + ', 70%, 55%)';
+      g.fillStyle = c.body;
       g.fillRect(ox + x * s, y - BLOCK_H * s, w * s, BLOCK_H * s);
-      g.fillStyle = 'hsl(' + hue(level) + ', 75%, 70%)';
+      g.fillStyle = c.top;
       g.fillRect(ox + x * s, y - BLOCK_H * s, w * s, Math.max(2, BLOCK_H * s * 0.18));
+      if (c.edge) {
+        g.strokeStyle = c.edge;
+        g.lineWidth = 1.5;
+        g.strokeRect(ox + x * s, y - BLOCK_H * s, w * s, BLOCK_H * s);
+      }
       g.globalAlpha = 1;
     };
 
@@ -56,8 +72,10 @@
     // Below the oldest one we have, the tower carries on down to the ground.
     if (first > 0) {
       const b = v.tower[0];
-      g.fillStyle = 'hsl(' + hue(first - 1) + ', 40%, 30%)';
+      g.fillStyle = theme(first - 1).body;
+      g.globalAlpha = 0.6;
       g.fillRect(ox + b.x * s, yOf(first - 1), b.w * s, H);
+      g.globalAlpha = 1;
     }
 
     // Cut-off pieces fall and fade.
@@ -66,7 +84,7 @@
       const k = (now - p.at) / 900;
       const y = yOf(p.level) + k * k * H * 0.8;
       g.globalAlpha = 1 - k;
-      g.fillStyle = 'hsl(' + hue(p.level) + ', 70%, 55%)';
+      g.fillStyle = theme(p.level).body;
       g.fillRect(ox + p.x * s, y - BLOCK_H * s, p.w * s, BLOCK_H * s);
       g.globalAlpha = 1;
     });
