@@ -89,12 +89,13 @@ const GAMES = [
   }),
   withSetup(breaker, {
     lives: { title: 'Lives', values: ['normal', 'easy'], label: (l) => (l === 'easy' ? '5 lives (easy, its own scores)' : '3 lives') },
+    ...lookRow('breaker', 'Ball and paddle'),
   }),
   blocks,
   withSetup(flappy, lookRow('flappy', 'Fly as')),
-  asteroids,
-  invaders,
-  runner,
+  withSetup(asteroids, lookRow('asteroids', 'Ship')),
+  withSetup(invaders, lookRow('invaders', 'Invaders')),
+  withSetup(runner, lookRow('runner', 'Run as')),
   withSetup(stack, lookRow('stack', 'Blocks')),
   withSetup(cave, {
     map: { title: 'Map', values: Object.keys(CAVE_MAPS), label: (k) => CAVE_MAPS[k].name, lock: byAchievement(CAVE_MAPS) },

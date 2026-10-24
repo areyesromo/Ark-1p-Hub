@@ -5,6 +5,8 @@
 // sometimes flies across the top for a bonus. Clear a wave and the next one
 // starts a little lower. 3 lives. Score: points (the top rows are worth more).
 
+import { lookOf } from './looks.js';
+
 export const FIELD = { w: 100, h: 75 };
 export const SHIP = { y: 70, w: 6, h: 3, speed: 70 };
 export const ALIENS = { cols: 9, rows: 5, w: 5, h: 3.5, gapX: 3, gapY: 2.5, top: 10, dropY: 2.5, points: [30, 20, 20, 10, 10] };
@@ -21,6 +23,7 @@ const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 export class Invaders {
   constructor(ctx, rng = Math.random) {
     this.ctx = ctx;
+    this.look = lookOf(ctx, 'invaders');
     this.rng = rng;
     this.timer = null;
   }
@@ -272,6 +275,7 @@ export class Invaders {
   hostView() {
     const r = (v) => Math.round(v * 100) / 100;
     return {
+      look: this.look,
       phase: this.phase,
       player: this.ctx.player,
       field: FIELD,

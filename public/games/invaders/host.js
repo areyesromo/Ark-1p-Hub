@@ -32,20 +32,40 @@
     }
   }
 
+  // The unlockable looks (see server/games/looks.js): the aliens' shape and colours by row,
+  // the bunkers and the ship. These colours are the scene itself.
+  const SPRITES = {
+    alien: [
+      ['..X..X..', '.XXXXXX.', 'XX.XX.XX', 'XXXXXXXX', 'X.X..X.X', '.X....X.'],
+      ['..X..X..', '.XXXXXX.', 'XX.XX.XX', 'XXXXXXXX', '.X....X.', 'X......X'],
+    ],
+    octopus: [
+      ['..XXXX..', '.XXXXXX.', 'XX.XX.XX', 'XXXXXXXX', '.X.XX.X.', 'X.X..X.X'],
+      ['..XXXX..', '.XXXXXX.', 'XX.XX.XX', 'XXXXXXXX', 'X.X..X.X', '.X.XX.X.'],
+    ],
+    ghost: [
+      ['..XXXX..', '.XXXXXX.', 'X..XX..X', 'XXXXXXXX', 'XXXXXXXX', 'X.XX.XX.'],
+      ['..XXXX..', '.XXXXXX.', 'X..XX..X', 'XXXXXXXX', 'XXXXXXXX', '.XX.XX.X'],
+    ],
+    sweet: [
+      ['...XX...', '.XXXXXX.', 'XX.XX.XX', 'XXXXXXXX', '.XXXXXX.', '..X..X..'],
+      ['...XX...', '.XXXXXX.', 'XX.XX.XX', 'XXXXXXXX', '.XXXXXX.', '.X....X.'],
+    ],
+  };
+  const THEMES = {
+    classic: { sprite: 'alien', rows: ROWS, bunker: '#4ade80', ship: null },
+    ocean: { sprite: 'octopus', rows: ['#2dd4bf', '#22d3ee', '#38bdf8', '#818cf8', '#a78bfa'], bunker: '#fb7185', ship: '#facc15' },
+    spooky: { sprite: 'ghost', rows: ['#f1f5f9', '#e9d5ff', '#c4b5fd', '#a78bfa', '#f1f5f9'], bunker: '#f97316', ship: '#a855f7' },
+    candy: { sprite: 'sweet', rows: ['#f9a8d4', '#fdba74', '#fde68a', '#bef264', '#a5f3fc'], bunker: '#f472b6', ship: '#f9a8d4' },
+  };
+  const themeOf = function (v) { return THEMES[v.look] || THEMES.classic; };
+
   /** A little pixel alien, two frames of legs. */
-  function alien(g, x, y, w, h, row, frame) {
-    g.fillStyle = ROWS[row % ROWS.length];
+  function alien(g, x, y, w, h, row, frame, theme) {
+    g.fillStyle = theme.rows[row % theme.rows.length];
     const px = w / 8;
     const py = h / 6;
-    const body = [
-      '..X..X..',
-      '.XXXXXX.',
-      'XX.XX.XX',
-      'XXXXXXXX',
-      frame ? '.X....X.' : 'X.X..X.X',
-      frame ? 'X......X' : '.X....X.',
-    ];
-    body.forEach(function (line, r) {
+    SPRITES[theme.sprite][frame].forEach(function (line, r) {
       for (let c = 0; c < 8; c++) if (line[c] === 'X') g.fillRect(x + c * px, y + r * py, px + 0.02, py + 0.02);
     });
   }
@@ -62,8 +82,9 @@
     const dt = view.phase === 'play' ? Math.min(performance.now() - viewAt, MAX_EXTRAPOLATE_MS) / 1000 : 0;
     const frame = Math.floor(now / 400) % 2;
 
+    const theme = themeOf(view);
     const shift = view.march.dir * view.march.speed * dt;
-    view.aliens.forEach(function (a) { alien(g, a[0] + shift, a[1], view.alien.w, view.alien.h, a[2], frame); });
+    view.aliens.forEach(function (a) { alien(g, a[0] + shift, a[1], view.alien.w, view.alien.h, a[2], frame, theme); });
 
     if (view.saucer) {
       const s = view.saucer;
@@ -79,7 +100,7 @@
     }
 
     const bk = view.bunker;
-    g.fillStyle = '#4ade80';
+    g.fillStyle = theme.bunker;
     view.bunkers.forEach(function (b) {
       for (let i = 0; i < b.cells.length; i++) {
         if (b.cells[i] !== '1') continue;
@@ -99,7 +120,7 @@
 
     const s = view.ship;
     if (view.phase !== 'hit' || Math.floor(now / 120) % 2) {
-      g.fillStyle = g.shadowColor = color;
+      g.fillStyle = g.shadowColor = theme.ship || color;
       g.shadowBlur = 3;
       g.fillRect(s.x - s.w / 2, s.y + s.h * 0.4, s.w, s.h * 0.6);
       g.fillRect(s.x - s.w * 0.15, s.y, s.w * 0.3, s.h * 0.5);

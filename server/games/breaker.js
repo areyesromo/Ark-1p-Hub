@@ -8,6 +8,7 @@
 // controller or the keyboard sends a direction (axis -1..1).
 
 import { settingOf } from './options.js';
+import { lookOf } from './looks.js';
 
 export const FIELD = { w: 100, h: 75 };
 export const PADDLE = { y: 70, h: 2, w: 16, speed: 110 }; // speed: units per second on the stick
@@ -31,6 +32,7 @@ const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 export class Breaker {
   constructor(ctx) {
     this.ctx = ctx;
+    this.look = lookOf(ctx, 'breaker');
     this.easy = settingOf(ctx, 'lives', 'normal') === 'easy';
     this.timer = null;
   }
@@ -217,6 +219,7 @@ export class Breaker {
 
   hostView() {
     return {
+      look: this.look,
       phase: this.phase,
       player: this.ctx.player,
       field: FIELD,
