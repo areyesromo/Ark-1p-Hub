@@ -19,6 +19,7 @@ import kenken, { SIZES as KENKEN_SIZES } from './kenken.js';
 import numbers from './numbers.js';
 import oddone from './oddone.js';
 import hangman from './hangman.js';
+import mastermind, { LEVELS as MASTER_LEVELS } from './mastermind.js';
 import { LEVELS as SOKOBAN_LEVELS } from './sokoban-levels.js';
 import cave, { MAPS as CAVE_MAPS, VEHICLES as CAVE_VEHICLES } from './cave.js';
 import lights, { LEVELS as LIGHTS_LEVELS } from './lights.js';
@@ -128,6 +129,9 @@ const GAMES = [
     size: { title: 'Size', values: [4, 3, 5], label: (n) => `${n} × ${n} (${n * n - 1} tiles${n === 3 ? ', a warm-up' : n === 5 ? ', a real test' : ''})` },
   }),
   withSetup(gems, lookRow('gems', 'Gems')),
+  withSetup(mastermind, {
+    level: { title: 'Code', values: Object.keys(MASTER_LEVELS), label: (k) => `${MASTER_LEVELS[k].name} · ${MASTER_LEVELS[k].pegs} pegs, ${MASTER_LEVELS[k].colours} colours` },
+  }),
   withSetup(sokoban, {
     level: {
       title: 'Level',
