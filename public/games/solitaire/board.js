@@ -14,7 +14,7 @@
 
   function card(code, extra, data, y) {
     const down = code === '#';
-    return '<div class="card' + (down ? ' down' : ' up ' + (code[0] === 'h' || code[0] === 'd' ? 'red' : 'black')) + (extra || '') + '"' +
+    return '<div class="card' + (down ? ' down' : ' up ' + (code[0] === 'h' || code[0] === 'd' ? 'red' : 'black') + ' s' + code[0]) + (extra || '') + '"' +
       (data ? ' data-pile="' + data.pile + '"' + (data.index !== undefined ? ' data-index="' + data.index + '"' : '') : '') +
       (y !== undefined ? ' style="--y:' + y.toFixed(2) + '"' : '') + '>' + (down ? '' : face(code)) + '</div>';
   }

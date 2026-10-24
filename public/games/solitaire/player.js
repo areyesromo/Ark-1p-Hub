@@ -81,6 +81,7 @@
       ready.then(render);
     },
     update: function (v) {
+      if (root) root.setAttribute('data-look', v.look || 'classic');
       if (pending && v.nope > pending.nope) {
         selected = pending.from; // couldn't go anywhere by itself: picked up instead
         api.vibrate([30, 30, 30]);

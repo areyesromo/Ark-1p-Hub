@@ -41,3 +41,9 @@ test('a look doesn\'t change the scores\' table', () => {
   assert.equal(variant('gold'), variant('classic'));
   assert.equal(lookOf(fakeCtx('Ana', { look: 'toString' }), 'flappy'), 'bird');
 });
+
+test('every Memory look has enough different faces for the biggest board', async () => {
+  const { FACE_SETS } = await import('../server/games/memory.js');
+  assert.deepEqual(Object.keys(FACE_SETS), Object.keys(LOOKS.memory));
+  for (const [look, faces] of Object.entries(FACE_SETS)) assert.ok(new Set(faces).size >= 18, look);
+});

@@ -6,6 +6,8 @@
 // doubled for each empty column. Nearly every deal can be won. Score: the
 // time to finish (lower is better); a game you give up on doesn't count.
 
+import { lookOf } from './looks.js';
+
 const SUITS = ['s', 'h', 'd', 'c'];
 const red = (c) => c.s === 'h' || c.s === 'd';
 const code = (c) => c.s + c.r;
@@ -21,6 +23,7 @@ export class FreeCell {
     this.ctx = ctx;
     this.rng = rng;
     this.timer = null;
+    this.look = lookOf(ctx, 'freecell');
   }
 
   start() {
@@ -202,6 +205,7 @@ export class FreeCell {
   view() {
     const won = this.phase === 'over' && this.found.every((f) => f.length === 13);
     return {
+      look: this.look,
       phase: this.phase,
       tab: this.tab.map((col) => col.map(code)),
       cells: this.cells.map((c) => (c ? code(c) : null)),

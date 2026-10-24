@@ -5,6 +5,8 @@
 // on the clock); a hint shows a pair (15 s). Score: the time to clear it
 // (lower is better); giving up doesn't count.
 
+import { lookOf } from './looks.js';
+
 export const FACES = ['🍎', '🍊', '🍋', '🍇', '🍓', '🍒', '🥝', '🍑', '🍍', '🌸', '🌻', '🍀', '🍄', '🌙', '⭐', '🔥', '💧', '⚡', '🎈'];
 export const PENALTY = { hint: 15000, shuffle: 30000 };
 
@@ -81,6 +83,7 @@ export class Mahjong {
     this.ctx = ctx;
     this.rng = rng;
     this.timer = null;
+    this.look = lookOf(ctx, 'mahjong');
   }
 
   start() {
@@ -226,6 +229,7 @@ export class Mahjong {
     const hidden = this.phase === 'paused'; // no thinking time for free
     const left = this.here.filter(Boolean).length;
     return {
+      look: this.look,
       phase: this.phase,
       tiles: this.tiles.map((t, i) => ({ x: t.x, y: t.y, z: t.z, face: hidden ? '' : t.face, here: this.here[i], free: this.free(i) })),
       selected: this.selected,

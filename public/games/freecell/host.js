@@ -124,6 +124,7 @@
       ready.then(render);
     },
     update: function (v) {
+      if (root) root.setAttribute('data-look', v.look || 'classic');
       const nope = view && v.nope > view.nope;
       if (!view || v.moves < view.moves) {
         cur.top = null;

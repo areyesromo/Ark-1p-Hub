@@ -124,9 +124,10 @@ const GAMES = [
   }),
   withSetup(solitaire, {
     draw: { title: 'Turn from the stock', values: [1, 3], label: (n) => (n === 1 ? 'One card at a time' : 'Three at a time (harder, its own scores)') },
+    ...lookRow('solitaire', 'Card backs'),
   }),
-  freecell,
-  mahjong,
+  withSetup(freecell, lookRow('freecell', 'Cards')),
+  withSetup(mahjong, lookRow('mahjong', 'Tiles')),
   withSetup(slide, {
     size: { title: 'Size', values: [4, 3, 5], label: (n) => `${n} × ${n} (${n * n - 1} tiles${n === 3 ? ', a warm-up' : n === 5 ? ', a real test' : ''})` },
   }),
@@ -162,9 +163,10 @@ const GAMES = [
   withSetup(wordGuess, {
     mode: { title: 'Word', values: ['daily', 'practice'], label: (m) => (m === 'daily' ? '📅 Today\'s word (the same for everyone, once a day)' : '🎲 Practice (a new word every time)') },
   }),
-  simon,
+  withSetup(simon, lookRow('simon', 'Pads')),
   withSetup(memory, {
     size: { title: 'Cards', values: ['small', 'medium', 'large'], label: (k) => `${MEMORY_SIZES[k].w} × ${MEMORY_SIZES[k].h} (${(MEMORY_SIZES[k].w * MEMORY_SIZES[k].h) / 2} pairs)` },
+    ...lookRow('memory', 'Faces'),
   }),
   reaction,
   maths,

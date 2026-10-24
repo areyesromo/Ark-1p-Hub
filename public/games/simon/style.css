@@ -39,3 +39,14 @@
 .simon-phone .pad { background: var(--c); border-radius: var(--radius); opacity: 0.75; padding: 0; }
 .simon-phone .pad:disabled { opacity: 0.35; }
 .simon-phone .pad.lit { opacity: 1; filter: brightness(1.35); box-shadow: 0 0 2rem var(--glow); }
+
+/* ---- looks (see server/games/looks.js): same four hues as the controller's buttons, different finish ---- */
+
+[data-look='pastel'] .pad.p0 { --c: #86efac; --glow: #dcfce7; }
+[data-look='pastel'] .pad.p1 { --c: #fca5a5; --glow: #fee2e2; }
+[data-look='pastel'] .pad.p2 { --c: #fde68a; --glow: #fef9c3; }
+[data-look='pastel'] .pad.p3 { --c: #93c5fd; --glow: #dbeafe; }
+[data-look='neon'] .pad.p0 { --c: #00ff6a; --glow: #7dffb0; }
+[data-look='neon'] .pad.p1 { --c: #ff2d55; --glow: #ff8aa0; }
+[data-look='neon'] .pad.p2 { --c: #ffe600; --glow: #fff58a; }
+[data-look='neon'] .pad.p3 { --c: #1f6bff; --glow: #8ab4ff; }

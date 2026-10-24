@@ -77,6 +77,7 @@
       ready.then(render);
     },
     update: function (v) {
+      if (root) root.setAttribute('data-look', v.look || 'classic');
       if (pending && v.nope > pending.nope) {
         // Couldn't go anywhere by itself: picked up instead (if it's a run that can be picked up).
         if (window.ArkFreeCell && window.ArkFreeCell.taking(v, pending.from.pile, pending.from.index)) selected = pending.from;

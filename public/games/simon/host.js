@@ -57,6 +57,7 @@
       msg = root.querySelector('.simon-msg');
     },
     update: function (v) {
+      if (root) root.setAttribute('data-look', v.look || 'classic');
       // A press lights its pad for a moment (the server only says which pad, not for how long).
       if (v.pressed && (!view || !view.pressed || v.pressed.n !== view.pressed.n)) {
         flash = { pad: v.pressed.pad };

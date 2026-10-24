@@ -3,6 +3,8 @@
 // faster). One wrong pad, or a long wait, and it's over. Score: the longest
 // sequence you repeated.
 
+import { lookOf } from './looks.js';
+
 export const PADS = 4;
 export const TIMING = {
   startMs: 1200, // before the first sequence
@@ -20,6 +22,7 @@ export class Simon {
     this.ctx = ctx;
     this.rng = rng;
     this.timer = null;
+    this.look = lookOf(ctx, 'simon');
   }
 
   start() {
@@ -113,6 +116,7 @@ export class Simon {
 
   view() {
     return {
+      look: this.look,
       phase: this.phase,
       lit: this.lit,
       pressed: this.pressed,
