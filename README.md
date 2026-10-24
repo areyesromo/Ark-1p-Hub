@@ -111,6 +111,11 @@ challenge at midnight (UTC).
 game, the days you played (✅ finished, 🟡 started and didn't finish), the games still to come, your
 current streak and your longest. Days are UTC days, like the challenge itself.
 
+📊 **My stats** (the phone lobby, at `/me/`) is your own page: runs finished, games tried, days played, new
+personal bests, achievements and your daily streak, your five favourite games with your best in each, your
+latest personal bests, and a chart of the last two weeks. The hub keeps its latest 5,000 runs (the page says
+when older ones are missing), and it doesn't record how long a run took, so there's no "time played".
+
 ## Controllers and the keyboard
 
 The player can use a phone, **or** a game controller connected to the device

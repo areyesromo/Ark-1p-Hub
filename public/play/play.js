@@ -175,6 +175,7 @@
   function renderLobby() {
     $('lobby-status').innerHTML = 'Hi <strong>' + Ark.escapeHtml(me.name) + '</strong>! Pick a game and beat your best.' +
       ' <span class="muted">Tap your avatar to change it.</span>';
+    $('me-link').href = '/me/?name=' + encodeURIComponent(me.name);
     $('ach-link').href = Ark.achievementsUrl(me.name);
     $('col-link').href = '/collection/?name=' + encodeURIComponent(me.name);
     $('cal-link').href = '/calendar/?name=' + encodeURIComponent(me.name);

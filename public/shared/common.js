@@ -247,6 +247,22 @@
     return '/achievements/?name=' + encodeURIComponent(name || '');
   }
 
+  /**
+   * Fills the header links of the player pages (<nav id="nav">): the other pages, for the same
+   * player, and a way back (to the phone if that's where they came from).
+   */
+  function mountNav(current) {
+    const nav = document.getElementById('nav');
+    if (!nav) return;
+    const name = new URLSearchParams(location.search).get('name') || '';
+    const q = name ? '?name=' + encodeURIComponent(name) : '';
+    const pages = [['me', '/me/', '📊 My stats'], ['achievements', '/achievements/', '⭐ Achievements'], ['collection', '/collection/', '🎁 Collection'], ['calendar', '/calendar/', '📅 Calendar']];
+    const back = /\/play\//.test(document.referrer) ? '/play/' : '/host/';
+    nav.innerHTML = pages.filter(function (p) { return p[0] !== current; }).map(function (p) {
+      return '<a class="btn ghost" href="' + p[1] + q + '">' + p[2] + '</a>';
+    }).join('') + '<a class="btn ghost" id="back" href="' + back + '">← Back</a>';
+  }
+
   // ---- the TV lobby's layout change (QR code panel on / off) ----
 
   const switching = new WeakMap(); // lobby -> the layout it's on its way to, while the panel fades out
@@ -458,6 +474,7 @@
     bestLine: bestLine,
     unlockedHtml: unlockedHtml,
     achievementsUrl: achievementsUrl,
+    mountNav: mountNav,
     GROUPS: GROUPS,
     setup: { html: setupHtml, pad: setupPad, bind: bindSetup, choices: setupChoices, isHub: isHubSetup, hubParts: hubSetupParts },
   };

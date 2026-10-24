@@ -13,12 +13,13 @@ import { resolveJoin, detectLanAddress } from './network.js';
 import { loadOrCreateCert } from './tls.js';
 import { Settings } from './settings.js';
 import { adminRouter } from './admin.js';
-import { Stats } from './stats.js';
+import { Stats, MAX_RUNS, nameKey } from './stats.js';
 import { Profiles, AVATARS, COLOURS } from './profiles.js';
 import { ACHIEVEMENTS, describe } from './achievements.js';
 import { collectionFor, countOpen } from './collection.js';
 import { monthDays, shiftMonth, weekOffset, streaks } from './calendar.js';
 import { challengeFor, dayOf } from './daily.js';
+import { profileFor } from './profile.js';
 import { listGames } from './games/index.js';
 
 const ROOT_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -85,6 +86,26 @@ export function createApp({
     const name = String(req.query.name || '').slice(0, 32);
     const groups = collectionFor({ have: name ? stats.achievementsOf(name) : {}, bestOf: (game, variant, better) => (name ? stats.bestFor(game, variant, name, better) : null) });
     res.json({ name, profile: name ? profiles.get(name) : null, ...countOpen(groups), groups });
+  });
+  // A player's own numbers (?name=): runs, favourite games, new records, the last two weeks, and a few totals
+  // from the other pages. Only the latest MAX_RUNS runs are kept, so `trimmed` says when it's not the whole story.
+  app.get('/api/me', (req, res) => {
+    const name = String(req.query.name || '').slice(0, 32);
+    const key = nameKey(name);
+    const names = Object.fromEntries(listGames().map((g) => [g.id, g.name]));
+    const mine = name ? stats.runs.filter((r) => nameKey(r.player) === key) : [];
+    const have = name ? stats.achievementsOf(name) : {};
+    const today = dayOf(Date.now());
+    res.json({
+      name,
+      profile: name ? profiles.get(name) : null,
+      ...profileFor({ runs: mine, names, now: Date.now() }),
+      since: mine.length ? mine[0].at : null,
+      trimmed: stats.runs.length >= MAX_RUNS,
+      achievements: { got: Object.keys(have).length, total: ACHIEVEMENTS.length },
+      daily: { ...streaks((name ? stats.dailyDaysOf(name) : new Map()).keys(), today) },
+      gamesInHub: listGames().length,
+    });
   });
   // A month of the daily challenge for a player (?name=&month=YYYY-MM): each day's game, whether they
   // took part, and their streaks.

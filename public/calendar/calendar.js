@@ -3,14 +3,10 @@
 (function () {
   const esc = Ark.escapeHtml;
   const $ = function (id) { return document.getElementById(id); };
-  if (/\/play\//.test(document.referrer)) $('back').href = '/play/';
+  Ark.mountNav('calendar');
   const params = new URLSearchParams(location.search);
   const name = params.get('name') || '';
   const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  if (name) {
-    $('to-ach').href = Ark.achievementsUrl(name);
-    $('to-col').href = '/collection/?name=' + encodeURIComponent(name);
-  }
 
   const url = function (month) { return '/calendar/?name=' + encodeURIComponent(name) + '&month=' + month; };
 
