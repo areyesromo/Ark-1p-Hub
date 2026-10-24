@@ -20,10 +20,11 @@
   function render(v) {
     if (v.phase === 'over' && phase === 'play') api.vibrate(200); // crashed
     phase = v.phase;
-    const key = [v.phase, v.score, v.best].join('|');
+    const key = [v.phase, v.score, v.best, v.map, v.vehicle].join('|');
     if (key === lastKey) return;
     lastKey = key;
-    root.querySelector('.info').innerHTML = '<strong>' + v.score + ' m</strong>' + (v.best === null || v.best === undefined ? '' : ' · best ' + v.best + ' m');
+    root.querySelector('.info').innerHTML = '<strong>' + v.score + ' m</strong>' + (v.best === null || v.best === undefined ? '' : ' · best ' + v.best + ' m') +
+      '<div class="where">' + Ark.escapeHtml(v.vehicle + ' · ' + v.map) + '</div>';
     btn.querySelector('.sub').textContent = v.phase === 'ready' ? 'Hold to take off' : 'Hold to climb, let go to drop';
     btn.classList.toggle('off', v.phase === 'paused');
     root.querySelector('.pause').textContent = v.phase === 'paused' ? '▶ Carry on' : '⏸ Pause';
@@ -31,6 +32,11 @@
   }
 
   Ark.register('player', 'cave', {
+    // A run that earned a map or a vehicle says so.
+    overHtml: function (v) {
+      const got = (v.record && v.record.unlocked) || [];
+      return got.filter(function (a) { return v.unlocks && v.unlocks[a.id]; }).map(function (a) { return '<strong>' + Ark.escapeHtml(v.unlocks[a.id]) + '</strong>'; }).join(' · ');
+    },
     mount: function (el, a) {
       api = a;
       root = document.createElement('div');

@@ -65,6 +65,10 @@ export const ACHIEVEMENTS = [
     { id: 'cave-100', icon: '🚁', name: 'Lift off', desc: 'Helicopter Cave: fly 100 m.', check: (r) => r.score >= 100 },
     { id: 'cave-500', icon: '🦇', name: 'Cave diver', desc: 'Helicopter Cave: fly 500 m.', check: (r) => r.score >= 500 },
     { id: 'cave-1000', icon: '🏔️', name: 'Deep down', desc: 'Helicopter Cave: fly 1,000 m.', check: (r) => r.score >= 1000 },
+    // Each of these opens the next map or a vehicle (see MAPS and VEHICLES in server/games/cave.js).
+    { id: 'cave-mine', icon: '⛏️', name: 'Down the shaft', desc: 'Helicopter Cave: fly 300 m in the Old Mine.', check: (r) => r.variant === 'Old Mine' && r.score >= 300 },
+    { id: 'cave-ice', icon: '🧊', name: 'Thin ice', desc: 'Helicopter Cave: fly 300 m in the Ice Tunnel.', check: (r) => r.variant === 'Ice Tunnel' && r.score >= 300 },
+    { id: 'cave-volcano', icon: '🌋', name: 'Through the fire', desc: 'Helicopter Cave: fly 300 m in the Volcano.', check: (r) => r.variant === 'Volcano' && r.score >= 300 },
   ]),
   ...game('invaders', [
     { id: 'invaders-wave2', icon: '👾', name: 'Defender', desc: 'Invaders: clear a whole wave.', check: (r, v) => v.wave >= 2 },
