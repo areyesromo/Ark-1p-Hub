@@ -234,6 +234,7 @@ export default {
   name: 'Road Hopper',
   tagline: 'Hop across the road and the river without getting squashed or soaked.',
   category: 'arcade',
+  phone: 'split',
   score: { better: 'higher', unit: 'pts' },
   create: (ctx) => new Hopper(ctx, ctx.rng),
 };

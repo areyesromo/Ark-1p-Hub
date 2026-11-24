@@ -235,6 +235,7 @@ export default {
   name: 'FreeCell',
   tagline: 'Every card face up, four free cells to juggle with. Nearly every deal can be won.',
   category: 'puzzle',
+  phone: true,
   score: { better: 'lower', unit: 'time' },
   create: (ctx) => new FreeCell(ctx, ctx.rng),
 };

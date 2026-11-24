@@ -116,6 +116,7 @@ export default {
   name: 'Reaction Rush',
   tagline: 'Wait for GO, then tap. Five rounds, your average time is your score.',
   category: 'brain',
+  phone: true,
   music: 'off',
   score: { better: 'lower', unit: 'ms' },
   create: (ctx) => new ReactionRush(ctx, ctx.rng),

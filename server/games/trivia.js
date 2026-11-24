@@ -162,6 +162,7 @@ export default {
   name: 'Trivia',
   tagline: 'Twelve questions, four answers, 15 seconds each. Quick right answers score more.',
   category: 'brain',
+  phone: true,
   score: { better: 'higher', unit: 'pts' },
   create: (ctx) => new Trivia(ctx, ctx.rng),
 };

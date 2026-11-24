@@ -57,6 +57,7 @@ export default {
   name: 'Quick Maths',
   tagline: 'Sums against the clock: pick the right answer. They get harder as you go.',
   category: 'brain',
+  phone: true,
   score: { better: 'higher', unit: 'pts' },
   create: (ctx) => new QuickMaths(ctx, ctx.rng),
 };

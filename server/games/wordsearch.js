@@ -162,6 +162,7 @@ export default {
   name: 'Word Search',
   tagline: 'Find the hidden words in the grid of letters. Across, down, diagonal, even backwards.',
   category: 'puzzle',
+  phone: true,
   score: { better: 'lower', unit: 'time' },
   create: (ctx) => new WordSearch(ctx, ctx.rng),
 };

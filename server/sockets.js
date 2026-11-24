@@ -8,6 +8,7 @@ const reply = (ack, payload) => {
  *   host:create   { origin }                -> ack { ok, code, hostToken, qr }
  *   host:resume   { code, hostToken, origin } -> ack { ok, code, hostToken, qr }  (reopens the room after a restart)
  *   player:join   { code, name, token? }    -> ack { ok, code, token, name }
+ *   phone:create  { name }                  -> ack { ok, code, token, name }  (a phone-only room, no TV: /phone)
  *   player:leave
  *   lobby:start   { gameId | 'random' }     -> ack { ok, gameId } | { error }
  *   lobby:return
@@ -155,6 +156,20 @@ export function registerSocketHandlers(io, rooms, { refreshJoin }) {
         seat = target.seatPlayer(name, token);
       }
       if (seat.error) return reply(ack, { error: seat.error });
+      bindPlayer(target);
+      reply(ack, { ok: true, code: target.code, token: seat.player.token, name: seat.player.name });
+    });
+
+    // Phone-only mode: the phone opens its own room and takes the seat, with no TV.
+    socket.on('phone:create', (data, ack) => {
+      const { name } = asObject(data);
+      const target = rooms.create({ phoneOnly: true });
+      const seat = target.seatPlayer(name);
+      if (seat.error) {
+        rooms.rooms.delete(target.code);
+        target.dispose();
+        return reply(ack, { error: seat.error });
+      }
       bindPlayer(target);
       reply(ack, { ok: true, code: target.code, token: seat.player.token, name: seat.player.name });
     });

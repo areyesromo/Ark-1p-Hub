@@ -260,6 +260,7 @@ export default {
   name: 'Mahjong Solitaire',
   tagline: 'Take matching pairs of free tiles off the pile until it’s gone.',
   category: 'puzzle',
+  phone: true,
   score: { better: 'lower', unit: 'time' },
   create: (ctx) => new Mahjong(ctx, ctx.rng),
 };

@@ -183,6 +183,7 @@ export default {
   name: 'Gem Swap',
   tagline: 'Swap gems to line up three of a colour. Chains score more. 30 swaps.',
   category: 'puzzle',
+  phone: true,
   score: { better: 'higher', unit: 'pts' },
   create: (ctx) => new Gems(ctx, ctx.rng),
 };

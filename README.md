@@ -117,6 +117,15 @@ personal bests, achievements and your daily streak, your five favourite games wi
 latest personal bests, and a chart of the last two weeks. The hub keeps its latest 5,000 runs (the page says
 when older ones are missing), and it doesn't record how long a run took, so there's no "time played".
 
+## Phone only (no TV)
+
+Open **`http://<hub>:<port>/phone`** on your phone (or tap **No TV? Play on this phone alone** on the join page), type your name and play: no TV and no room code. Every game works:
+
+- The puzzle and brain games show the whole game on the phone, as they do with a TV.
+- The arcade games (and 2048) split the phone: the TV's picture on top, the usual phone controls below. Turn the phone sideways and they sit side by side.
+
+The phone plays the sounds itself (switch them off in the ⋯ menu). Scores, bests, achievements and the daily challenge count the same as on the TV. Your phone-only seat is kept apart from the one you use with the TV, and a reload (or a hub restart) puts you straight back in.
+
 ## Controllers and the keyboard
 
 The player can use a phone, **or** a game controller connected to the device

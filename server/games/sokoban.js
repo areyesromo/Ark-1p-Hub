@@ -166,6 +166,7 @@ export default {
   name: 'Sokoban',
   tagline: 'Push every box onto a target. You can only push, never pull: think before you shove.',
   category: 'puzzle',
+  phone: true,
   score: { better: 'lower', unit: 'moves' },
   create: (ctx) => new Sokoban(ctx),
 };

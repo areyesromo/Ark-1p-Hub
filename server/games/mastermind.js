@@ -92,6 +92,7 @@ export default {
   name: 'Mastermind',
   tagline: 'Crack the secret colour code. Black: right colour, right place. White: right colour, wrong place.',
   category: 'puzzle',
+  phone: true,
   score: { better: 'lower', unit: 'tries' },
   create: (ctx) => new Mastermind(ctx, ctx.rng),
 };

@@ -229,6 +229,7 @@ export default {
   name: 'Helicopter Cave',
   tagline: 'Hold to climb, let go to drop. Fly down the winding cave as far as you can.',
   category: 'arcade',
+  phone: 'split',
   score: { better: 'higher', unit: 'm' },
   create: (ctx) => new Cave(ctx, ctx.rng),
 };
