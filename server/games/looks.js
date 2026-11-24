@@ -89,6 +89,10 @@ export const LOOKS = {
     sea: { name: '🐠 Sea', unlock: 'memory-12' },
     space: { name: '🚀 Space', unlock: 'memory-large' },
   },
+  dogpark: {
+    golden: { name: '🐕 Golden retriever' },
+    aussie: { name: '🐾 Aussie', unlock: 'dogpark-solve' },
+  },
   simon: {
     classic: { name: 'Classic' },
     pastel: { name: '🍬 Pastel', unlock: 'simon-10' },

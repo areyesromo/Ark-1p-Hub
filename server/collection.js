@@ -21,13 +21,16 @@ export function collectionFor({ have, bestOf }) {
     if (!rows.length) continue;
     const ctx = { achievements: () => have, best: (variant) => bestOf(id, variant, def.score.better) };
     const locked = lockedFor(ctx, def.spec);
+    // Only what's there to unlock: the first choice and the ones a new player finds locked
+    // (Dog Park's random parks, say, are open to everyone, so they're not part of a collection).
+    const fresh = lockedFor({ achievements: () => ({}), best: () => null }, def.spec);
     groups.push({
       game: id,
       gameName: def.name,
       rows: rows.map(([key, s]) => ({
         key,
         title: s.title,
-        items: s.values.map((value) => {
+        items: s.values.filter((value, i) => i === 0 || own(fresh[key], value)).map((value) => {
           const how = own(locked[key], value) ? locked[key][value] : null;
           return { value, label: s.label(value), open: how === null, how };
         }),

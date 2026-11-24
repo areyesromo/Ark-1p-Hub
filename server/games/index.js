@@ -20,6 +20,8 @@ import numbers from './numbers.js';
 import oddone from './oddone.js';
 import hangman from './hangman.js';
 import lines from './lines.js';
+import dogpark, { PARKS as DOG_PARKS, RANDOM as DOG_RANDOM, EXPERT_FROM as DOG_EXPERT } from './dogpark.js';
+import { LEVELS as DOG_LEVELS } from './dogpark-levels.js';
 import flood, { SIZES as FLOOD_SIZES } from './flood.js';
 import mastermind, { LEVELS as MASTER_LEVELS } from './mastermind.js';
 import { LEVELS as SOKOBAN_LEVELS } from './sokoban-levels.js';
@@ -139,6 +141,20 @@ const GAMES = [
     size: { title: 'Board', values: ['medium', 'small', 'large'], label: (k) => `${FLOOD_SIZES[k].name}${k === 'small' ? ' (a quick one)' : k === 'large' ? ' (a long one)' : ''}` },
   }),
   lines,
+  withSetup(dogpark, {
+    park: {
+      title: 'Park',
+      values: DOG_PARKS,
+      label: (p) => {
+        if (typeof p !== 'number') return `🎲 Random ${DOG_RANDOM[p]} × ${DOG_RANDOM[p]} (a new park every time)`;
+        const n = DOG_LEVELS[p - 1].length;
+        return `Level ${p} · ${n} × ${n}${p >= DOG_EXPERT ? ' · Expert' : ''}`;
+      },
+      // Each level opens once the one before it is solved; the random parks are open from the start.
+      lock: (p, have, ctx) => (typeof p !== 'number' || p === 1 || (ctx.best && ctx.best(`Level ${p - 1}`) !== null) ? null : `Solve level ${p - 1} to unlock`),
+    },
+    ...lookRow('dogpark', 'Dogs'),
+  }),
   withSetup(sokoban, {
     level: {
       title: 'Level',

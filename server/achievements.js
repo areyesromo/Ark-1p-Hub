@@ -126,6 +126,13 @@ export const ACHIEVEMENTS = [
     { id: 'flood-par', icon: '🎯', name: 'Sharp tide', desc: 'Flood-It: flood a board in 20 moves or fewer.', check: (r) => scored(r) && r.score <= 20 },
     { id: 'flood-large', icon: '🌍', name: 'Ocean', desc: 'Flood-It: flood the 18 × 18 board.', check: (r) => scored(r) && r.variant === '18 × 18' },
   ]),
+  ...game('dogpark', [
+    { id: 'dogpark-solve', icon: '🐶', name: 'Good dog', desc: 'Dog Park: solve a park.', check: (r) => scored(r) },
+    { id: 'dogpark-10', icon: '🦮', name: 'Pack leader', desc: 'Dog Park: solve level 10.', check: (r) => scored(r) && r.variant === 'Level 10' },
+    { id: 'dogpark-nohint', icon: '🎾', name: 'Off the leash', desc: 'Dog Park: solve a 9 × 9 park or bigger without a hint.', check: (r, v) => scored(r) && v.n >= 9 && !v.hints },
+    { id: 'dogpark-30', icon: '🏆', name: 'Top dog', desc: 'Dog Park: solve level 30.', check: (r) => scored(r) && r.variant === 'Level 30' },
+    { id: 'dogpark-expert', icon: '🎖️', name: 'Best in show', desc: 'Dog Park: solve level 36, the last of the Expert pack.', check: (r) => scored(r) && r.variant === 'Level 36' },
+  ]),
   ...game('lines', [
     { id: 'lines-first', icon: '🎱', name: 'Five of a kind', desc: 'Color Lines: finish a game with 10 points or more.', check: (r) => scored(r) && r.score >= 10 },
     { id: 'lines-100', icon: '🌈', name: 'Rainbow runner', desc: 'Color Lines: score 100 points.', check: (r) => scored(r) && r.score >= 100 },
