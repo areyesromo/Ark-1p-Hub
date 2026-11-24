@@ -234,6 +234,7 @@ export default {
   name: 'KenKen',
   tagline: 'Every number once in each row and column, and each cage makes its sum. Maths meets Sudoku.',
   category: 'puzzle',
+  phone: true,
   score: { better: 'lower', unit: 'time' },
   create: (ctx) => new KenKen(ctx, ctx.rng),
 };

@@ -197,3 +197,59 @@ test('a run that scores nothing, or doesn\'t count, is not recorded', () => {
   assert.equal(stats.runs.length, 1);
   room.dispose();
 });
+
+test('phone-only mode: the phone opens its own room and plays only the games its screen can show', async () => {
+  const phone = client();
+  const state = next(phone, 'room:state', (s) => s.player && s.player.name === 'Pip');
+  const res = await call(phone, 'phone:create', { name: 'Pip' });
+  assert.ok(res.ok && res.code && res.token);
+  const s = await state;
+  assert.equal(s.phoneOnly, true);
+  assert.equal(s.hostConnected, false);
+  assert.equal(s.readyToPlay, true, 'no TV needed');
+  assert.ok(s.games.length > 0 && s.games.every((g) => g.phone), 'only phone games in its lobby');
+  assert.ok(!s.games.some((g) => g.id === 'snake'));
+  assert.match((await call(phone, 'lobby:start', { gameId: 'snake' })).error, /needs the TV/);
+  for (let i = 0; i < 10; i++) {
+    const r = await call(phone, 'lobby:start', { gameId: 'random' });
+    assert.ok(r.ok && getGame(r.gameId).phone, 'random picks a phone game');
+  }
+  const view = next(phone, 'game:view', (m) => m.gameId === 'reaction');
+  assert.ok((await call(phone, 'lobby:start', { gameId: 'reaction' })).ok);
+  assert.ok((await view).view);
+  // A reload: the same seat comes back with the token.
+  const again = client();
+  const back = await call(again, 'player:join', { code: res.code, name: 'Pip', token: res.token });
+  assert.ok(back.ok);
+  assert.equal((await call(client(), 'phone:create', { name: '' })).error, 'Please enter a name.');
+});
+
+test('a phone-only room only offers the daily challenge when its game plays on the phone', () => {
+  const io = { to: () => ({ emit() {} }) };
+  const room = new Room('PHON', io, { phoneOnly: true });
+  room.seatPlayer('Pip');
+  room.player.connected = true;
+  const d = room.dailyInfo();
+  assert.equal(d.playable, Boolean(getGame(d.game).phone));
+  const r = room.startGame('daily');
+  if (d.playable) assert.ok(r.ok);
+  else assert.match(r.error, /needs the TV/);
+  room.dispose();
+  // A TV room plays everything.
+  const tv = new Room('TVRM', io);
+  assert.equal(tv.dailyInfo().playable, true);
+  assert.equal(tv.lobbyGames().length, listGames().length);
+});
+
+test('the games marked for the phone are the ones whose phone screen shows the whole game', () => {
+  const tvOnly = listGames().filter((g) => !g.phone).map((g) => g.id).sort();
+  assert.deepEqual(tvOnly, ['2048', 'asteroids', 'blocks', 'breaker', 'bubbles', 'cave', 'flappy', 'hopper', 'invaders', 'numbers', 'runner', 'snake', 'stack']);
+});
+
+test('/phone serves the phone page', async () => {
+  for (const p of ['/phone', '/phone/']) {
+    const res = await fetch(url + p);
+    assert.equal(res.status, 200);
+    assert.match(await res.text(), /id="join-form"/);
+  }
+});

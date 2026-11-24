@@ -134,6 +134,7 @@ export default {
   name: 'Sliding Puzzle',
   tagline: 'Slide the numbered tiles back into order. 3×3, 4×4 or 5×5.',
   category: 'puzzle',
+  phone: true,
   score: { better: 'lower', unit: 'time' },
   create: (ctx) => new Slide(ctx, ctx.rng),
 };

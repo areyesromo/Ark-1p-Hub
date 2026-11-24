@@ -109,6 +109,7 @@ export default {
   name: 'Lights Out',
   tagline: 'Each press flips a light and its neighbours. Switch them all off in as few moves as you can.',
   category: 'puzzle',
+  phone: true,
   score: { better: 'lower', unit: 'moves' },
   create: (ctx) => new Lights(ctx, ctx.rng),
 };

@@ -144,6 +144,7 @@ export default {
   name: 'Memory Pairs',
   tagline: 'Turn two cards over and find the pairs. Fewer tries is better.',
   category: 'brain',
+  phone: true,
   score: { better: 'lower', unit: 'tries' },
   create: (ctx) => new Memory(ctx, ctx.rng),
 };

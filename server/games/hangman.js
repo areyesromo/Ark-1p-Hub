@@ -107,6 +107,7 @@ export default {
   name: 'Hangman',
   tagline: 'Guess the hidden word a letter at a time. Six wrong guesses and it\'s over.',
   category: 'brain',
+  phone: true,
   score: { better: 'higher', unit: 'pts' },
   create: (ctx) => new Hangman(ctx, ctx.rng),
 };

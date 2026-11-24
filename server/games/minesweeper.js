@@ -192,6 +192,7 @@ export default {
   name: 'Minesweeper',
   tagline: 'Clear the field without setting off a mine. Numbers count the mines next door.',
   category: 'puzzle',
+  phone: true,
   score: { better: 'lower', unit: 'time' },
   create: (ctx) => new Minesweeper(ctx, ctx.rng),
 };

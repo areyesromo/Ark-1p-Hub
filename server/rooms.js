@@ -33,8 +33,11 @@ const isValidToken = (t) => typeof t === 'string' && /^[0-9a-f]{32}$/.test(t);
  * pushes them out, and records the score when a run ends.
  */
 export class Room {
-  constructor(code, io, { stats = null, profiles = null, hostToken = null } = {}) {
+  constructor(code, io, { stats = null, profiles = null, hostToken = null, phoneOnly = false } = {}) {
     this.code = code;
+    // Phone-only (opened from /phone): no TV, the phone shows the whole game, so only
+    // games marked `phone` can be played.
+    this.phoneOnly = phoneOnly;
     this.io = io;
     this.stats = stats; // score history (see stats.js), optional
     this.profiles = profiles; // avatars and colours (see profiles.js), optional
@@ -143,9 +146,14 @@ export class Room {
 
   /** A random game for the "🎲 Random" button: not the one just played. */
   pickRandomGame(rng = Math.random) {
-    let pool = listGames();
+    let pool = this.playable();
     if (pool.length > 1) pool = pool.filter((g) => g.id !== this.lastGameId);
     return pool[Math.floor(rng() * pool.length)].id;
+  }
+
+  /** The games this room can play: all of them, or the phone ones in a phone-only room. */
+  playable() {
+    return listGames().filter((g) => !this.phoneOnly || g.phone);
   }
 
   /** Today's daily challenge for the lobby: which game, and whether this player has had their go. */
@@ -158,6 +166,8 @@ export class Room {
       game: c.game,
       name: def ? def.name : c.game,
       done: Boolean(mine),
+      // A phone-only room can't play a challenge that needs the TV.
+      playable: !this.phoneOnly || Boolean(def && def.phone),
       score: mine && Number.isFinite(mine.score) ? mine.score : null,
       unit: def ? def.score.unit : 'pts',
     };
@@ -172,10 +182,12 @@ export class Room {
         return { error: "You've had your go at today's challenge. A new one comes at midnight (UTC)." };
       }
       gameId = challenge.game;
+      if (this.phoneOnly && !(getGame(gameId) || {}).phone) return { error: "Today's challenge needs the TV. Play it on the TV, or pick another game." };
     }
     if (gameId === 'random') gameId = this.pickRandomGame();
     const def = getGame(gameId);
     if (!def) return { error: 'Unknown game.' };
+    if (this.phoneOnly && !def.phone) return { error: `${def.name} needs the TV: it isn't in phone-only mode.` };
     if (!this.readyToPlay) return { error: 'Join first: scan the code with your phone, or press a button on a controller.' };
 
     this.stopGame({ silent: true });
@@ -349,6 +361,7 @@ export class Room {
       phase: this.game ? 'playing' : 'lobby',
       gameId: this.gameId,
       hostConnected: this.hostSockets.size > 0,
+      phoneOnly: this.phoneOnly,
       readyToPlay: this.readyToPlay,
       player: p ? { name: p.name, connected: p.connected, local: Boolean(p.local), profile: this.profileOf(p.name) } : null,
       achievements: p ? (({ got, total }) => ({ got, total }))(this.achievementCounts()) : null,
@@ -389,7 +402,7 @@ export class Room {
     const bests = this.stats && this.player ? this.stats.bestsOf(this.player.name) : {};
     const last = this.stats ? this.stats.lastPlayed() : {};
     const ach = this.achievementCounts().games;
-    return listGames().map((g) => ({ ...g, best: bests[g.id] || null, lastPlayed: last[g.id] || null, achievements: this.player ? ach[g.id] || null : null }));
+    return this.playable().map((g) => ({ ...g, best: bests[g.id] || null, lastPlayed: last[g.id] || null, achievements: this.player ? ach[g.id] || null : null }));
   }
 
   /** Bring a (re)connecting socket fully up to date. */
@@ -418,7 +431,7 @@ export class RoomManager {
    * A new room with a random code, or (after a server restart) the code and
    * host token a TV asks for, so phones that knew the old room find it again.
    */
-  create({ code: wanted = null, hostToken = null } = {}) {
+  create({ code: wanted = null, hostToken = null, phoneOnly = false } = {}) {
     let code = normalizeCode(wanted);
     if (!isValidCode(code) || this.rooms.has(code)) {
       do {
@@ -426,7 +439,7 @@ export class RoomManager {
       } while (this.rooms.has(code));
       hostToken = null;
     }
-    const room = new Room(code, this.io, { stats: this.stats, profiles: this.profiles, hostToken: isValidToken(hostToken) ? hostToken : null });
+    const room = new Room(code, this.io, { stats: this.stats, profiles: this.profiles, hostToken: isValidToken(hostToken) ? hostToken : null, phoneOnly });
     this.rooms.set(code, room);
     return room;
   }

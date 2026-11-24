@@ -261,6 +261,7 @@ export default {
   name: 'Nonograms',
   tagline: 'The numbers say how many squares are filled in each line. Fill them in to reveal the picture.',
   category: 'puzzle',
+  phone: true,
   score: { better: 'lower', unit: 'time' },
   create: (ctx) => new Nonogram(ctx, ctx.rng),
 };

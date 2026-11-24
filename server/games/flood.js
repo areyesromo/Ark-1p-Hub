@@ -129,6 +129,7 @@ export default {
   name: 'Flood-It',
   tagline: 'Flood the board from the corner, one colour at a time, in as few moves as you can.',
   category: 'puzzle',
+  phone: true,
   score: { better: 'lower', unit: 'moves' },
   create: (ctx) => new Flood(ctx, ctx.rng),
 };

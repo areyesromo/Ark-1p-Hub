@@ -119,6 +119,7 @@ export default {
   name: 'Odd One Out',
   tagline: 'One square is a shade different. Spot it, fast: the grid grows and the shades get closer.',
   category: 'brain',
+  phone: true,
   score: { better: 'higher', unit: 'pts' },
   create: (ctx) => new OddOne(ctx, ctx.rng),
 };

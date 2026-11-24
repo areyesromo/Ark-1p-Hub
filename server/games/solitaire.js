@@ -245,6 +245,7 @@ export default {
   name: 'Solitaire',
   tagline: 'Klondike: build the suits up from ace to king. Tap a card to send it where it fits.',
   category: 'puzzle',
+  phone: true,
   score: { better: 'lower', unit: 'time' },
   create: (ctx) => new Solitaire(ctx, ctx.rng),
 };

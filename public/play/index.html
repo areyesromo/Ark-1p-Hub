@@ -15,7 +15,8 @@
   <section id="join-screen" class="join-screen">
     <h1 class="brand"><span class="p1">ARK</span> <span class="p2">1P</span> HUB</h1>
     <form id="join-form" class="panel" autocomplete="off">
-      <label>Room code
+      <p id="join-mode" class="join-mode muted"></p>
+      <label id="code-label">Room code
         <input id="code" name="code" maxlength="4" inputmode="text" autocapitalize="characters" placeholder="ABCD" required>
       </label>
       <label>Your name <span class="muted note">(your high scores are kept under it)</span>
@@ -23,6 +24,7 @@
       </label>
       <button class="primary" type="submit" id="join-btn">Play</button>
       <p id="join-error" class="error" role="alert"></p>
+      <p class="join-alt muted"><a href="/phone">No TV? Play on this phone alone</a></p>
     </form>
   </section>
 
@@ -38,6 +40,7 @@
     <div id="menu" class="menu hidden">
       <button id="lobby-btn">Back to lobby</button>
       <button id="profile-btn" class="ghost">🎨 Avatar and colour</button>
+      <button id="sound-btn" class="ghost hidden">🔊 Sound is on</button>
       <button id="buzz-btn" class="ghost">📳 Test vibration</button>
       <button id="leave-btn" class="ghost">Leave room</button>
       <p id="buzz-msg" class="buzz-msg hidden"></p>

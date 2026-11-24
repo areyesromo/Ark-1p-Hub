@@ -151,6 +151,7 @@ export default {
   name: 'Color Lines',
   tagline: 'Slide balls round the board and line up five of a colour before it fills up.',
   category: 'puzzle',
+  phone: true,
   score: { better: 'higher', unit: 'pts' },
   create: (ctx) => new Lines(ctx, ctx.rng),
 };

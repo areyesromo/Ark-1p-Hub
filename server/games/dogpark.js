@@ -250,6 +250,7 @@ export default {
   name: 'Dog Park',
   tagline: 'One dog per row, column and colour, and no two dogs touching. Can you fill the park?',
   category: 'puzzle',
+  phone: true,
   score: { better: 'lower', unit: 'time' },
   create: (ctx) => new DogPark(ctx, ctx.rng),
 };

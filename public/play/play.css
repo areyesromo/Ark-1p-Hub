@@ -107,3 +107,9 @@ body { --me: var(--p1); }
 .phone-games button.daily.done strong { color: var(--muted); }
 .me-avatar { padding: 0; border: 0; background: none; font-size: 1.05rem; display: flex; align-items: center; }
 .me-avatar .dot { margin: 0 4px; }
+
+/* Phone-only mode (/phone): no room code to type, and no link to itself. */
+.join-mode:empty { display: none; }
+.join-mode a, .join-alt a { color: var(--p1); }
+.phone-only .join-alt { display: none; }
+.join-alt { text-align: center; font-size: 0.9rem; margin: 0; }

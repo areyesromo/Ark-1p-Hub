@@ -174,6 +174,7 @@ export default {
   name: 'Word Guess',
   tagline: 'Find the five-letter word in six guesses. A new daily word for everyone, or practise.',
   category: 'brain',
+  phone: true,
   music: 'thinking',
   score: { better: 'lower', unit: 'tries' },
   create: (ctx) => new WordGuess(ctx, ctx.rng),

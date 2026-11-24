@@ -143,6 +143,7 @@ export default {
   name: 'Anagram Rush',
   tagline: 'Unscramble five letters into a word. As many as you can in 60 seconds.',
   category: 'brain',
+  phone: true,
   score: { better: 'higher', unit: 'pts' },
   create: (ctx) => new Anagram(ctx, ctx.rng),
 };

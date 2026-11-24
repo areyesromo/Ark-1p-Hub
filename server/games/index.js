@@ -47,10 +47,12 @@ import { getAchievement } from '../achievements.js';
 /**
  * Every game is a module exporting:
  *
- *   { id, name, tagline, category, music?, score: { better, unit }, create(ctx) }
+ *   { id, name, tagline, category, music?, phone?, score: { better, unit }, create(ctx) }
  *
  * category is 'arcade' (real time, quick reflexes), 'puzzle' (think at your
  * own pace) or 'brain' (memory and reaction). The lobby groups them.
+ * phone: true when the phone's own screen shows the whole game, so it can be
+ * played with no TV at all (phone-only mode, /phone).
  * score.better is 'higher' or 'lower'; score.unit says how to show a score:
  * 'pts', 'ms' (a reaction time), 'time' (a duration in ms, shown as m:ss.s),
  * 'tries' (guesses it took), 'moves' or 'm' (metres).
@@ -209,11 +211,12 @@ export function getGame(id) {
 
 /** What the lobby shows for each game, grouped by category in registry order. */
 export function listGames() {
-  return CATEGORIES.flatMap((c) => GAMES.filter((g) => g.category === c)).map(({ id, name, tagline, category, music, score }) => ({
+  return CATEGORIES.flatMap((c) => GAMES.filter((g) => g.category === c)).map(({ id, name, tagline, category, music, phone, score }) => ({
     id,
     name,
     tagline,
     category,
+    phone: Boolean(phone),
     music: music || DEFAULT_MOOD[category],
     score: { better: score.better, unit: score.unit },
   }));
