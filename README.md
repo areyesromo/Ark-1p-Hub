@@ -1,5 +1,12 @@
 # Ark 1P Hub
 
+> **📦 Moved.** Ark 1P Hub's games now live in [Ark 2P Hub](https://github.com/areyesromo/Ark-2P-Hub):
+> switch its lobby to **👤 1 player** for all 39 solo games, with bests, achievements, unlockable looks,
+> the daily challenge and its pages, or open **/phone** to play them on the phone alone. One app for
+> both, so get the [latest Ark 2P Hub release](https://github.com/areyesromo/Ark-2P-Hub/releases/latest).
+> This repo is archived and gets no more updates. (Scores and achievements here stay in this app:
+> Ark 2P Hub starts fresh.)
+
 **Solo arcade games** for your living room. The TV shows the game and your
 **phone is the controller**: scan a QR code and play in the browser, nothing to
 install. No phone handy? A game controller plugged into the TV, or the TV's
