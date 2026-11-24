@@ -106,6 +106,7 @@ export default {
   name: 'Number Memory',
   tagline: 'Remember the number, then type it back. One digit longer every time.',
   category: 'brain',
+  phone: true,
   score: { better: 'higher', unit: 'pts' },
   create: (ctx) => new Numbers(ctx, ctx.rng),
 };

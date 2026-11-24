@@ -283,6 +283,7 @@ export default {
   name: 'Bubble Shooter',
   tagline: 'Aim, fire, pop three of a colour. Don\'t let the bubbles reach the bottom.',
   category: 'arcade',
+  phone: 'split',
   score: { better: 'higher', unit: 'pts' },
   create: (ctx) => new Bubbles(ctx, ctx.rng),
 };

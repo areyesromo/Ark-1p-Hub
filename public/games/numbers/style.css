@@ -27,3 +27,6 @@
 .nm-keys { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; touch-action: manipulation; }
 .nm-keys button { font-size: var(--fs-xl); font-weight: 800; }
 .nm-keys.off { opacity: 0.4; }
+
+/* The number while it shows, big enough to read at arm's length. */
+.nm-phone .msg.big { font-size: var(--fs-2xl); font-weight: 900; letter-spacing: 0.06em; font-variant-numeric: tabular-nums; word-break: break-all; }

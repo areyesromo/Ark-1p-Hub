@@ -298,6 +298,7 @@ export default {
   name: 'Blocks',
   tagline: 'Turn the falling pieces to fill whole rows. Four rows at once scores big.',
   category: 'arcade',
+  phone: 'split',
   score: { better: 'higher', unit: 'pts' },
   create: (ctx) => new Blocks(ctx, ctx.rng),
 };

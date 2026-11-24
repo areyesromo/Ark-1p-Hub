@@ -18,11 +18,13 @@
     const typing = v.phase === 'answer' || v.phase === 'show';
     let top = '';
     if (v.phase === 'ready') top = 'Get ready…';
-    else if (v.phase === 'show') top = '👀 Watch the TV';
+    // The number shows here too, so there's no need to look up at the TV (and no TV at all in phone-only mode).
+    else if (v.phase === 'show') top = v.number ? '👀 ' + v.number : '👀 Remember it';
     else if (v.phase === 'answer') top = 'Type the number';
     else if (v.result) top = v.result.ok ? '✓ Right!' : '✗ It was ' + v.result.number;
     root.querySelector('.info').innerHTML = '<strong>' + v.length + '</strong> digits · best ' + v.score + ' · ' + '❤️'.repeat(Math.max(0, v.lives));
     root.querySelector('.msg').textContent = top;
+    root.querySelector('.msg').classList.toggle('big', v.phase === 'show');
     root.querySelector('.entry').textContent = typing ? entry || '…' : '';
     root.querySelector('.nm-keys').classList.toggle('off', !typing);
   }

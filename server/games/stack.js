@@ -159,6 +159,7 @@ export default {
   name: 'Stack',
   tagline: 'Drop the sliding block on the tower. Overhangs get cut off. How high can you go?',
   category: 'arcade',
+  phone: 'split',
   score: { better: 'higher', unit: 'pts' },
   create: (ctx) => new Stack(ctx),
 };

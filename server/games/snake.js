@@ -198,6 +198,7 @@ export default {
   name: 'Snake',
   tagline: 'Eat, grow, don\'t bite your own tail. It speeds up as you go.',
   category: 'arcade',
+  phone: 'split',
   score: { better: 'higher', unit: 'pts' },
   create: (ctx) => new Snake(ctx, ctx.rng),
 };

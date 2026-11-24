@@ -256,6 +256,7 @@ export default {
   name: 'Asteroids',
   tagline: 'Turn, thrust and blast the rocks to bits before they hit you.',
   category: 'arcade',
+  phone: 'split',
   score: { better: 'higher', unit: 'pts' },
   create: (ctx) => new Asteroids(ctx, ctx.rng),
 };

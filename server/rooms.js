@@ -393,7 +393,7 @@ export class Room {
     this.lastPhase = host.phase;
     this.io.to(this.hostChannel).emit('game:view', { gameId, view: this.decorate(host, host) });
     if (this.player && !this.player.local) {
-      this.io.to(this.playerChannel).emit('game:view', { gameId, view: this.decorate(this.game.playerView(), host) });
+      this.io.to(this.playerChannel).emit('game:view', this.phoneMessage(host));
     }
   }
 
@@ -405,13 +405,22 @@ export class Room {
     return this.playable().map((g) => ({ ...g, best: bests[g.id] || null, lastPlayed: last[g.id] || null, achievements: this.player ? ach[g.id] || null : null }));
   }
 
+  /**
+   * The phone's game:view. With no TV (phone-only) a 'split' game also sends the
+   * TV's view as `tv`, for the phone to draw the TV's picture above its controls.
+   */
+  phoneMessage(host) {
+    const msg = { gameId: this.gameId, view: this.decorate(this.game.playerView(), host) };
+    if (this.phoneOnly && (getGame(this.gameId) || {}).phone === 'split') msg.tv = this.decorate(host, host);
+    return msg;
+  }
+
   /** Bring a (re)connecting socket fully up to date. */
   sendSnapshot(socket, role) {
     socket.emit('room:state', this.publicState());
     if (!this.game) return;
     const host = this.game.hostView();
-    const view = role === 'host' ? host : this.game.playerView();
-    socket.emit('game:view', { gameId: this.gameId, view: this.decorate(view, host) });
+    socket.emit('game:view', role === 'host' ? { gameId: this.gameId, view: this.decorate(host, host) } : this.phoneMessage(host));
   }
 
   dispose() {

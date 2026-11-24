@@ -160,6 +160,7 @@ export default {
   name: '2048',
   tagline: 'Swipe to slide the tiles; equal tiles merge. Can you make 2048?',
   category: 'puzzle',
+  phone: 'split',
   score: { better: 'higher', unit: 'pts' },
   create: (ctx) => new Game2048(ctx, ctx.rng),
 };

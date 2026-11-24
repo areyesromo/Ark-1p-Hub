@@ -272,23 +272,40 @@
 
   function unmountGame() {
     if (current && current.renderer && current.renderer.unmount) current.renderer.unmount();
+    if (current && current.split && current.tv && current.tv.unmount) current.tv.unmount();
     current = null;
     $('phone-stage').innerHTML = '';
+    $('phone-stage').classList.remove('split');
     showRunOver(null);
   }
 
   function mountGame(gameId) {
     unmountGame();
-    const mounting = { gameId: gameId, renderer: null, tv: null };
+    const game = currentGame();
+    // Phone-only and a 'split' game (the arcade ones): the TV's picture on top, the phone's controls below.
+    const split = PHONE_ONLY && game && game.phone === 'split';
+    const mounting = { gameId: gameId, renderer: null, tv: null, split: split };
     current = mounting;
-    // Phone-only: there's no TV, so borrow its renderer (not shown) for the sounds and the end screen's line.
+    const stage = $('phone-stage');
+    stage.classList.toggle('split', split);
+    if (split) stage.innerHTML = '<div class="split-tv"></div><div class="split-pad"></div>';
+    const padEl = split ? stage.querySelector('.split-pad') : stage;
+    // Phone-only: there's no TV, so borrow its renderer for the sounds and the end screen's line
+    // (and, split, to draw the picture).
     if (PHONE_ONLY) {
-      Ark.loadRenderer('host', gameId).then(function (tv) { mounting.tv = tv; }).catch(function () { /* no sounds, that's all */ });
+      Ark.loadRenderer('host', gameId).then(function (tv) {
+        if (current !== mounting) return;
+        if (split) {
+          tv.mount(stage.querySelector('.split-tv'), { player: state.player, game: game });
+          if (lastView && lastView.gameId === gameId && lastView.tv && !Ark.setup.isHub(lastView.tv)) tv.update(lastView.tv);
+        }
+        mounting.tv = tv;
+      }).catch(function () { /* no sounds, that's all */ });
     }
     Ark.loadRenderer('player', gameId).then(function (renderer) {
       if (current !== mounting) return;
       mounting.renderer = renderer;
-      renderer.mount($('phone-stage'), api);
+      renderer.mount(padEl, api);
       if (lastView && lastView.gameId === gameId && !Ark.setup.isHub(lastView.view)) {
         renderer.update(lastView.view);
         showRunOver(lastView.view);
@@ -366,10 +383,12 @@
   }
 
   socket.on('game:view', function (msg) {
-    const prev = lastView && lastView.gameId === msg.gameId ? lastView.view : null;
+    const old = lastView && lastView.gameId === msg.gameId ? lastView : null;
     lastView = msg;
     const v = msg.view;
-    if (PHONE_ONLY) playSounds(prev, v);
+    // The sounds go by the TV's view when there is one (the TV renderer's sounds() expects it).
+    if (PHONE_ONLY) playSounds(old && (msg.tv ? old.tv : old.view), msg.tv || v);
+    if (msg.tv && current && current.split && current.tv && current.gameId === msg.gameId && !Ark.setup.isHub(msg.tv)) current.tv.update(msg.tv);
     showHubSetup(Ark.setup.isHub(v) ? v : null);
     if (Ark.setup.isHub(v)) return; // the game hasn't started: the hub shows its setup screen
     if (current && current.renderer && current.gameId === msg.gameId) {
@@ -416,7 +435,11 @@
     }
     const r = current && current.renderer;
     const tv = current && current.tv;
-    const extra = r && r.overHtml ? r.overHtml(v) : tv && tv.overHtml ? tv.overHtml(v) : '';
+    let extra = '';
+    try {
+      // The TV renderer's line reads the TV's view, when the phone has it (a split game).
+      extra = r && r.overHtml ? r.overHtml(v) : tv && tv.overHtml ? tv.overHtml(lastView && lastView.tv ? lastView.tv : v) : '';
+    } catch (e) { /* the end screen shows without it */ }
     const html =
       '<div class="ro-game">' + Ark.escapeHtml(g.name) + (v.variant ? ' · ' + Ark.escapeHtml(v.variant) : '') + '</div>' +
       '<div class="ro-score">' + Ark.formatScore(v.score, g.score.unit) + '</div>' +

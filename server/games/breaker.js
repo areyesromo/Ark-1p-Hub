@@ -251,6 +251,7 @@ export default {
   name: 'Brick Breaker',
   tagline: 'Bounce the ball off your paddle and smash the wall, brick by brick.',
   category: 'arcade',
+  phone: 'split',
   score: { better: 'higher', unit: 'pts' },
   create: (ctx) => new Breaker(ctx, ctx.rng),
 };

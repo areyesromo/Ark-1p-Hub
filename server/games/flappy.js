@@ -167,6 +167,7 @@ export default {
   name: 'Flappy',
   tagline: 'Tap to flap. Fly through the gaps in the pipes, as far as you can.',
   category: 'arcade',
+  phone: 'split',
   score: { better: 'higher', unit: 'pts' },
   create: (ctx) => new Flappy(ctx, ctx.rng),
 };

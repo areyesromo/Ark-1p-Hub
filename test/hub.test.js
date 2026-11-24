@@ -198,7 +198,7 @@ test('a run that scores nothing, or doesn\'t count, is not recorded', () => {
   room.dispose();
 });
 
-test('phone-only mode: the phone opens its own room and plays only the games its screen can show', async () => {
+test('phone-only mode: the phone opens its own room and plays the games that play on the phone', async () => {
   const phone = client();
   const state = next(phone, 'room:state', (s) => s.player && s.player.name === 'Pip');
   const res = await call(phone, 'phone:create', { name: 'Pip' });
@@ -207,9 +207,8 @@ test('phone-only mode: the phone opens its own room and plays only the games its
   assert.equal(s.phoneOnly, true);
   assert.equal(s.hostConnected, false);
   assert.equal(s.readyToPlay, true, 'no TV needed');
-  assert.ok(s.games.length > 0 && s.games.every((g) => g.phone), 'only phone games in its lobby');
-  assert.ok(!s.games.some((g) => g.id === 'snake'));
-  assert.match((await call(phone, 'lobby:start', { gameId: 'snake' })).error, /needs the TV/);
+  assert.ok(s.games.length > 0 && s.games.every((g) => g.phone), 'only games that play on the phone in its lobby');
+  assert.equal(s.games.length, listGames().filter((g) => g.phone).length);
   for (let i = 0; i < 10; i++) {
     const r = await call(phone, 'lobby:start', { gameId: 'random' });
     assert.ok(r.ok && getGame(r.gameId).phone, 'random picks a phone game');
@@ -241,9 +240,30 @@ test('a phone-only room only offers the daily challenge when its game plays on t
   assert.equal(tv.lobbyGames().length, listGames().length);
 });
 
-test('the games marked for the phone are the ones whose phone screen shows the whole game', () => {
-  const tvOnly = listGames().filter((g) => !g.phone).map((g) => g.id).sort();
-  assert.deepEqual(tvOnly, ['2048', 'asteroids', 'blocks', 'breaker', 'bubbles', 'cave', 'flappy', 'hopper', 'invaders', 'numbers', 'runner', 'snake', 'stack']);
+test('every game plays with no TV: the arcade ones (and 2048) split the phone, TV picture above the controls', () => {
+  const split = listGames().filter((g) => g.phone === 'split').map((g) => g.id).sort();
+  assert.deepEqual(split, ['2048', 'asteroids', 'blocks', 'breaker', 'bubbles', 'cave', 'flappy', 'hopper', 'invaders', 'runner', 'snake', 'stack']);
+  assert.ok(listGames().every((g) => g.phone === true || g.phone === 'split'));
+});
+
+test('a split game sends the phone the TV\'s view too, but only with no TV', async () => {
+  const phone = client();
+  await call(phone, 'phone:create', { name: 'Sid' });
+  const view = next(phone, 'game:view', (m) => m.gameId === '2048' && Array.isArray(m.view.tiles || (m.tv && m.tv.tiles)));
+  assert.ok((await call(phone, 'lobby:start', { gameId: '2048' })).ok);
+  phone.emit('game:input', { type: 'go' }); // past its setup screen
+  const msg = await view;
+  assert.ok(msg.tv && Array.isArray(msg.tv.tiles), 'the TV view, tiles and all');
+  assert.equal(msg.view.tiles, undefined, 'the phone view is still its own');
+  // With a TV, the phone gets only its own view.
+  const io = { to: () => ({ emit() {} }) };
+  const room = new Room('TVRM', io);
+  room.hostSockets.add('tv');
+  room.seatPlayer('Sid');
+  room.player.connected = true;
+  room.startGame('2048');
+  assert.equal(room.phoneMessage(room.game.hostView()).tv, undefined);
+  room.dispose();
 });
 
 test('/phone serves the phone page', async () => {

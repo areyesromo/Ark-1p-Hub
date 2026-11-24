@@ -113,3 +113,16 @@ body { --me: var(--p1); }
 .join-mode a, .join-alt a { color: var(--p1); }
 .phone-only .join-alt { display: none; }
 .join-alt { text-align: center; font-size: 0.9rem; margin: 0; }
+
+/* Phone-only mode, a 'split' game: the TV's picture on top, the phone's controls below
+   (side by side when the phone is turned sideways). The picture pane is laid out like the TV's stage. */
+.phone-stage.split { gap: 6px; }
+.split-tv { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; overflow: hidden; border-radius: var(--r-md); background: var(--bg-2); font-size: 0.8rem; }
+.split-pad { flex: 0 0 42%; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+/* The controls get less room than a whole phone screen: tighter spacing, and nothing may push past the pane. */
+.split-pad > * { min-height: 0; padding-top: 4px; padding-bottom: 8px; gap: 8px; }
+.split-pad button { min-height: 0; }
+@media (orientation: landscape) {
+  .phone-stage.split { flex-direction: row; }
+  .split-pad { flex-basis: 38%; }
+}

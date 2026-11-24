@@ -51,8 +51,9 @@ import { getAchievement } from '../achievements.js';
  *
  * category is 'arcade' (real time, quick reflexes), 'puzzle' (think at your
  * own pace) or 'brain' (memory and reaction). The lobby groups them.
- * phone: true when the phone's own screen shows the whole game, so it can be
- * played with no TV at all (phone-only mode, /phone).
+ * phone: how it plays with no TV at all (phone-only mode, /phone). true: the
+ * phone's own screen shows the whole game. 'split': the phone shows the TV's
+ * picture above its own controls (the arcade games). Every game has one.
  * score.better is 'higher' or 'lower'; score.unit says how to show a score:
  * 'pts', 'ms' (a reaction time), 'time' (a duration in ms, shown as m:ss.s),
  * 'tries' (guesses it took), 'moves' or 'm' (metres).
@@ -216,7 +217,7 @@ export function listGames() {
     name,
     tagline,
     category,
-    phone: Boolean(phone),
+    phone: phone || false,
     music: music || DEFAULT_MOOD[category],
     score: { better: score.better, unit: score.unit },
   }));
